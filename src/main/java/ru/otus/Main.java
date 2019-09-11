@@ -12,8 +12,6 @@ import java.io.IOException;
 @Configuration
 @ComponentScan(basePackages = "ru.otus")
 
-
-
 public class Main {
     public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
@@ -21,7 +19,5 @@ public class Main {
         ServicePollImpl poll = context.getBean(ServicePollImpl.class);
         Person ya = db.getPerson();
         poll.testing(ya);
-
     }
-
 }
