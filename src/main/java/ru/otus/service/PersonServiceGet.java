@@ -1,9 +1,9 @@
-package homework02.ru.otus.service;
+package ru.otus.service;
 
-import homework02.ru.otus.domain.Person;
+import ru.otus.domain.Person;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import homework02.ru.otus.database.PersonDB;
+import ru.otus.database.PersonDB;
 
 import java.util.Locale;
 

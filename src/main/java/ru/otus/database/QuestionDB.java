@@ -1,4 +1,4 @@
-package homework02.ru.otus.database;
+package ru.otus.database;
 
 import java.util.HashMap;
 

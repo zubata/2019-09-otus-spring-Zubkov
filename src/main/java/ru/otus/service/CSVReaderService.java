@@ -1,4 +1,4 @@
-package homework02.ru.otus.service;
+package ru.otus.service;
 
 public interface CSVReaderService {
 }

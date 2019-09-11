@@ -1,6 +1,6 @@
-package homework02.ru.otus.database;
+package ru.otus.database;
 
-import homework02.ru.otus.domain.Person;
+import ru.otus.domain.Person;
 import org.springframework.stereotype.Repository;
 
 @Repository
