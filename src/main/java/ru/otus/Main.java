@@ -4,14 +4,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import ru.otus.domain.Person;
-import ru.otus.service.ServicePollImpl;
 import ru.otus.service.PersonServiceGet;
+import ru.otus.service.ServicePollImpl;
 
 import java.io.IOException;
 
 @Configuration
 @ComponentScan(basePackages = "ru.otus")
-@PropertySource("classpath:app.properties")
+
 
 
 public class Main {
@@ -23,12 +23,5 @@ public class Main {
         poll.testing(ya);
     }
 
-    @Bean
-    public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename("/i18n/bundle");
-        ms.setDefaultEncoding("UTF-8");
-        return ms;
-    }
 
 }
