@@ -1,7 +1,5 @@
 package ru.otus.database;
 
-import homework02.ru.otus.database.QuestionDB;
-import homework02.ru.otus.database.QuestionDBImpl;
 import org.junit.Assert;
 import org.junit.Test;
 

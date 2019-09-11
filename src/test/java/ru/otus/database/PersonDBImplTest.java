@@ -1,10 +1,8 @@
 package ru.otus.database;
 
-import homework02.ru.otus.database.PersonDB;
-import homework02.ru.otus.database.PersonDBImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import homework02.ru.otus.domain.Person;
+import ru.otus.domain.Person;
 
 public class PersonDBImplTest {
 

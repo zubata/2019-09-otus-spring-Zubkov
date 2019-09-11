@@ -16,4 +16,5 @@ public class ConfigBundle {
         ms.setDefaultEncoding("UTF-8");
         return ms;
     }
+
 }
