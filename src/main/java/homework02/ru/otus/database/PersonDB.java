@@ -1,6 +1,6 @@
-package ru.otus.database;
+package homework02.ru.otus.database;
 
-import ru.otus.domain.Person;
+import homework02.ru.otus.domain.Person;
 
 public interface PersonDB {
     Person findPerson(String firtsName, String secondName);

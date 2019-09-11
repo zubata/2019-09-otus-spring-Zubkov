@@ -1,7 +1,7 @@
-package ru.otus.database;
+package homework02.ru.otus.database;
 
+import homework02.ru.otus.domain.Person;
 import org.springframework.stereotype.Repository;
-import ru.otus.domain.Person;
 
 @Repository
 public class PersonDBImpl implements PersonDB {

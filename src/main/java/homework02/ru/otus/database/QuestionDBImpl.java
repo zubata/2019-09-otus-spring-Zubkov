@@ -1,4 +1,4 @@
-package ru.otus.database;
+package homework02.ru.otus.database;
 
 import org.springframework.stereotype.Repository;
 

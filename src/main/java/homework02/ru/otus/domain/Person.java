@@ -1,4 +1,4 @@
-package ru.otus.domain;
+package homework02.ru.otus.domain;
 
 public class Person {
 

@@ -1,11 +1,11 @@
-package ru.otus;
+package homework02.ru.otus;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.domain.Person;
-import ru.otus.service.PersonServiceGet;
-import ru.otus.service.ServicePollImpl;
+import homework02.ru.otus.domain.Person;
+import homework02.ru.otus.service.PersonServiceGet;
+import homework02.ru.otus.service.ServicePollImpl;
 
 import java.io.IOException;
 

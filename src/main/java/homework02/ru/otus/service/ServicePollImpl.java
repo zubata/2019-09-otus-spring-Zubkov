@@ -1,8 +1,8 @@
-package ru.otus.service;
+package homework02.ru.otus.service;
 
+import homework02.ru.otus.domain.Person;
 import org.springframework.stereotype.Service;
-import ru.otus.database.QuestionDBImpl;
-import ru.otus.domain.Person;
+import homework02.ru.otus.database.QuestionDBImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;

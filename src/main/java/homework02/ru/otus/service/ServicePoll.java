@@ -1,6 +1,6 @@
-package ru.otus.service;
+package homework02.ru.otus.service;
 
-import ru.otus.domain.Person;
+import homework02.ru.otus.domain.Person;
 
 import java.io.IOException;
 

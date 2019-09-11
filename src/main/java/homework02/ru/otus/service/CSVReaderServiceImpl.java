@@ -1,9 +1,9 @@
-package ru.otus.service;
+package homework02.ru.otus.service;
 
 import com.opencsv.CSVReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.otus.database.QuestionDB;
+import homework02.ru.otus.database.QuestionDB;
 
 import java.io.IOException;
 import java.io.InputStream;
