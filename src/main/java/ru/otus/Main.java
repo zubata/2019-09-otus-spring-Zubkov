@@ -19,5 +19,6 @@ public class Main {
         ServicePollImpl poll = context.getBean(ServicePollImpl.class);
         Person ya = db.getPerson();
         poll.testing(ya);
+        System.out.println("Foool!");
     }
 }
