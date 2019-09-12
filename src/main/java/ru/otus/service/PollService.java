@@ -2,6 +2,6 @@ package ru.otus.service;
 
 import java.io.IOException;
 
-public interface ServicePoll {
+public interface PollService {
     void testing() throws IOException;
 }

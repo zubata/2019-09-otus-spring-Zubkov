@@ -1,8 +1,8 @@
 package ru.otus.database;
 
+import java.io.IOException;
 import java.util.HashMap;
 
-public interface QuestionDB {
-    HashMap<String, String> getQuestions();
-    void setQuestionAndAnswer(String question, String answer);
+public interface QuestionDao {
+    HashMap<String, String> getQuestions() throws IOException;
 }

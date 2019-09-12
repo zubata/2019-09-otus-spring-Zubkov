@@ -8,7 +8,7 @@ public class PersonDBImplTest {
 
     @Test
     public void findPerson() {
-        PersonDB db = new PersonDBImpl();
+        PersonDao db = new PersonDaoImpl();
         Person test = db.findPerson("Олег","Пупкин");
         Assert.assertEquals("Олег",test.getFirstName());
         Assert.assertEquals("Пупкин",test.getSecondName());

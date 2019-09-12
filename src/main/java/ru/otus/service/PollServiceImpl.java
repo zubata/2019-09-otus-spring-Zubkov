@@ -1,38 +1,50 @@
 package ru.otus.service;
 
-import ru.otus.domain.Person;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.database.QuestionDB;
+import ru.otus.database.QuestionDao;
+import ru.otus.domain.Person;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
-public class ServicePollImpl implements ServicePoll {
-    public HashMap<String,String> questions;
-    public PersonService serviceGet;
+public class PollServiceImpl implements PollService {
+    private HashMap<String, String> questions;
+    private Person person;
+    private InOutService inOutService;
+    private MessageSource ms;
+    private final int threshold = 75;
 
-    public ServicePollImpl(QuestionDB base,PersonService serviceGet) {
-        this.questions=base.getQuestions();
-        this.serviceGet = serviceGet;
+    public PollServiceImpl(QuestionDao base, PersonService serviceGet, InOutService inOutService, MessageSource ms) throws IOException {
+        this.questions = base.getQuestions();
+        this.person = serviceGet.getPerson();
+        this.inOutService = inOutService;
+        this.ms = ms;
     }
 
     public void testing() throws IOException {
-        Person person = serviceGet.getPerson();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
         int result = 0;
         String answer;
-        System.out.println(String.format("Тест проходит: %s %s",person.getFirstName(),person.getSecondName()));
-        for (Map.Entry<String,String> s : questions.entrySet()) {
-            System.out.println(s.getKey());
-            answer=rd.readLine();
-            if(answer.equals(s.getValue())) result++;
+        inOutService.output(ms.getMessage("intro.msg", new String[]{person.getFirstName(), person.getSecondName()}, Locale.getDefault()));
+        for (Map.Entry<String, String> s : questions.entrySet()) {
+            inOutService.output(s.getKey());
+            answer = inOutService.input();
+            if (answer.equals(s.getValue())) result++;
         }
-        result = result*100/questions.size();
-        if(result>75) System.out.println(String.format("Тест пройден \nРезультат: %d%%",result));
-        else System.out.println(String.format("Тест не пройден \nРезультат: %d%%",result));
+        if (questions.size() == 0) {
+            inOutService.output(ms.getMessage("error.msg", null, Locale.getDefault()));
+            return;
+        }
+        result = result * 100 / questions.size();
+        if (result > threshold) {
+            String strResult = String.valueOf(result);
+            inOutService.output(ms.getMessage("good.msg", new String[]{strResult}, Locale.getDefault()));
+        } else {
+            String strResult = String.valueOf(result);
+            inOutService.output(ms.getMessage("bad.msg", new String[]{strResult}, Locale.getDefault()));
+        }
     }
 }
