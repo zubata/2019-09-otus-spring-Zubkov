@@ -2,7 +2,7 @@ package ru.otus.service;
 
 import ru.otus.domain.Person;
 import org.springframework.stereotype.Service;
-import ru.otus.database.QuestionDBImpl;
+import ru.otus.database.QuestionDB;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,12 +13,15 @@ import java.util.Map;
 @Service
 public class ServicePollImpl implements ServicePoll {
     public HashMap<String,String> questions;
+    public PersonService serviceGet;
 
-    public ServicePollImpl(QuestionDBImpl base) {
-        questions=base.getQuestions();
+    public ServicePollImpl(QuestionDB base,PersonService serviceGet) {
+        this.questions=base.getQuestions();
+        this.serviceGet = serviceGet;
     }
 
-    public void testing(Person person) throws IOException {
+    public void testing() throws IOException {
+        Person person = serviceGet.getPerson();
         BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
         int result = 0;
         String answer;
@@ -31,6 +34,5 @@ public class ServicePollImpl implements ServicePoll {
         result = result*100/questions.size();
         if(result>75) System.out.println(String.format("Тест пройден \nРезультат: %d%%",result));
         else System.out.println(String.format("Тест не пройден \nРезультат: %d%%",result));
-        rd.close();
     }
 }
