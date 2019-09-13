@@ -4,15 +4,17 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.database.QuestionDao;
 import ru.otus.domain.Person;
+import ru.otus.domain.Question;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 @Service
 public class PollServiceImpl implements PollService {
-    private HashMap<String, String> questions;
+    private List<Question> questions;
     private Person person;
     private InOutService inOutService;
     private MessageSource ms;
@@ -29,10 +31,10 @@ public class PollServiceImpl implements PollService {
         int result = 0;
         String answer;
         inOutService.output(ms.getMessage("intro.msg", new String[]{person.getFirstName(), person.getSecondName()}, Locale.getDefault()));
-        for (Map.Entry<String, String> s : questions.entrySet()) {
-            inOutService.output(s.getKey());
+        for (Question question : questions) {
+            inOutService.output(question.getQuestion());
             answer = inOutService.input();
-            if (answer.equals(s.getValue())) result++;
+            if (answer.equals(question.getAnswer())) result++;
         }
         if (questions.size() == 0) {
             inOutService.output(ms.getMessage("error.msg", null, Locale.getDefault()));
