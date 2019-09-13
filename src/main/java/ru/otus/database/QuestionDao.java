@@ -1,8 +1,11 @@
 package ru.otus.database;
 
+import ru.otus.domain.Question;
+
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public interface QuestionDao {
-    HashMap<String, String> getQuestions() throws IOException;
+    List<Question> getQuestions() throws IOException;
 }
