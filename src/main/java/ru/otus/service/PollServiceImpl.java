@@ -18,7 +18,7 @@ public class PollServiceImpl implements PollService {
     private Person person;
     private InOutService inOutService;
     private MessageSource ms;
-    private final int threshold = 75;
+    private static final int THRESHOLD = 75;
 
     public PollServiceImpl(QuestionDao base, PersonService serviceGet, InOutService inOutService, MessageSource ms) throws IOException {
         this.questions = base.getQuestions();
@@ -41,7 +41,7 @@ public class PollServiceImpl implements PollService {
             return;
         }
         result = result * 100 / questions.size();
-        if (result > threshold) {
+        if (result > THRESHOLD) {
             String strResult = String.valueOf(result);
             inOutService.output(ms.getMessage("good.msg", new String[]{strResult}, Locale.getDefault()));
         } else {

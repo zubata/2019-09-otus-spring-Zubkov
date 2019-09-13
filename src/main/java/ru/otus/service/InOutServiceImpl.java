@@ -9,11 +9,7 @@ import java.io.InputStreamReader;
 @Service
 public class InOutServiceImpl implements InOutService{
 
-    private BufferedReader rd;
-
-    public InOutServiceImpl() {
-        this.rd = new BufferedReader(new InputStreamReader(System.in));
-    }
+    private BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));;
 
     @Override
     public void output(String s) {
