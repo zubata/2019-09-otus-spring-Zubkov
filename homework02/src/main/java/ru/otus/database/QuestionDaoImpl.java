@@ -24,11 +24,9 @@ public class QuestionDaoImpl implements QuestionDao {
     private String language;
 
     private List<Question> questionAndAnswer;
-    private MessageSource ms;
 
     public QuestionDaoImpl(MessageSource ms) {
         this.questionAndAnswer = new ArrayList<>();
-        this.ms = ms;
     }
 
     public List<Question> getQuestions() throws IOException {
