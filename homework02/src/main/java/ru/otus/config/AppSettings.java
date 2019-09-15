@@ -1,19 +1,19 @@
 package ru.otus.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
-@Configuration
+@Service
 @PropertySource("classpath:app.properties")
-public class AppConfig {
+public class AppSettings {
 
     private final String filename;
     private Locale locale;
 
-    public AppConfig(@Value("${fileway}") String fileway, @Value("${filetype}") String filetype, @Value("${language}") String language) {
+    public AppSettings(@Value("${fileway}") String fileway, @Value("${filetype}") String filetype, @Value("${language}") String language) {
         filename = fileway + language + filetype;
         locale = setLanguage(language);
     }

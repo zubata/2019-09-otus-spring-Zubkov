@@ -2,51 +2,50 @@ package ru.otus.service;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.config.MessageWrapper;
 import ru.otus.database.QuestionDao;
 import ru.otus.domain.Person;
 import ru.otus.domain.Question;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @Service
 public class PollServiceImpl implements PollService {
-    private List<Question> questions;
-    private Person person;
-    private InOutService inOutService;
-    private MessageSource ms;
+    private final Person person;
+    private final InOutService inOutService;
+    private final MessageWrapper mw;
+    private final QuestionDao base;
     private static final int THRESHOLD = 75;
 
-    public PollServiceImpl(QuestionDao base, PersonService serviceGet, InOutService inOutService, MessageSource ms) throws IOException {
-        this.questions = base.getQuestions();
+    public PollServiceImpl(PersonService serviceGet, InOutService inOutService, MessageWrapper mw, QuestionDao base) throws IOException {
         this.person = serviceGet.getPerson();
         this.inOutService = inOutService;
-        this.ms = ms;
+        this.mw = mw;
+        this.base = base;
     }
 
     public void testing() throws IOException {
+        List<Question> questions = base.getQuestions();
         int result = 0;
         String answer;
-        inOutService.output(ms.getMessage("intro.msg", new String[]{person.getFirstName(), person.getSecondName()}, Locale.getDefault()));
+        inOutService.output(mw.getMessage("intro.msg", person.getFirstName(), person.getSecondName()));
         for (Question question : questions) {
             inOutService.output(question.getQuestion());
             answer = inOutService.input();
             if (answer.equals(question.getAnswer())) result++;
         }
         if (questions.size() == 0) {
-            inOutService.output(ms.getMessage("error.msg", null, Locale.getDefault()));
+            inOutService.output(mw.getMessage("error.msg"));
             return;
         }
         result = result * 100 / questions.size();
+        String strResult = String.valueOf(result);
         if (result > THRESHOLD) {
-            String strResult = String.valueOf(result);
-            inOutService.output(ms.getMessage("good.msg", new String[]{strResult}, Locale.getDefault()));
+            inOutService.output(mw.getMessage("good.msg",strResult));
         } else {
-            String strResult = String.valueOf(result);
-            inOutService.output(ms.getMessage("bad.msg", new String[]{strResult}, Locale.getDefault()));
+            inOutService.output(mw.getMessage("bad.msg", strResult));
         }
     }
 }

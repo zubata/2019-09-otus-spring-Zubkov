@@ -1,9 +1,8 @@
 package ru.otus.database;
 
 import com.opencsv.CSVReader;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
+import ru.otus.config.AppSettings;
 import ru.otus.domain.Question;
 
 import java.io.IOException;
@@ -11,26 +10,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Repository
 public class QuestionDaoImpl implements QuestionDao {
-
-    @Value("${fileway}")
-    private String fileway;
-    @Value("${filetype}")
-    private String filetype;
-    @Value("${language}")
-    private String language;
-
     private List<Question> questionAndAnswer;
+    private final AppSettings appSettings;
 
-    public QuestionDaoImpl(MessageSource ms) {
+    public QuestionDaoImpl(AppSettings appSettings) {
+        this.appSettings = appSettings;
         this.questionAndAnswer = new ArrayList<>();
     }
 
     public List<Question> getQuestions() throws IOException {
-        InputStream inn = getClass().getClassLoader().getResourceAsStream(fileway+language+filetype);
+        InputStream inn = getClass().getClassLoader().getResourceAsStream(appSettings.getFilename());
         CSVReader rd = new CSVReader(new InputStreamReader(inn),';');
         String[] temp;
         while ((temp = rd.readNext()) != null) {

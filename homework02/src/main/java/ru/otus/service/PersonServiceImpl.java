@@ -1,5 +1,6 @@
 package ru.otus.service;
 
+import ru.otus.config.MessageWrapper;
 import ru.otus.domain.Person;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -10,20 +11,20 @@ import java.util.Locale;
 
 @Service
 public class PersonServiceImpl implements PersonService {
+    private final InOutService inOutService;
+    private final MessageWrapper mw;
     private PersonDao db;
-    private InOutService inOutService;
-    private MessageSource ms;
 
-    public PersonServiceImpl(PersonDao db, MessageSource ms , InOutService inOutService) {
+    public PersonServiceImpl(PersonDao db, MessageWrapper mw , InOutService inOutService) {
         this.db = db;
-        this.ms = ms;
+        this.mw = mw;
         this.inOutService=inOutService;
     }
 
     public Person getPerson() throws IOException {
-        inOutService.output(ms.getMessage("input.first.name",null,Locale.getDefault()));
+        inOutService.output(mw.getMessage("input.first.name"));
         String firstName = inOutService.input();
-        inOutService.output(ms.getMessage("input.second.name",null,Locale.getDefault()));
+        inOutService.output(mw.getMessage("input.second.name"));
         String secondName = inOutService.input();
         return db.findPerson(firstName,secondName);
     }
