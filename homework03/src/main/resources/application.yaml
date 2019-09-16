@@ -1,4 +1,0 @@
-application:
-  language: en
-  fileway: csv/test_
-  filetype: .csv
