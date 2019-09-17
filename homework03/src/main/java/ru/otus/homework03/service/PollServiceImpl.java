@@ -1,30 +1,31 @@
 package ru.otus.homework03.service;
 
 import org.springframework.stereotype.Service;
-import ru.otus.homework03.config.MessageWrapper;
-import ru.otus.homework03.database.QuestionDao;
 import ru.otus.homework03.domain.Person;
 import ru.otus.homework03.domain.Question;
+import ru.otus.homework03.config.MessageWrapper;
+import ru.otus.homework03.database.QuestionDao;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
 public class PollServiceImpl implements PollService {
-    private final Person person;
+    private final PersonService personService;
     private final IOService IOService;
     private final MessageWrapper mw;
     private final QuestionDao base;
     private static final int THRESHOLD = 75;
 
-    public PollServiceImpl(PersonService serviceGet, IOService IOService, MessageWrapper mw, QuestionDao base) throws IOException {
-        this.person = serviceGet.getPerson();
+    public PollServiceImpl(PersonService personService, IOService IOService, MessageWrapper mw, QuestionDao base) throws IOException {
+        this.personService = personService;
         this.IOService = IOService;
         this.mw = mw;
         this.base = base;
     }
 
     public void testing() throws IOException {
+        Person person = personService.getPerson();
         List<Question> questions = base.getQuestions();
         int result = 0;
         String answer;
@@ -40,10 +41,7 @@ public class PollServiceImpl implements PollService {
         }
         result = result * 100 / questions.size();
         String strResult = String.valueOf(result);
-        if (result > THRESHOLD) {
-            IOService.output(mw.getMessage("good.msg",strResult));
-        } else {
-            IOService.output(mw.getMessage("bad.msg", strResult));
-        }
+        if (result > THRESHOLD) IOService.output(mw.getMessage("good.msg",strResult));
+        else IOService.output(mw.getMessage("bad.msg", strResult));
     }
 }

@@ -1,9 +1,9 @@
 package ru.otus.homework03.service;
 
 import org.springframework.stereotype.Service;
+import ru.otus.homework03.domain.Person;
 import ru.otus.homework03.config.MessageWrapper;
 import ru.otus.homework03.database.PersonDao;
-import ru.otus.homework03.domain.Person;
 
 import java.io.IOException;
 

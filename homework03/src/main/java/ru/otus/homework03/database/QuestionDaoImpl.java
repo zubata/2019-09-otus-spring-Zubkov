@@ -2,8 +2,8 @@ package ru.otus.homework03.database;
 
 import com.opencsv.CSVReader;
 import org.springframework.stereotype.Repository;
-import ru.otus.homework03.config.AppSettings;
 import ru.otus.homework03.domain.Question;
+import ru.otus.homework03.config.AppSettings;
 
 import java.io.IOException;
 import java.io.InputStream;

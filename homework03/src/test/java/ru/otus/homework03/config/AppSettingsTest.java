@@ -1,18 +1,41 @@
 package ru.otus.homework03.config;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@DisplayName("Проверка AppSettings ")
+@SpringBootTest
 class AppSettingsTest {
 
+    @Autowired
+    private PropetiesConfig pf;
+    @Autowired
+    private AppSettings appSettings;
+
+    @DisplayName("метод getFilename")
     @Test
-    void getFilename() {
+    void testgetFilename() {
+        assertEquals("csv/test_en.csv",appSettings.getFilename());
     }
 
+    @DisplayName("метод getLocale")
     @Test
-    void setLocale() {
+    void testgetLocale() {
+        appSettings.setLocale("en");
+        assertThat(appSettings.getLocale()).isEqualTo(new Locale("en","EN"));
     }
 
+    @DisplayName("метод setLocale")
     @Test
-    void getLocale() {
+    void testsetLocale() {
+        appSettings.setLocale("ru");
+        assertThat(appSettings.getLocale()).isEqualTo(new Locale("ru","RU"));
     }
 }
