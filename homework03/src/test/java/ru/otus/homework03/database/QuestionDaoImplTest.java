@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 
 @DisplayName("Тест класса QuestionDaoImpl")
 @SpringBootTest
-@ConfigurationProperties("application")
 class QuestionDaoImplTest {
 
     @Autowired
@@ -46,7 +45,7 @@ class QuestionDaoImplTest {
 
     @DisplayName(" метода getQuestion")
     @Test
-    void testgetQuestions() throws IOException {
+    void getQuestions() throws IOException {
         given(appSettings.getFilename()).willReturn("csv/test_en.csv");
         List<Question> testList = questionDao.getQuestions();
         assertThat(list).usingFieldByFieldElementComparator().isEqualTo(testList);

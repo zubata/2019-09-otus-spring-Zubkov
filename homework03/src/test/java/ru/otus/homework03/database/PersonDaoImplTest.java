@@ -13,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PersonDaoImplTest {
 
     @Autowired
-    PersonDao personDao;
+    private PersonDao personDao;
 
     @DisplayName(" метод findPerson")
     @Test
-    void testfindPerson() {
+    void findPerson() {
         String firstName = "Ivan";
         String secondName = "Ivanov";
         Person testperson = personDao.findPerson(firstName,secondName);

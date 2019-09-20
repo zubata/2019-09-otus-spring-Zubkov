@@ -11,7 +11,7 @@ import java.io.IOException;
 public class PersonServiceImpl implements PersonService {
     private final IOService IOService;
     private final MessageWrapper mw;
-    private PersonDao db;
+    private final PersonDao db;
 
     public PersonServiceImpl(PersonDao db, MessageWrapper mw , IOService IOService) {
         this.db = db;

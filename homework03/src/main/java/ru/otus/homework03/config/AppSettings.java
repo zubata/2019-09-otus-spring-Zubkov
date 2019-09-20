@@ -1,18 +1,26 @@
 package ru.otus.homework03.config;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Locale;
 
-@Service
+@Component
+@ConfigurationProperties("application")
 public class AppSettings {
 
-    private final String filename;
+    private String filename;
     private Locale locale;
+    private String fileway;
+    private String filetype;
+    private String language;
 
-    public AppSettings(PropetiesConfig pf) {
-        this.filename = pf.getFilename();
-        setLocale(pf.getLanguage());
+    @PostConstruct
+    public void init() {
+        filename = fileway + language + filetype;
+        setLocale(language);
     }
 
     public String getFilename() { return filename; }
@@ -25,5 +33,9 @@ public class AppSettings {
     public Locale getLocale() {
         return locale;
     }
+
+    public void setFileway(String fileway) { this.fileway = fileway; }
+    public void setFiletype(String filetype) { this.filetype = filetype; }
+    public void setLanguage(String language) { this.language = language; }
 
 }

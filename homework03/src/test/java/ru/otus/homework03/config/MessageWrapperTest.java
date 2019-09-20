@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("Тест обёртки MessageWrapper ")
 @SpringBootTest
@@ -21,18 +23,18 @@ class MessageWrapperTest {
     @MockBean
     private AppSettings appSettings;
 
-    @DisplayName(" метод getMessage без передачи параметра")
+    @DisplayName(" метод getMessage()")
     @Test
-    void testgetMessage1() {
+    void getMessage1() {
         given(appSettings.getLocale()).willReturn(new Locale("en","EN"));
         String message = "input.first.name";
         assertEquals("Enter First name",mw.getMessage(message));
         verify(appSettings,times(1)).getLocale();
     }
 
-    @DisplayName(" метод getMessage c передачей параметра")
+    @DisplayName(" метод getMessage(String source, String... values)")
     @Test
-    void testgetMessage2() {
+    void getMessage2() {
         given(appSettings.getLocale()).willReturn(new Locale("en","EN"));
         String message = "intro.msg";
         String[] parametrs = {"Oleg","Zubkov"};

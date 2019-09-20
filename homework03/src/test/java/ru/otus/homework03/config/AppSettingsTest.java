@@ -15,8 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AppSettingsTest {
 
     @Autowired
-    private PropetiesConfig pf;
-    @Autowired
     private AppSettings appSettings;
 
     @DisplayName("метод getFilename")
@@ -27,14 +25,14 @@ class AppSettingsTest {
 
     @DisplayName("метод getLocale")
     @Test
-    void testgetLocale() {
+    void getLocale() {
         appSettings.setLocale("en");
         assertThat(appSettings.getLocale()).isEqualTo(new Locale("en","EN"));
     }
 
     @DisplayName("метод setLocale")
     @Test
-    void testsetLocale() {
+    void setLocale() {
         appSettings.setLocale("ru");
         assertThat(appSettings.getLocale()).isEqualTo(new Locale("ru","RU"));
     }

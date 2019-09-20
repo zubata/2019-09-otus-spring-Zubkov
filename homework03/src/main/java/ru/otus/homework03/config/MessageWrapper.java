@@ -9,10 +9,7 @@ public class MessageWrapper {
     private final MessageSource ms;
     private final AppSettings appSettings;
 
-    public MessageWrapper(AppSettings appSettings) {
-        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename("/i18n/bundle");
-        ms.setDefaultEncoding("UTF-8");
+    public MessageWrapper(AppSettings appSettings, MessageSource ms) {
         this.ms = ms;
         this.appSettings = appSettings;
     }
