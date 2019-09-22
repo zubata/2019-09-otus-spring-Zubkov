@@ -1,4 +1,4 @@
-package ru.otus.homework04.database;
+package ru.otus.homework04.storage;
 
 
 import ru.otus.homework04.domain.Question;

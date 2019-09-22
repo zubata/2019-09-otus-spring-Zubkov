@@ -17,7 +17,9 @@ public class ShellCommands {
     private final PollService pollService;
     private final PersonService personService;
     private final MessageWrapper mw;
+
     private Person person;
+    private boolean isStart=false;
 
     public ShellCommands(PersonService personService, PollService pollService,MessageWrapper mw) {
         this.pollService=pollService;
@@ -25,10 +27,16 @@ public class ShellCommands {
         this.mw = mw;
     }
 
-    @ShellMethod(value = "enter username",key = {"user","start","s"})
+    @ShellMethod(value = "start",key = {"start","s"})
+    public String start() throws IOException {
+        isStart=true;
+        return mw.getMessage("welcome.msg");
+    }
+
+    @ShellMethod(value = "enter username",key = {"enter","e"})
     public String fillFullName() throws IOException {
         this.person=personService.getPerson();
-        return mw.getMessage("welcome.msg",person.getFirstName(),person.getSecondName());
+        return mw.getMessage("welcome.user.msg",person.getFirstName(),person.getSecondName());
     }
 
     @ShellMethod(value = "poll",key = {"p"})
@@ -38,7 +46,6 @@ public class ShellCommands {
     }
 
     private Availability isPersonAvailable() {
-        return person == null? Availability.unavailable("Не введено имя тестируемого"): Availability.available();
+        return person == null? Availability.unavailable(mw.getMessage("error.user.msg")): Availability.available();
     }
-
 }
