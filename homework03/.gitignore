@@ -1,0 +1,10 @@
+/spring-shell.log
+/target
+
+.idea
+.mvn
+mvnw.cmd
+HELP.md
+homework.iml
+mvnw
+
