@@ -1,4 +1,4 @@
-package ru.otus.homework03.database;
+package ru.otus.homework03.storage;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

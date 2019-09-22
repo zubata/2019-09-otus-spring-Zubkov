@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework03.domain.Person;
 import ru.otus.homework03.domain.Question;
 import ru.otus.homework03.config.MessageWrapper;
-import ru.otus.homework03.database.QuestionDao;
+import ru.otus.homework03.storage.QuestionDao;
 
 import java.io.IOException;
 import java.util.List;

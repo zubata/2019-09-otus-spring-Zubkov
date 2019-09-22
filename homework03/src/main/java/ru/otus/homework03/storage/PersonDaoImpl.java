@@ -1,4 +1,4 @@
-package ru.otus.homework03.database;
+package ru.otus.homework03.storage;
 
 import org.springframework.stereotype.Repository;
 import ru.otus.homework03.domain.Person;
