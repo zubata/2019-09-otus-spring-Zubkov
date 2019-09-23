@@ -17,16 +17,21 @@ public class PollServiceImpl implements PollService {
     private final QuestionDao base;
     private static final int THRESHOLD = 75;
 
-    public PollServiceImpl(PersonService personService, IOService IOService, MessageWrapper mw, QuestionDao base) throws IOException {
+    public PollServiceImpl(PersonService personService, IOService IOService, MessageWrapper mw, QuestionDao base) {
         this.personService = personService;
         this.IOService = IOService;
         this.mw = mw;
         this.base = base;
     }
 
-    public void testing() throws IOException {
+    public void testing() {
         Person person = personService.getPerson();
-        List<Question> questions = base.getQuestions();
+        List<Question> questions = null;
+        try {
+            questions = base.getQuestions();
+        } catch (IOException e) {
+            new RuntimeException("Не найден csv файл с вопросами");
+        }
         int result = 0;
         String answer;
         IOService.output(mw.getMessage("intro.msg", person.getFirstName(), person.getSecondName()));
@@ -41,12 +46,17 @@ public class PollServiceImpl implements PollService {
         }
         result = result * 100 / questions.size();
         String strResult = String.valueOf(result);
-        if (result > THRESHOLD) IOService.output(mw.getMessage("good.msg",strResult));
+        if (result > THRESHOLD) IOService.output(mw.getMessage("good.msg", strResult));
         else IOService.output(mw.getMessage("bad.msg", strResult));
     }
 
-    public void testing(Person person) throws IOException {
-        List<Question> questions = base.getQuestions();
+    public void testing(Person person) {
+        List<Question> questions = null;
+        try {
+            questions = base.getQuestions();
+        } catch (IOException e) {
+            new RuntimeException("Не найден csv файл с вопросами");
+        }
         int result = 0;
         String answer;
         IOService.output(mw.getMessage("intro.msg", person.getFirstName(), person.getSecondName()));
@@ -61,7 +71,7 @@ public class PollServiceImpl implements PollService {
         }
         result = result * 100 / questions.size();
         String strResult = String.valueOf(result);
-        if (result > THRESHOLD) IOService.output(mw.getMessage("good.msg",strResult));
+        if (result > THRESHOLD) IOService.output(mw.getMessage("good.msg", strResult));
         else IOService.output(mw.getMessage("bad.msg", strResult));
     }
 }

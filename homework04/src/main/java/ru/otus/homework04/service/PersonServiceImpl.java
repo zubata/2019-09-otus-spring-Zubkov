@@ -13,17 +13,17 @@ public class PersonServiceImpl implements PersonService {
     private final MessageWrapper mw;
     private final PersonDao db;
 
-    public PersonServiceImpl(PersonDao db, MessageWrapper mw , IOService IOService) {
+    public PersonServiceImpl(PersonDao db, MessageWrapper mw, IOService IOService) {
         this.db = db;
         this.mw = mw;
         this.IOService = IOService;
     }
 
-    public Person getPerson() throws IOException {
+    public Person getPerson() {
         IOService.output(mw.getMessage("input.first.name"));
         String firstName = IOService.input();
         IOService.output(mw.getMessage("input.second.name"));
         String secondName = IOService.input();
-        return db.findPerson(firstName,secondName);
+        return db.findPerson(firstName, secondName);
     }
 }

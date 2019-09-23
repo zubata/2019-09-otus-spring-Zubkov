@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 @Service
 public class IOServiceImpl implements IOService {
 
-    private BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));;
+    private BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
 
     @Override
     public void output(String s) {
@@ -17,5 +17,12 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public String input() throws IOException { return rd.readLine(); }
+    public String input() {
+        try {
+            return rd.readLine();
+        } catch (IOException e) {
+            new RuntimeException("Не введены данные");
+        }
+        return null;
+    }
 }

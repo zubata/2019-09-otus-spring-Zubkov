@@ -19,33 +19,39 @@ public class ShellCommands {
     private final MessageWrapper mw;
 
     private Person person;
-    private boolean isStart=false;
+    private boolean isStart = false;
 
-    public ShellCommands(PersonService personService, PollService pollService,MessageWrapper mw) {
-        this.pollService=pollService;
-        this.personService=personService;
+    public ShellCommands(PersonService personService, PollService pollService, MessageWrapper mw) {
+        this.pollService = pollService;
+        this.personService = personService;
         this.mw = mw;
     }
 
-    @ShellMethod(value = "start",key = {"start","s"})
-    public String start() throws IOException {
-        isStart=true;
+    @ShellMethod(value = "start", key = {"start", "s"})
+    public String start() {
+        isStart = true;
         return mw.getMessage("welcome.msg");
     }
 
-    @ShellMethod(value = "enter username",key = {"enter","e"})
+    @ShellMethod(value = "enter username", key = {"enter", "e"})
+    @ShellMethodAvailability(value = "isAppStart")
     public String fillFullName() throws IOException {
-        this.person=personService.getPerson();
-        return mw.getMessage("welcome.user.msg",person.getFirstName(),person.getSecondName());
+        this.person = personService.getPerson();
+        return mw.getMessage("welcome.user.msg", person.getFirstName(), person.getSecondName());
     }
 
-    @ShellMethod(value = "poll",key = {"p"})
+    @ShellMethod(value = "poll", key = {"p"})
     @ShellMethodAvailability(value = "isPersonAvailable")
     public void testing() throws IOException {
         pollService.testing(person);
     }
 
     private Availability isPersonAvailable() {
-        return person == null? Availability.unavailable(mw.getMessage("error.user.msg")): Availability.available();
+        if (!isStart) return isAppStart();
+        return person == null ? Availability.unavailable(mw.getMessage("error.user.msg")) : Availability.available();
+    }
+
+    private Availability isAppStart() {
+        return isStart ? Availability.available() : Availability.unavailable(mw.getMessage("error.app.msg"));
     }
 }
