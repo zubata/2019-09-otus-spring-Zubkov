@@ -9,8 +9,6 @@ import ru.otus.homework04.domain.Person;
 import ru.otus.homework04.service.PersonService;
 import ru.otus.homework04.service.PollService;
 
-import java.io.IOException;
-
 @ShellComponent
 public class ShellCommands {
 
@@ -35,14 +33,14 @@ public class ShellCommands {
 
     @ShellMethod(value = "enter username", key = {"enter", "e"})
     @ShellMethodAvailability(value = "isAppStart")
-    public String fillFullName() throws IOException {
+    public String fillFullName() {
         this.person = personService.getPerson();
         return mw.getMessage("welcome.user.msg", person.getFirstName(), person.getSecondName());
     }
 
     @ShellMethod(value = "poll", key = {"p"})
     @ShellMethodAvailability(value = "isPersonAvailable")
-    public void testing() throws IOException {
+    public void testing() {
         pollService.testing(person);
     }
 
