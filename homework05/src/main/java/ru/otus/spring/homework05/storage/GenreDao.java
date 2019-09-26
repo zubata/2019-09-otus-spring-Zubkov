@@ -11,6 +11,8 @@ public interface GenreDao {
 
     Genre getById(long id);
 
+    Genre getByName(String genrename);
+
     List getAll();
 
     void delete(long id);

@@ -5,9 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.otus.spring.homework05.domain.Author;
 import ru.otus.spring.homework05.domain.Book;
+import ru.otus.spring.homework05.domain.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +21,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Тестирование DAO для работы с книгами ")
 @ExtendWith(SpringExtension.class)
 @JdbcTest
-@Import(BookDaoImpl.class)
+@Import({BookDaoImpl.class,GenreDaoImpl.class,AuthorDaoImpl.class})
 class BookDaoImplTest {
     private static final int COUNT_EXCEPT_INSERT = 2;
     private static final int NEW_ID = 3;
     private static final int COUNT_AFTER_INSERT = 3;
     private static final int DEFAULT_ID = 1;
-    private static final Book TEMP = new Book(NEW_ID, "The Lord of the Rings", "Tolkien");
+    private static final Book TEMP = new Book("The Lord of the Rings", new Author(3,"Tolkien"), new Genre(3,"Фэнтези"));
 
     @Autowired
     private BookDaoImpl bookDaoImpl;
+    @Autowired
+    private AuthorDaoImpl authorDaoImpl;
+    @Autowired
+    private GenreDaoImpl genreDaoImpl;
 
     @DisplayName("должно возвращаться корректное число книг в БД")
     @Test
@@ -38,17 +46,23 @@ class BookDaoImplTest {
     @Test
     void getById() {
         assertThat(bookDaoImpl.getById(DEFAULT_ID)).
+                hasFieldOrPropertyWithValue("id", 1L).
                 hasFieldOrPropertyWithValue("bookName", "Война и Мир").
-                hasFieldOrPropertyWithValue("authorName", "Толстой");
+                hasFieldOrPropertyWithValue("author", new Author(1,"Толстой")).
+                hasFieldOrPropertyWithValue("genre", new Genre(1,"Роман"));
     }
 
     @DisplayName("должна корректно вставиться книга по id")
     @Test
     void insert() {
+        genreDaoImpl.insert(TEMP.getGenre());
+        authorDaoImpl.insert(TEMP.getAuthor());
         bookDaoImpl.insert(TEMP);
         assertThat(bookDaoImpl.getById(NEW_ID)).
+                hasFieldOrPropertyWithValue("id", 3L).
                 hasFieldOrPropertyWithValue("bookName", "The Lord of the Rings").
-                hasFieldOrPropertyWithValue("authorName", "Tolkien");
+                hasFieldOrPropertyWithValue("author",new Author(3,"Tolkien")).
+                hasFieldOrPropertyWithValue("genre",new Genre(3,"Фэнтези"));
         assertThat(bookDaoImpl.count()).isEqualTo(COUNT_AFTER_INSERT);
     }
 
@@ -63,8 +77,8 @@ class BookDaoImplTest {
     @Test
     void getAll() {
         List<Book> list = new ArrayList<>();
-        list.add(new Book(1, "Война и Мир", "Толстой"));
-        list.add(new Book(2, "Не стихов златая пена", "Есенин"));
+        list.add(new Book(1,"Война и Мир", new Author(1,"Толстой"),new Genre(1,"Роман")));
+        list.add(new Book(2,"Не стихов златая пена", new Author(2,"Есенин"),new Genre(2,"Стихи")));
         assertThat(bookDaoImpl.getAll()).usingFieldByFieldElementComparator().isEqualTo(list);
     }
 }

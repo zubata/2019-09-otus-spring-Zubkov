@@ -23,9 +23,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void insert(Author author) {
-        long id = this.count() + 1;
-        SqlParameterSource params = new MapSqlParameterSource().addValue("id", id).addValue("authorname", author.getAuthorName());
-        njdbc.update("insert into authors (id,`authorname`) values (:id,:authorname)", params);
+        SqlParameterSource params = new MapSqlParameterSource().addValue("authorname", author.getAuthorName());
+        njdbc.update("insert into authors (`authorname`) values (:authorname)", params);
     }
 
     @Override
@@ -38,6 +37,12 @@ public class AuthorDaoImpl implements AuthorDao {
     public Author getById(long id) {
         Map<String, Object> param = Collections.singletonMap("id", id);
         return njdbc.queryForObject("select * from authors where id = :id", param, new AuthorMapper());
+    }
+
+    @Override
+    public Author getByName(String authorname) {
+        Map<String, Object> param = Collections.singletonMap("authorname", authorname);
+        return njdbc.queryForObject("select * from authors where authorname = :authorname", param, new AuthorMapper());
     }
 
     @Override

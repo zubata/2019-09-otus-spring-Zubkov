@@ -1,30 +1,22 @@
 package ru.otus.spring.homework05.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Book {
     private long id;
+
+    @NonNull
     private String bookName;
-    private String authorName;
 
-    public Book(long id, String bookName, String authorName) {
-        this.id = id;
-        this.bookName = bookName;
-        this.authorName = authorName;
-    }
+    @NonNull
+    private Author author;
 
-    public Book(String bookName, String authorName) {
-        this.bookName = bookName;
-        this.authorName = authorName;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
+    @NonNull
+    private Genre genre;
 }

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import ru.otus.spring.homework05.domain.Book;
 import ru.otus.spring.homework05.domain.Genre;
 
 import java.sql.ResultSet;
@@ -23,11 +24,9 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public void insert(Genre genre) {
-        long id = this.count() + 1;
-        SqlParameterSource params = new MapSqlParameterSource().addValue("id", id).
-                addValue("genrename", genre.getGenreName()).
-                addValue("bookname", genre.getBookName());
-        njdbc.update("insert into genres (id,`genrename`,`bookname`) values (:id,:genrename,:bookname)", params);
+        SqlParameterSource params = new MapSqlParameterSource().
+                addValue("genrename", genre.getGenreName());
+        njdbc.update("insert into genres (`genrename`,) values (:genrename)", params);
     }
 
     @Override
@@ -40,6 +39,12 @@ public class GenreDaoImpl implements GenreDao {
     public Genre getById(long id) {
         Map<String, Object> param = Collections.singletonMap("id", id);
         return njdbc.queryForObject("select * from genres where id = :id", param, new GenreMapper());
+    }
+
+    @Override
+    public Genre getByName(String genrename) {
+        Map<String, Object> param = Collections.singletonMap("genrename", genrename);
+        return njdbc.queryForObject("select * from genres where genrename = :genrename", param, new GenreMapper());
     }
 
     @Override
@@ -59,8 +64,7 @@ public class GenreDaoImpl implements GenreDao {
         public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             String genrename = resultSet.getString("genrename");
-            String bookname = resultSet.getString("bookname");
-            return new Genre(id, genrename, bookname);
+            return new Genre(id, genrename);
         }
     }
 }

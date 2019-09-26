@@ -1,9 +1,14 @@
 package ru.otus.spring.homework05.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.homework05.domain.Author;
 import ru.otus.spring.homework05.domain.Book;
+import ru.otus.spring.homework05.domain.Genre;
+import ru.otus.spring.homework05.storage.AuthorDao;
 import ru.otus.spring.homework05.storage.BookDao;
+import ru.otus.spring.homework05.storage.GenreDao;
 
 import java.util.List;
 
@@ -13,13 +18,17 @@ public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
     private final IOService ioService;
+    private final AuthorService authorService;
+    private final GenreService genreService;
 
     @Override
     public String insert() {
-        ioService.output("Ввести название книги и автора через точку с запятой");
+        ioService.output("Ввести название книги, автора и жанра через точку с запятой");
         String book = ioService.input();
-        String[] mas = book.split(";");
-        Book temp = new Book(mas[0],mas[1]);
+        String[] mas = book.split(" *;");
+        Author tempAuthor = authorService.getAuthor(mas[1]);
+        Genre tempGenre = genreService.getGenre(mas[2]);
+        Book temp = new Book(mas[0],tempAuthor,tempGenre);
         bookDao.insert(temp);
         return book;
     }
@@ -27,7 +36,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public void showAllRows() {
         List<Book> list = bookDao.getAll();
-        list.stream().map(temp -> String.format("%d %s %s", temp.getId(), temp.getBookName(), temp.getAuthorName())).forEach(ioService::output);
+        list.stream().map(temp -> String.format("%d %s %s %s", temp.getId(), temp.getBookName(),
+                temp.getAuthor().getAuthorName(),
+                temp.getGenre().getGenreName())).forEach(ioService::output);
     }
 
     @Override
@@ -35,7 +46,9 @@ public class BookServiceImpl implements BookService {
         ioService.output("Показать книгу с id");
         long id = Long.parseLong(ioService.input());
         Book temp = bookDao.getById(id);
-        ioService.output(String.format("%d %s %s", temp.getId(), temp.getBookName(), temp.getAuthorName()));
+        ioService.output(String.format("%d %s %s %s", temp.getId(), temp.getBookName(),
+                temp.getAuthor().getAuthorName(),
+                temp.getGenre().getGenreName()));
     }
 
     @Override

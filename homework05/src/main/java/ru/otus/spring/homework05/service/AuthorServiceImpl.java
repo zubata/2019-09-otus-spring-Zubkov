@@ -1,6 +1,7 @@
 package ru.otus.spring.homework05.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.homework05.domain.Author;
 import ru.otus.spring.homework05.storage.AuthorDao;
@@ -49,5 +50,17 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void showCount() {
         ioService.output(String.valueOf(authorDao.count()));
+    }
+
+    @Override
+    public Author getAuthor(String authorName) {
+        long authorId;
+        try {
+            authorId = authorDao.getByName(authorName).getId();
+        } catch (EmptyResultDataAccessException e) {
+            authorDao.insert(new Author(authorName));
+            authorId = authorDao.getByName(authorName).getId();
+        }
+        return new Author(authorId,authorName);
     }
 }

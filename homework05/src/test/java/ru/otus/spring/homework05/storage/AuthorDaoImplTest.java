@@ -21,9 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AuthorDaoImplTest {
     private static final int COUNT_EXCEPT_INSERT = 2;
     private static final int DEFAULT_ID = 1;
+    private static final String DEFAULT_NAME = "Толстой";
     private static final int NEW_ID = 3;
     private static final int COUNT_AFTER_INSERT = 3;
-    private static final Author TEMP = new Author(NEW_ID, "Tolkien");
+    private static final Author TEMP = new Author("Tolkien");
 
     @Autowired
     private AuthorDaoImpl authorDaoImpl;
@@ -37,7 +38,15 @@ class AuthorDaoImplTest {
     @DisplayName("должен корректно возвратиться автор по id")
     @Test
     void getById() {
-        assertThat(authorDaoImpl.getById(DEFAULT_ID)).hasFieldOrPropertyWithValue("authorName", "Толстой");
+        assertThat(authorDaoImpl.getById(DEFAULT_ID)).hasFieldOrPropertyWithValue("authorName", "Толстой")
+                .hasFieldOrPropertyWithValue("id",1L);
+    }
+
+    @DisplayName("должен корректно возвращать жанр по названию")
+    @Test
+    void getByName() {
+        assertThat(authorDaoImpl.getByName(DEFAULT_NAME)).hasFieldOrPropertyWithValue("authorName", "Толстой")
+                .hasFieldOrPropertyWithValue("id",1L);
     }
 
     @DisplayName("должен корректно вставиться автор по id")

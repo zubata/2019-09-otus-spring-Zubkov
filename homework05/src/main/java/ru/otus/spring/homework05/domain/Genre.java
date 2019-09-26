@@ -1,30 +1,17 @@
 package ru.otus.spring.homework05.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Genre {
     private long id;
+
+    @NonNull
     private String genreName;
-    private String bookName;
 
-    public Genre(long id, String genreName, String bookName) {
-        this.id = id;
-        this.genreName = genreName;
-        this.bookName = bookName;
-    }
-
-    public Genre(String genreName, String bookName) {
-        this.genreName = genreName;
-        this.bookName = bookName;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getGenreName() {
-        return genreName;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
 }

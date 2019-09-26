@@ -1,5 +1,7 @@
 package ru.otus.spring.homework05.service;
 
+import ru.otus.spring.homework05.domain.Author;
+
 public interface AuthorService {
     String insert();
 
@@ -10,4 +12,6 @@ public interface AuthorService {
     String delete();
 
     void showCount();
+
+    Author getAuthor(String authorName);
 }

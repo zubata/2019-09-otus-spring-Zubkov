@@ -23,7 +23,8 @@ class GenreDaoImplTest {
     private static final int COUNT_AFTER_INSERT = 3;
     private static final int NEW_ID = 3;
     private static final int DEFAULT_ID = 1;
-    private static final Genre TEMP = new Genre("Фэнтези", "The Lord of the Rings");
+    private static final String DEFAULT_NAME = "Роман";
+    private static final Genre TEMP = new Genre("Фэнтези");
 
     @Autowired
     private GenreDaoImpl genreDaoImpl;
@@ -38,8 +39,16 @@ class GenreDaoImplTest {
     @Test
     void getById() {
         assertThat(genreDaoImpl.getById(DEFAULT_ID)).
-                hasFieldOrPropertyWithValue("genreName", "Роман").
-                hasFieldOrPropertyWithValue("bookName", "Война и Мир");
+                hasFieldOrPropertyWithValue("id", 1L).
+                hasFieldOrPropertyWithValue("genreName", "Роман");
+    }
+
+    @DisplayName("должен корректно возвращаться жанр по имени")
+    @Test
+    void getByName() {
+        assertThat(genreDaoImpl.getByName(DEFAULT_NAME)).
+                hasFieldOrPropertyWithValue("id", 1L).
+                hasFieldOrPropertyWithValue("genreName", "Роман");
     }
 
     @DisplayName("должен корректно вставиться жанр по id")
@@ -47,8 +56,8 @@ class GenreDaoImplTest {
     void insert() {
         genreDaoImpl.insert(TEMP);
         assertThat(genreDaoImpl.getById(NEW_ID)).
-                hasFieldOrPropertyWithValue("genreName", "Фэнтези").
-                hasFieldOrPropertyWithValue("bookName", "The Lord of the Rings");
+                hasFieldOrPropertyWithValue("id", 3L).
+                hasFieldOrPropertyWithValue("genreName", "Фэнтези");
         assertThat(genreDaoImpl.count()).isEqualTo(COUNT_AFTER_INSERT);
     }
 
@@ -63,8 +72,8 @@ class GenreDaoImplTest {
     @Test
     void getAll() {
         List<Genre> list = new ArrayList<>();
-        list.add(new Genre(1, "Роман", "Война и Мир"));
-        list.add(new Genre(2, "Стихи", "Не стихов златая пена"));
+        list.add(new Genre(1,"Роман"));
+        list.add(new Genre(2,"Стихи"));
         assertThat(genreDaoImpl.getAll()).usingFieldByFieldElementComparator().isEqualTo(list);
     }
 }

@@ -1,23 +1,15 @@
 package ru.otus.spring.homework05.domain;
 
+import lombok.*;
+
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Author {
+
     private long id;
+
+    @NonNull
     private String authorName;
 
-    public Author(long id, String authorName) {
-        this.id = id;
-        this.authorName = authorName;
-    }
-
-    public Author(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
 }
