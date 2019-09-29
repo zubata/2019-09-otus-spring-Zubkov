@@ -13,7 +13,7 @@ public interface AuthorDao {
 
     Author getByName(String authorname);
 
-    List getAll();
+    List<Author> getAll();
 
     void delete(long id);
 }

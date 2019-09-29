@@ -1,6 +1,9 @@
 package ru.otus.spring.homework05.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor

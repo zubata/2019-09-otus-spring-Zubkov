@@ -1,7 +1,6 @@
 package ru.otus.spring.homework05.storage;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -26,8 +25,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void insert(Book book) {
-        Long authorId = book.getAuthor().getId();
-        Long genreId = book.getGenre().getId();
+        long authorId = book.getAuthor().getId();
+        long genreId = book.getGenre().getId();
         SqlParameterSource params = new MapSqlParameterSource().
                 addValue("bookname", book.getBookName()).
                 addValue("author_id", authorId).
@@ -51,7 +50,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List getAll() {
+    public List<Book> getAll() {
         return njdbc.query("select b.id, b.bookname, b.author_id, a.authorname, b.genre_id, g.genrename " +
                 "from (books b inner join genres g on b.genre_id=g.id) " +
                 "inner join authors a on b.author_id=a.id", new BookMapper());

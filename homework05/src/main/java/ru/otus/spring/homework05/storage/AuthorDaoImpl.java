@@ -46,7 +46,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public List getAll() {
+    public List<Author> getAll() {
         return njdbc.query("select * from authors", new AuthorMapper());
     }
 

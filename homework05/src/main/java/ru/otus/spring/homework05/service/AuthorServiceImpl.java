@@ -19,8 +19,7 @@ public class AuthorServiceImpl implements AuthorService {
     public String insert() {
         ioService.output("Ввести имя автора");
         String author = ioService.input();
-        String[] mas = author.split(";");
-        Author temp = new Author(mas[0]);
+        Author temp = new Author(author);
         authorDao.insert(temp);
         return author;
     }
@@ -61,6 +60,6 @@ public class AuthorServiceImpl implements AuthorService {
             authorDao.insert(new Author(authorName));
             authorId = authorDao.getByName(authorName).getId();
         }
-        return new Author(authorId,authorName);
+        return new Author(authorId, authorName);
     }
 }

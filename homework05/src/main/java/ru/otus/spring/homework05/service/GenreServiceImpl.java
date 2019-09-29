@@ -19,8 +19,7 @@ public class GenreServiceImpl implements GenreService {
     public String insert() {
         ioService.output("Ввести название жанра");
         String genre = ioService.input();
-        String[] mas = genre.split(";");
-        Genre temp = new Genre(mas[0]);
+        Genre temp = new Genre(genre);
         genreDao.insert(temp);
         return genre;
     }
@@ -60,6 +59,6 @@ public class GenreServiceImpl implements GenreService {
             genreDao.insert(new Genre(genreName));
             genreId = genreDao.getByName(genreName).getId();
         }
-        return new Genre(genreId,genreName);
+        return new Genre(genreId, genreName);
     }
 }

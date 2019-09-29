@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.homework05.domain.Book;
 import ru.otus.spring.homework05.domain.Genre;
 
 import java.sql.ResultSet;
@@ -48,7 +47,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public List getAll() {
+    public List<Genre> getAll() {
         return njdbc.query("select * from genres", new GenreMapper());
     }
 

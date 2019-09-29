@@ -13,7 +13,7 @@ public interface GenreDao {
 
     Genre getByName(String genrename);
 
-    List getAll();
+    List<Genre> getAll();
 
     void delete(long id);
 }

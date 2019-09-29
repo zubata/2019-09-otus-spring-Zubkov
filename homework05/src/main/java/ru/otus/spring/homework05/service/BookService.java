@@ -10,4 +10,6 @@ public interface BookService {
     String delete();
 
     void showCount();
+
+    String[] checkInputData(String book);
 }

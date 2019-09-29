@@ -1,14 +1,11 @@
 package ru.otus.spring.homework05.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.homework05.domain.Author;
 import ru.otus.spring.homework05.domain.Book;
 import ru.otus.spring.homework05.domain.Genre;
-import ru.otus.spring.homework05.storage.AuthorDao;
 import ru.otus.spring.homework05.storage.BookDao;
-import ru.otus.spring.homework05.storage.GenreDao;
 
 import java.util.List;
 
@@ -25,10 +22,10 @@ public class BookServiceImpl implements BookService {
     public String insert() {
         ioService.output("Ввести название книги, автора и жанра через точку с запятой");
         String book = ioService.input();
-        String[] mas = book.split(" *;");
+        String[] mas = checkInputData(book);
         Author tempAuthor = authorService.getAuthor(mas[1]);
         Genre tempGenre = genreService.getGenre(mas[2]);
-        Book temp = new Book(mas[0],tempAuthor,tempGenre);
+        Book temp = new Book(mas[0], tempAuthor, tempGenre);
         bookDao.insert(temp);
         return book;
     }
@@ -62,5 +59,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public void showCount() {
         ioService.output(String.valueOf(bookDao.count()));
+    }
+
+    @Override
+    public String[] checkInputData(String book) {
+        String[] mas = book.split(" *;");
+        if(mas.length!=3) throw new RuntimeException("Не правильно введены данные, количество слов не ровняется трём");
+        return mas;
     }
 }

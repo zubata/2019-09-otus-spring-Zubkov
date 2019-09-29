@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.spring.homework05.domain.Author;
 import ru.otus.spring.homework05.domain.Book;
@@ -25,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BookDaoImplTest {
     private static final int COUNT_EXCEPT_INSERT = 2;
     private static final int NEW_ID = 3;
-    private static final int COUNT_AFTER_INSERT = 3;
     private static final int DEFAULT_ID = 1;
     private static final Book TEMP = new Book("The Lord of the Rings", new Author(3,"Tolkien"), new Genre(3,"Фэнтези"));
 
@@ -55,6 +52,7 @@ class BookDaoImplTest {
     @DisplayName("должна корректно вставиться книга по id")
     @Test
     void insert() {
+        int countBeforeInsert  = bookDaoImpl.count();
         genreDaoImpl.insert(TEMP.getGenre());
         authorDaoImpl.insert(TEMP.getAuthor());
         bookDaoImpl.insert(TEMP);
@@ -63,7 +61,7 @@ class BookDaoImplTest {
                 hasFieldOrPropertyWithValue("bookName", "The Lord of the Rings").
                 hasFieldOrPropertyWithValue("author",new Author(3,"Tolkien")).
                 hasFieldOrPropertyWithValue("genre",new Genre(3,"Фэнтези"));
-        assertThat(bookDaoImpl.count()).isEqualTo(COUNT_AFTER_INSERT);
+        assertThat(bookDaoImpl.count()).isEqualTo(countBeforeInsert+1);
     }
 
     @DisplayName("должна корректно удалиться книга в БД")

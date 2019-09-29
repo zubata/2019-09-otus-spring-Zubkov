@@ -1,4 +1,4 @@
 spring:
   datasource:
-    data: test-data.sql
+    data: data.sql
     sqlScriptEncoding: UTF-8
