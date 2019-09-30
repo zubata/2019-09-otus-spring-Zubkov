@@ -1,4 +1,4 @@
-package ru.otus.homework04.service;
+package ru.otus.spring.homework05.service;
 
 public interface IOService {
 
