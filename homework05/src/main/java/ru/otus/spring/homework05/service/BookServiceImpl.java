@@ -2,6 +2,7 @@ package ru.otus.spring.homework05.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.homework05.config.IllegalText;
 import ru.otus.spring.homework05.domain.Author;
 import ru.otus.spring.homework05.domain.Book;
 import ru.otus.spring.homework05.domain.Genre;
@@ -22,7 +23,12 @@ public class BookServiceImpl implements BookService {
     public String insert() {
         ioService.output("Ввести название книги, автора и жанра через точку с запятой");
         String book = ioService.input();
-        String[] mas = checkInputData(book);
+        String[] mas = new String[0];
+        try {
+            mas = checkInputData(book);
+        } catch (IllegalText illegalText) {
+            illegalText.printStackTrace();
+        }
         Author tempAuthor = authorService.getAuthor(mas[1]);
         Genre tempGenre = genreService.getGenre(mas[2]);
         Book temp = new Book(mas[0], tempAuthor, tempGenre);
@@ -62,9 +68,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String[] checkInputData(String book) {
+    public String[] checkInputData(String book) throws IllegalText {
         String[] mas = book.split(" *;");
-        if(mas.length!=3) throw new RuntimeException("Не правильно введены данные, количество слов не ровняется трём");
+        if (mas.length != 3) {
+            throw new IllegalText(book);
+        }
         return mas;
     }
 }

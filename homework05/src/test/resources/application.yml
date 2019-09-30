@@ -2,3 +2,6 @@ spring:
   datasource:
     data: test-data.sql
     sqlScriptEncoding: UTF-8
+  shell:
+    interactive:
+      enabled: false

@@ -1,5 +1,7 @@
 package ru.otus.spring.homework05.service;
 
+import ru.otus.spring.homework05.config.IllegalText;
+
 public interface BookService {
     String insert();
 
@@ -11,5 +13,5 @@ public interface BookService {
 
     void showCount();
 
-    String[] checkInputData(String book);
+    String[] checkInputData(String book) throws IllegalText;
 }
