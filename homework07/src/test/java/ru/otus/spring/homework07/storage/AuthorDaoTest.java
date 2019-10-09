@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.spring.homework07.domain.Author;
 
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Тестирование DAO для работы с авторами ")
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@Import(AuthorDao.class)
+@Import(value = SimpleJpaRepository.class)
 class AuthorDaoImplTest {
     private static final long COUNT_EXCEPT_INSERT = 2;
     private static final long COUNT_AFTER_INSERT = 3;

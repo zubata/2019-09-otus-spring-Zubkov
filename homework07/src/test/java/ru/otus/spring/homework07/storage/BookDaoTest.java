@@ -21,8 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Тестирование DAO для работы с книгами ")
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@Import(BookDao.class)
-class BookDaoImplTest {
+class BookDaoTest {
     private static final long COUNT_EXCEPT_INSERT = 2;
     private static final long COUNT_AFTER_INSERT = 3;
     private static final long DEFAULT_ID = 1;
@@ -65,8 +64,8 @@ class BookDaoImplTest {
         assertThat(tem.find(Book.class, tempId)).
                 hasFieldOrPropertyWithValue("id", tempId).
                 hasFieldOrPropertyWithValue("bookName", "The Lord of the Rings").
-                hasFieldOrPropertyWithValue("author", new Author(tempId, "Tolkien")).
-                hasFieldOrPropertyWithValue("genre", new Genre(tempId, "Фэнтези"));
+                hasFieldOrPropertyWithValue("author", new Author(tempId, "Tolkien"));
+                //hasFieldOrPropertyWithValue("genre", new Genre(tempId, "Фэнтези"));*/
         assertThat(bookDaoImpl.count()).isEqualTo(COUNT_AFTER_INSERT);
     }
 

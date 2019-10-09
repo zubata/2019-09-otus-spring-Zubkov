@@ -18,9 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Тестирование DAO для работы с жанрами ")
 @ExtendWith(SpringExtension.class)
-@Import(GenreDao.class)
 @DataJpaTest
-class GenreDaoImplTest {
+class GenreDaoTest {
     private static final long COUNT_EXCEPT_INSERT = 2;
     private static final long COUNT_AFTER_INSERT = 3;
     private static final long DEFAULT_ID = 1;
