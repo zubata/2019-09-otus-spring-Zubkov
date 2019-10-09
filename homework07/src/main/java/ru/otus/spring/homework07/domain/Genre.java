@@ -16,7 +16,7 @@ public class Genre {
     private long id;
 
     @NonNull
-    @Column(name = "genrename", nullable = false)
+    @Column(name = "genre_name", nullable = false)
     private String genreName;
 
     @Override

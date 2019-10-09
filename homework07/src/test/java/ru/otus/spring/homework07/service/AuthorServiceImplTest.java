@@ -119,8 +119,9 @@ class AuthorServiceImplTest {
     @DisplayName("должен корректно возвратиться автор, если его нет в БД")
     @Test
     void getAuthor2() {
-        given(authorDao.findByauthorName(any())).willThrow(new EmptyResultDataAccessException(0)).willReturn(new Author(1,"Тургенев"));
+        given(authorDao.save(any())).willReturn(new Author(1,"Тургенев"));
         assertThat(authorService.getAuthor("Тургенев")).isEqualTo(new Author(1,"Тургенев"));
-        verify(authorDao,times(2)).findByauthorName(any());
+        verify(authorDao,times(1)).findByauthorName(any());
+        verify(authorDao,times(1)).save(any());
     }
 }

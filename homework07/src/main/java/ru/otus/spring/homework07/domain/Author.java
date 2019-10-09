@@ -16,7 +16,7 @@ public class Author {
     private long id;
 
     @NonNull
-    @Column(name = "authorname", nullable = false)
+    @Column(name = "author_name", nullable = false)
     private String authorName;
 
     @Override

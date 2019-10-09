@@ -18,7 +18,7 @@ public class Book {
     private long id;
 
     @NonNull
-    @Column(name = "bookname", nullable = false)
+    @Column(name = "book_name", nullable = false)
     private String bookName;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
