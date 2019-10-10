@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.spring.homework07.domain.Author;
 import ru.otus.spring.homework07.domain.Book;
@@ -58,6 +59,7 @@ class BookDaoTest {
 
     @DisplayName("должна корректно вставиться книга по id")
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void insert() {
         long tempId = (long) tem.persistAndGetId(new Book("The Lord of the Rings", new Author( "Tolkien"), new Genre("Фэнтези")));
         assertThat(tem.find(Book.class, tempId)).

@@ -12,6 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(name = "BookWithAuthorAndGenre", attributeNodes =
+        {@NamedAttributeNode(value = "author"), @NamedAttributeNode(value = "genre")},includeAllAttributes = true)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,7 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @NonNull
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;

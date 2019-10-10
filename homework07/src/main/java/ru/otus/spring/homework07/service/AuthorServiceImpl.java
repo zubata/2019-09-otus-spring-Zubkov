@@ -35,7 +35,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void showById() {
         ioService.output("Показать автора с id");
         long id = Long.parseLong(ioService.input());
-        Author temp = authorDao.findById(id);
+        Author temp = authorDao.getById(id);
         ioService.output(temp.toString());
     }
 
@@ -43,7 +43,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void showByName() {
         ioService.output("Показать автора с именем");
         String authorname = ioService.input();
-        Author temp = authorDao.findByauthorName(authorname);
+        Author temp = authorDao.getByauthorName(authorname);
         ioService.output(temp.toString());
     }
 
@@ -59,7 +59,7 @@ public class AuthorServiceImpl implements AuthorService {
     public String deleteByName() {
         ioService.output("Удалить автора с именем");
         String authorname = ioService.input();
-        Author temp = authorDao.findByauthorName(authorname);
+        Author temp = authorDao.getByauthorName(authorname);
         long id = temp.getId();
         authorDao.deleteById(id);
         return authorname;
@@ -72,7 +72,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author getAuthor(String authorName) {
-        Author temp = authorDao.findByauthorName(authorName);
+        Author temp = authorDao.getByauthorName(authorName);
         if (temp == null) temp = authorDao.save(new Author(authorName));
         return temp;
     }

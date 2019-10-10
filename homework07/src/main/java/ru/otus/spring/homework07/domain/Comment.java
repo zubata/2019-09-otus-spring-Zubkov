@@ -19,7 +19,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NonNull
-    @JoinColumn(name = "book")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @Column(name = "comment")

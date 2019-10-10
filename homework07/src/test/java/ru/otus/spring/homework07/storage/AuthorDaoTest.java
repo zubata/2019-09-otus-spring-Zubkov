@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.spring.homework07.domain.Author;
 
@@ -40,7 +42,7 @@ class AuthorDaoTest {
     @DisplayName("должен корректно возвратиться автор по id")
     @Test
     void getById() {
-        val actual = authorDao.findById(DEFAULT_ID);
+        val actual = authorDao.getById(DEFAULT_ID);
         val expected = tem.find(Author.class, DEFAULT_ID);
         assertThat(actual).isEqualTo(expected);
     }
@@ -48,7 +50,7 @@ class AuthorDaoTest {
     @DisplayName("должен корректно возвращать автора по названию")
     @Test
     void getByName() {
-        val actual = authorDao.findByauthorName(DEFAULT_NAME);
+        val actual = authorDao.getByauthorName(DEFAULT_NAME);
         assertThat(actual)
                 .hasFieldOrPropertyWithValue("authorName", "Толстой")
                 .hasFieldOrPropertyWithValue("id", 1L);

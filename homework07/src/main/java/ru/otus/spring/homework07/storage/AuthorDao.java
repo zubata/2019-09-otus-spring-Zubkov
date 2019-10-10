@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface AuthorDao extends JpaRepository<Author,Long> {
 
-    Author findById(long id);
+    Author getById(long id);
 
-    Author findByauthorName(String authorname);
+    Author getByauthorName(String authorname);
 
 }

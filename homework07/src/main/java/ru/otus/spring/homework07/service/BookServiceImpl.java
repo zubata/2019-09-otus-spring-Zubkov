@@ -3,7 +3,7 @@ package ru.otus.spring.homework07.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.homework07.config.IllegalText;
+import ru.otus.spring.homework07.config.IllegalTextException;
 import ru.otus.spring.homework07.domain.Author;
 import ru.otus.spring.homework07.domain.Book;
 import ru.otus.spring.homework07.domain.Genre;
@@ -32,8 +32,8 @@ public class BookServiceImpl implements BookService {
             Genre tempGenre = genreService.getGenre(mas[2]);
             Book temp = new Book(mas[0], tempAuthor, tempGenre);
             bookDao.save(temp);
-        } catch (IllegalText illegalText) {
-            illegalText.printStackTrace();
+        } catch (IllegalTextException illegalTextException) {
+            illegalTextException.printStackTrace();
             return null;
         }
         return book;
@@ -84,10 +84,10 @@ public class BookServiceImpl implements BookService {
         ioService.output(String.valueOf(bookDao.count()));
     }
 
-    private String[] checkInputData(String book) throws IllegalText {
+    private String[] checkInputData(String book) throws IllegalTextException {
         String[] mas = book.split(" *;");
         if (mas.length != 3) {
-            throw new IllegalText(book);
+            throw new IllegalTextException(book);
         }
         for (int i = 0; i < mas.length; i++) {
             mas[i] = mas[i].trim();

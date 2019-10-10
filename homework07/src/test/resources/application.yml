@@ -1,4 +1,7 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   datasource:
     data: test-data.sql
     sqlScriptEncoding: UTF-8

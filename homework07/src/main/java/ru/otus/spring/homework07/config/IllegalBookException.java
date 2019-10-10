@@ -1,8 +1,8 @@
 package ru.otus.spring.homework07.config;
 
-public class IllegalBook extends RuntimeException {
+public class IllegalBookException extends RuntimeException {
 
-    public IllegalBook(String message) {
+    public IllegalBookException(String message) {
         super("Книга " + message + " не найдена");
     }
 }

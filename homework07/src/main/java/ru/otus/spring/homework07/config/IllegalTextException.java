@@ -1,8 +1,8 @@
 package ru.otus.spring.homework07.config;
 
-public class IllegalText extends RuntimeException {
+public class IllegalTextException extends RuntimeException {
 
-    public IllegalText(String message) {
+    public IllegalTextException(String message) {
         super("Неправильно введены данные книги " + message + ": число слов (данных) через точку запятой неравно трём");
     }
 }

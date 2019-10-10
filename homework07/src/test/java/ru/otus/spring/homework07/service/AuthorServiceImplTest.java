@@ -22,7 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Тестирование сервия AuthorServiceImpl")
-@SpringBootTest()
+@SpringBootTest
 class AuthorServiceImplTest {
 
     @Autowired
@@ -58,22 +58,22 @@ class AuthorServiceImplTest {
     @Test
     void showById() {
         given(ioService.input()).willReturn("1");
-        given(authorDao.findById(anyLong())).willReturn(new Author(1,"Тургенев"));
+        given(authorDao.getById(anyLong())).willReturn(new Author(1,"Тургенев"));
         authorService.showById();
         verify(ioService,times(1)).output("Показать автора с id");
         verify(ioService,times(1)).input();
-        verify(authorDao,times(1)).findById(anyLong());
+        verify(authorDao,times(1)).getById(anyLong());
         verify(ioService,times(1)).output("id =1, автор = 'Тургенев'");
     }
 
     @DisplayName("должен правильно отображаться автор по названию")
     @Test
     void showByName() {
-        given(authorDao.findByauthorName(any())).willReturn(new Author(1,"Тургенев"));
+        given(authorDao.getByauthorName(any())).willReturn(new Author(1,"Тургенев"));
         authorService.showByName();
         verify(ioService,times(1)).output("Показать автора с именем");
         verify(ioService,times(1)).input();
-        verify(authorDao,times(1)).findByauthorName(any());
+        verify(authorDao,times(1)).getByauthorName(any());
         verify(ioService,times(1)).output("id =1, автор = 'Тургенев'");
     }
 
@@ -91,11 +91,11 @@ class AuthorServiceImplTest {
     @Test
     void deleteByName() {
         given(ioService.input()).willReturn("Тургенев");
-        given(authorDao.findByauthorName(any())).willReturn(new Author(1,"Тургенев"));
+        given(authorDao.getByauthorName(any())).willReturn(new Author(1,"Тургенев"));
         assertThat(authorService.deleteByName()).isEqualTo("Тургенев");
         verify(ioService,times(1)).output("Удалить автора с именем");
         verify(ioService,times(1)).input();
-        verify(authorDao,times(1)).findByauthorName(any());
+        verify(authorDao,times(1)).getByauthorName(any());
         verify(authorDao,times(1)).deleteById(1L);
     }
 
@@ -111,9 +111,9 @@ class AuthorServiceImplTest {
     @DisplayName("должен корректно возвратиться автор, если он есть в БД")
     @Test
     void getAuthor1() {
-        given(authorDao.findByauthorName(any())).willReturn(new Author(1,"Тургенев"));
+        given(authorDao.getByauthorName(any())).willReturn(new Author(1,"Тургенев"));
         assertThat(authorService.getAuthor("Тургенев")).isEqualTo(new Author(1,"Тургенев"));
-        verify(authorDao,times(1)).findByauthorName(any());
+        verify(authorDao,times(1)).getByauthorName(any());
     }
 
     @DisplayName("должен корректно возвратиться автор, если его нет в БД")
@@ -121,7 +121,7 @@ class AuthorServiceImplTest {
     void getAuthor2() {
         given(authorDao.save(any())).willReturn(new Author(1,"Тургенев"));
         assertThat(authorService.getAuthor("Тургенев")).isEqualTo(new Author(1,"Тургенев"));
-        verify(authorDao,times(1)).findByauthorName(any());
+        verify(authorDao,times(1)).getByauthorName(any());
         verify(authorDao,times(1)).save(any());
     }
 }

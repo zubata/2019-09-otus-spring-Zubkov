@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.homework07.config.IllegalBook;
+import ru.otus.spring.homework07.config.IllegalBookException;
 import ru.otus.spring.homework07.domain.Book;
 import ru.otus.spring.homework07.domain.Comment;
 import ru.otus.spring.homework07.storage.CommentDao;
@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
             String strComment = ioService.input();
             temp.setComment(strComment);
             commentDao.save(temp);
-        } catch (IllegalBook illegalBook) {
+        } catch (IllegalBookException illegalBook) {
             illegalBook.printStackTrace();
             return null;
         }
@@ -75,7 +75,7 @@ public class CommentServiceImpl implements CommentService {
             checkBook(bookname);
             List<Comment> list = commentDao.getByBook(bookname);
             list.forEach(temp -> commentDao.deleteById(temp.getId()));
-        } catch (IllegalBook illegalBook) {
+        } catch (IllegalBookException illegalBook) {
             illegalBook.printStackTrace();
             return null;
         }
@@ -87,11 +87,11 @@ public class CommentServiceImpl implements CommentService {
         ioService.output(String.valueOf(commentDao.count()));
     }
 
-    private Book checkBook(String bookname) throws IllegalBook {
+    private Book checkBook(String bookname) throws IllegalBookException {
         try {
             return bookService.getBook(bookname);
         } catch (EmptyResultDataAccessException e) {
-            throw new IllegalBook(bookname);
+            throw new IllegalBookException(bookname);
         }
     }
 
