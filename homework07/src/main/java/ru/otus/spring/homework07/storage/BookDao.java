@@ -12,7 +12,7 @@ public interface BookDao extends JpaRepository<Book,Long> {
     Book getById(long id);
 
     @EntityGraph(value = "BookWithAuthorAndGenre")
-    Book getBybookName(String bookname);
+    Book getByBookName(String bookname);
 
     @Override
     @EntityGraph(value = "BookWithAuthorAndGenre")

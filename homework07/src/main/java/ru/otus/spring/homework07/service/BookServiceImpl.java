@@ -22,7 +22,6 @@ public class BookServiceImpl implements BookService {
     private final GenreService genreService;
 
     @Override
-
     public String insert() {
         ioService.output("Ввести название книги, автора и жанра через точку с запятой");
         String book = ioService.input();
@@ -57,7 +56,7 @@ public class BookServiceImpl implements BookService {
     public void showByName() {
         ioService.output("Показать книгу с названием");
         String bookname = ioService.input();
-        Book temp = bookDao.getBybookName(bookname);
+        Book temp = bookDao.getByBookName(bookname);
         ioService.output(temp.toString());
     }
 
@@ -73,7 +72,7 @@ public class BookServiceImpl implements BookService {
     public String deleteByName() {
         ioService.output("Удалить книгу с названием");
         String bookname = ioService.input();
-        Book temp = bookDao.getBybookName(bookname);
+        Book temp = bookDao.getByBookName(bookname);
         long id = temp.getId();
         bookDao.deleteById(id);
         return bookname;
@@ -97,7 +96,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBook(String bookname) {
-        return bookDao.getBybookName(bookname);
+        return bookDao.getByBookName(bookname);
     }
 
 }

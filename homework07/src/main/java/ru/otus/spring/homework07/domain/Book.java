@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "books")
 @NamedEntityGraph(name = "BookWithAuthorAndGenre", attributeNodes =
-        {@NamedAttributeNode(value = "author"), @NamedAttributeNode(value = "genre")},includeAllAttributes = true)
+        {@NamedAttributeNode(value = "author"), @NamedAttributeNode(value = "genre")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

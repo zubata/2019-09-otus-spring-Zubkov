@@ -49,7 +49,7 @@ class BookDaoTest {
     @DisplayName("должна корректно возвратиться книга по названию")
     @Test
     void getByName() {
-        val actual = bookDao.getBybookName(DEFAULT_NAME);
+        val actual = bookDao.getByBookName(DEFAULT_NAME);
         assertThat(actual).
                 hasFieldOrPropertyWithValue("id", 1L).
                 hasFieldOrPropertyWithValue("bookName", "Война и Мир").

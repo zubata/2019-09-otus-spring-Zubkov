@@ -3,6 +3,6 @@ spring:
     data: data.sql
     sqlScriptEncoding: UTF-8
   jpa:
-    show-sql: true
+    #show-sql: true
     hibernate:
       ddl-auto: none
