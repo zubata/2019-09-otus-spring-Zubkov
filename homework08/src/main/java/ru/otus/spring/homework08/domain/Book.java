@@ -15,22 +15,27 @@ public class Book {
     private String id;
 
     @NonNull
-    @Field("bookname")
-    private String bookName;
+    @Field("name")
+    private String name;
 
     @NonNull
     @Field("author")
     private Author author;
 
-    @NonNull
     @Field("genre")
     private Genre genre;
+
+    public Book(String name, Author author, Genre genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
 
     @Override
     public String toString() {
         return "id = " + id +
-                ", название = '" + bookName + '\'' +
+                ", название = '" + name + '\'' +
                 ", автор = " + author.getAuthorName() +
-                ", жанр = " + genre.getGenreName();
+                ", жанр = " + genre;
     }
 }

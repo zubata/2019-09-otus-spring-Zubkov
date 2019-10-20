@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.homework08.domain.Author;
 import ru.otus.spring.homework08.domain.Book;
 import ru.otus.spring.homework08.domain.Comment;
@@ -26,9 +27,12 @@ class CommentDaoTest {
     @Autowired
     private CommentDao commentDao;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @BeforeEach
     void setUp() {
-        commentDao.save(DEFAULT_COMMENT_OBJECT);
+        mongoTemplate.save(DEFAULT_COMMENT_OBJECT);
     }
 
     @Test

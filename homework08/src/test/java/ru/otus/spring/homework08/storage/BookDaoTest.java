@@ -3,13 +3,10 @@ package ru.otus.spring.homework08.storage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.homework08.domain.Author;
 import ru.otus.spring.homework08.domain.Book;
 import ru.otus.spring.homework08.domain.Genre;
@@ -24,31 +21,34 @@ class BookDaoTest {
     private static final String DEFAULT_ID = "1";
     private static final Author DEFAULT_AUTHOR = new Author("Tolkien");
     private static final Genre DEFAULT_GENRE = new Genre("Fantasy");
-    private static final Book testBook = new Book(DEFAULT_ID,DEFAULT_BOOKNAME,DEFAULT_AUTHOR,DEFAULT_GENRE);
+    private static final Book testBook = new Book(DEFAULT_ID, DEFAULT_BOOKNAME, DEFAULT_AUTHOR, DEFAULT_GENRE);
 
     @Autowired
     private BookDao bookDao;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @BeforeEach
     void setUp() {
-        bookDao.save(testBook);
+        mongoTemplate.save(testBook);
     }
 
     @DisplayName("должна корректно вернуться книга по ID")
     @Test
     void getById() {
-        assertThat(bookDao.getById(DEFAULT_ID)).hasFieldOrPropertyWithValue("id",DEFAULT_ID)
-                .hasFieldOrPropertyWithValue("bookName",DEFAULT_BOOKNAME)
-                .hasFieldOrPropertyWithValue("author",DEFAULT_AUTHOR)
-                .hasFieldOrPropertyWithValue("genre",DEFAULT_GENRE);
+        assertThat(bookDao.getById(DEFAULT_ID)).hasFieldOrPropertyWithValue("id", DEFAULT_ID)
+                .hasFieldOrPropertyWithValue("name", DEFAULT_BOOKNAME)
+                .hasFieldOrPropertyWithValue("author", DEFAULT_AUTHOR)
+                .hasFieldOrPropertyWithValue("genre", DEFAULT_GENRE);
     }
 
     @DisplayName("должна корректно вернуться книга по имени")
     @Test
     void getByBookName() {
-        assertThat(bookDao.getByBookName(DEFAULT_BOOKNAME)).hasFieldOrPropertyWithValue("id",DEFAULT_ID)
-                .hasFieldOrPropertyWithValue("bookName",DEFAULT_BOOKNAME)
-                .hasFieldOrPropertyWithValue("author",DEFAULT_AUTHOR)
-                .hasFieldOrPropertyWithValue("genre",DEFAULT_GENRE);
+        assertThat(bookDao.getByName(DEFAULT_BOOKNAME)).hasFieldOrPropertyWithValue("id", DEFAULT_ID)
+                .hasFieldOrPropertyWithValue("name", DEFAULT_BOOKNAME)
+                .hasFieldOrPropertyWithValue("author", DEFAULT_AUTHOR)
+                .hasFieldOrPropertyWithValue("genre", DEFAULT_GENRE);
     }
 }

@@ -6,6 +6,10 @@ import lombok.*;
 @AllArgsConstructor
 public class Genre {
 
-    private String genreName;
+    private String name;
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

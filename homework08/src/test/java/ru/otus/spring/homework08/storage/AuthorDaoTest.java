@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.spring.homework08.domain.Author;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -21,9 +22,12 @@ class AuthorDaoTest {
     @Autowired
     private AuthorDao authorDao;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @BeforeEach
     void setUp() {
-        authorDao.save(testAuthor);
+        mongoTemplate.save(testAuthor);
     }
 
     @DisplayName("должен корректно вернуться автор по ID")

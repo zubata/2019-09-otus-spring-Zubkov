@@ -18,10 +18,11 @@ public class ShellCommandsForBook {
         return String.format("Книга %s добавлена", book);
     }
 
+    @ShellMethod(value = "update genre by name", key = "ugn")
+    public String updateGenre() { return bookService.updateGenre(); }
+
     @ShellMethod(value = "show book by id", key = "sbi")
-    public void showById() {
-        bookService.showById();
-    }
+    public void showById() { bookService.showById(); }
 
     @ShellMethod(value = "show book by name", key = "sbn")
     public void showByName() { bookService.showByName(); }
@@ -32,13 +33,14 @@ public class ShellCommandsForBook {
     }
 
     @ShellMethod(value = "delete book by Id", key = {"dbi"})
-    public String deleteById() {
-        return bookService.deleteById();
-    }
+    public String deleteById() { return bookService.deleteById(); }
 
     @ShellMethod(value = "delete book by name", key = {"dbn"})
-    public String deleteByName() {
-        return bookService.deleteByName();
+    public String deleteByName() { return bookService.deleteByName(); }
+
+    @ShellMethod(value = "delete genre by name", key = {"dgn"})
+    public String deleteGenre() {
+        return bookService.deleteGenre();
     }
 
     @ShellMethod(value = "show count books", key = "scb")

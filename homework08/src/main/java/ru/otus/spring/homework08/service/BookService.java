@@ -1,7 +1,5 @@
 package ru.otus.spring.homework08.service;
 
-import ru.otus.spring.homework08.domain.Book;
-
 public interface BookService {
     String insert();
 
@@ -17,5 +15,7 @@ public interface BookService {
 
     void showCount();
 
-    Book getBook(String bookname);
+    String deleteGenre();
+
+    String updateGenre();
 }

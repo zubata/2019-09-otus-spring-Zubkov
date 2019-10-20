@@ -27,6 +27,8 @@ class AuthorServiceImplTest {
     private IOService ioService;
     @MockBean
     private AuthorDao authorDao;
+    @MockBean
+    private CustomService customService;
 
     @DisplayName("должен вставляться объект в БД")
     @Test
@@ -77,10 +79,12 @@ class AuthorServiceImplTest {
     @Test
     void deleteById() {
         given(ioService.input()).willReturn("1");
-        assertThat(authorService.deleteById()).isEqualTo("1");
+        given(customService.checkAvailableBooks(any())).willReturn(true);
+        assertThat(authorService.deleteById()).isEqualTo("Автор с id 1 удален из БД");
         verify(ioService,times(1)).output("Удалить автора с id");
         verify(ioService,times(1)).input();
         verify(authorDao,times(1)).deleteById("1");
+        verify(customService,times(1)).checkAvailableBooks(any());
     }
 
     @DisplayName("должен удаляться автор по имени из БД")
@@ -88,11 +92,13 @@ class AuthorServiceImplTest {
     void deleteByName() {
         given(ioService.input()).willReturn("Тургенев");
         given(authorDao.getByAuthorName(any())).willReturn(new Author("1","Тургенев"));
-        assertThat(authorService.deleteByName()).isEqualTo("Тургенев");
+        given(customService.checkAvailableBooks(any())).willReturn(true);
+        assertThat(authorService.deleteByName()).isEqualTo("Автор с именем Тургенев удален из БД");
         verify(ioService,times(1)).output("Удалить автора с именем");
         verify(ioService,times(1)).input();
         verify(authorDao,times(1)).getByAuthorName(any());
         verify(authorDao,times(1)).deleteById("1");
+        verify(customService,times(1)).checkAvailableBooks(any());
     }
 
     @DisplayName("должно корректно отображаться количество авторов")

@@ -18,10 +18,14 @@ public class ShellCommandsForAuthor {
     }
 
     @ShellMethod(value = "show author by id", key = "sai")
-    public void showById() { authorService.showById(); }
+    public void showById() {
+        authorService.showById();
+    }
 
     @ShellMethod(value = "show author by name", key = "san")
-    public void showByName() { authorService.showByName(); }
+    public void showByName() {
+        authorService.showByName();
+    }
 
     @ShellMethod(value = "show all authors", key = "saa")
     public void showAllRows() {
@@ -30,14 +34,12 @@ public class ShellCommandsForAuthor {
 
     @ShellMethod(value = "delete author by id", key = "dai")
     public String deleteById() {
-        String id = authorService.deleteById();
-        return String.format("Автор с id %s удален из БД", id);
+        return authorService.deleteById();
     }
 
     @ShellMethod(value = "delete author by name", key = "dan")
     public String deleteByName() {
-        String name = authorService.deleteByName();
-        return String.format("Автор с именем %s удален из БД", name);
+        return authorService.deleteByName();
     }
 
     @ShellMethod(value = "show count authors", key = "sca")

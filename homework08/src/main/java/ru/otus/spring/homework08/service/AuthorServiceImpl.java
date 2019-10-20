@@ -15,6 +15,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
     private final IOService ioService;
+    private final CustomService customService;
 
     @Override
     public String insert() {
@@ -51,8 +52,14 @@ public class AuthorServiceImpl implements AuthorService {
     public String deleteById() {
         ioService.output("Удалить автора с id");
         String id = ioService.input();
-        authorDao.deleteById(id);
-        return String.valueOf(id);
+        if (customService.checkAvailableBooks(id)) {
+            authorDao.deleteById(id);
+            id = String.format("Автор с id %s удален из БД", id);
+        }
+        else {
+            id = String.format("Автор с id %s не был удален из БД", id);
+        }
+        return id;
     }
 
     @Override
@@ -61,7 +68,13 @@ public class AuthorServiceImpl implements AuthorService {
         String authorname = ioService.input();
         Author temp = authorDao.getByAuthorName(authorname);
         String id = temp.getId();
-        authorDao.deleteById(id);
+        if (customService.checkAvailableBooks(id)) {
+            authorDao.deleteById(id);
+            authorname = String.format("Автор с именем %s удален из БД", authorname);
+        }
+        else {
+            authorname = String.format("Автор с именем %s не был удален из БД", authorname);
+        }
         return authorname;
     }
 

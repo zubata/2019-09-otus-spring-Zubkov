@@ -24,7 +24,7 @@ public class Comment {
     @Override
     public String toString() {
         return "id = " + id +
-                ", книга = '" + book.getBookName() +
+                ", книга = '" + book.getName() +
                 "', комментарий = '" + comment + "'";
     }
 }
