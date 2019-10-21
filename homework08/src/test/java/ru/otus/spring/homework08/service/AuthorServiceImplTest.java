@@ -78,11 +78,13 @@ class AuthorServiceImplTest {
     @DisplayName("должен удаляться автор по id из БД")
     @Test
     void deleteById() {
-        given(ioService.input()).willReturn("1");
+        given(ioService.input()).willReturn("1").willReturn("y");
+        given(authorDao.getById(any())).willReturn(new Author("1","Тургенев"));
         given(customService.checkAvailableBooks(any())).willReturn(true);
         assertThat(authorService.deleteById()).isEqualTo("Автор с id 1 удален из БД");
         verify(ioService,times(1)).output("Удалить автора с id");
-        verify(ioService,times(1)).input();
+        verify(ioService,times(2)).input();
+        verify(authorDao,times(1)).getById(any());
         verify(authorDao,times(1)).deleteById("1");
         verify(customService,times(1)).checkAvailableBooks(any());
     }
@@ -90,12 +92,12 @@ class AuthorServiceImplTest {
     @DisplayName("должен удаляться автор по имени из БД")
     @Test
     void deleteByName() {
-        given(ioService.input()).willReturn("Тургенев");
+        given(ioService.input()).willReturn("Тургенев").willReturn("y");
         given(authorDao.getByAuthorName(any())).willReturn(new Author("1","Тургенев"));
         given(customService.checkAvailableBooks(any())).willReturn(true);
         assertThat(authorService.deleteByName()).isEqualTo("Автор с именем Тургенев удален из БД");
         verify(ioService,times(1)).output("Удалить автора с именем");
-        verify(ioService,times(1)).input();
+        verify(ioService,times(2)).input();
         verify(authorDao,times(1)).getByAuthorName(any());
         verify(authorDao,times(1)).deleteById("1");
         verify(customService,times(1)).checkAvailableBooks(any());
