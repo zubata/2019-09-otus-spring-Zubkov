@@ -13,16 +13,11 @@ public class CustomServiceImpl implements CustomService {
 
     private final BookDao bookDao;
     private final CommentDao commentDao;
-    private final IOService ioService;
 
     @Override
     public boolean checkAvailableComments(String bookId) {
         int count = commentDao.getByBookId(bookId).size();
-        if (count != 0) {
-            ioService.output("Имеются комменатрии к книге, которые будут удалены, продолжить? [Y(да)]");
-            return ioService.input().toLowerCase().equals("y");
-        }
-        return false;
+        return count != 0;
     }
 
     @Override
@@ -35,10 +30,6 @@ public class CustomServiceImpl implements CustomService {
     @Override
     public boolean checkAvailableBooks(String authorId) {
         int count = bookDao.getByAuthorId(authorId).size();
-        if (count != 0) {
-            ioService.output("Имеются книги у данного автора, которые будут удалены (в том числе комментарии), продолжить? [Y(да)]");
-            return ioService.input().toLowerCase().equals("y");
-        }
-        return false;
+        return count != 0;
     }
 }

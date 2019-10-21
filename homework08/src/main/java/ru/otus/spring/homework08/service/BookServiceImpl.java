@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework08.domain.Author;
 import ru.otus.spring.homework08.domain.Book;
 import ru.otus.spring.homework08.domain.Genre;
+import ru.otus.spring.homework08.exceptions.IllegalBookException;
 import ru.otus.spring.homework08.exceptions.IllegalTextException;
 import ru.otus.spring.homework08.storage.BookDao;
 
@@ -47,7 +48,7 @@ public class BookServiceImpl implements BookService {
     public void showById() {
         ioService.output("Показать книгу с id");
         String id = ioService.input();
-        Book temp = bookDao.getById(id);
+        Book temp = checkBookById(id);
         ioService.output(temp.toString());
     }
 
@@ -55,7 +56,7 @@ public class BookServiceImpl implements BookService {
     public void showByName() {
         ioService.output("Показать книгу с названием");
         String bookname = ioService.input();
-        Book temp = bookDao.getByName(bookname);
+        Book temp = checkBookByName(bookname);
         ioService.output(temp.toString());
     }
 
@@ -63,11 +64,11 @@ public class BookServiceImpl implements BookService {
     public String deleteById() {
         ioService.output("Удалить книгу с id");
         String id = ioService.input();
-        if (customService.checkAvailableComments(id)) {
+        if (deleteOrNot(id)) {
             bookDao.deleteById(id);
-            id = String.format("Книга с id %s удалена из БД", id);
+            id = String.format("Книга с названием %s удалена из БД", id);
         } else {
-            id = String.format("Книга с id %s не была удалена", id);
+            id = String.format("Книга %s не была удалена", id);
         }
         return id;
     }
@@ -76,9 +77,9 @@ public class BookServiceImpl implements BookService {
     public String deleteByName() {
         ioService.output("Удалить книгу с названием");
         String bookname = ioService.input();
-        Book temp = bookDao.getByName(bookname);
+        Book temp = checkBookByName(bookname);
         String id = temp.getId();
-        if (customService.checkAvailableComments(id)) {
+        if (deleteOrNot(id)) {
             bookDao.deleteById(id);
             bookname = String.format("Книга с названием %s удалена из БД", bookname);
         } else {
@@ -108,7 +109,7 @@ public class BookServiceImpl implements BookService {
     public String updateGenre() {
         ioService.output("Для какой книги обновить/удалить жанр");
         String bookname = ioService.input();
-        Book temp = customService.checkBook(bookname);
+        Book temp = checkBookByName(bookname);
         ioService.output("Какой жанр добавить (для удаления просто нажать enter)");
         String genrename = ioService.input();
         Genre tempGenre = genrename.equals("") ? null : new Genre(genrename);
@@ -131,6 +132,26 @@ public class BookServiceImpl implements BookService {
             mas[i] = mas[i].trim();
         }
         return mas;
+    }
+
+    private boolean deleteOrNot(String id) {
+        if (customService.checkAvailableComments(id)) {
+            ioService.output("Имеются комменатрии к книге, которые будут удалены, продолжить? [Y(да)]");
+            return ioService.input().toLowerCase().equals("y");
+        }
+        return true;
+    }
+
+    private Book checkBookById(String id) throws IllegalBookException {
+        Book temp = bookDao.getById(id);
+        if (temp == null) throw new IllegalBookException(id);
+        return temp;
+    }
+
+    private Book checkBookByName(String bookname) throws IllegalBookException {
+        Book temp = bookDao.getByName(bookname);
+        if (temp == null) throw new IllegalBookException(bookname);
+        return temp;
     }
 
 }

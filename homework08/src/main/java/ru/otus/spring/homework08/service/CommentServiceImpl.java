@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework08.domain.Comment;
 import ru.otus.spring.homework08.exceptions.IllegalBookException;
+import ru.otus.spring.homework08.exceptions.IllegalCommentException;
 import ru.otus.spring.homework08.storage.CommentDao;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
     public void showById() {
         ioService.output("Показать комментарий с id");
         String id = ioService.input();
-        Comment temp = commentDao.getById(id);
+        Comment temp = checkCommentById(id);
         ioService.output(temp.toString());
     }
 
@@ -53,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
     public void showByBook() {
         ioService.output("Показать комменатрий для книги с названием");
         String bookname = ioService.input();
-        List<Comment> list = commentDao.getByBookName(bookname);
+        List<Comment> list = checkCommentsByBookName(bookname);
         list.forEach(temp -> ioService.output(temp.toString()));
     }
 
@@ -61,6 +62,7 @@ public class CommentServiceImpl implements CommentService {
     public String deleteById() {
         ioService.output("Удалить комментарий по id");
         String id = ioService.input();
+        checkCommentById(id);
         commentDao.deleteById(id);
         return String.valueOf(id);
     }
@@ -71,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
         String bookname = ioService.input();
         try {
             customService.checkBook(bookname);
-            List<Comment> list = commentDao.getByBookName(bookname);
+            List<Comment> list = checkCommentsByBookName(bookname);
             list.forEach(temp -> commentDao.deleteById(temp.getId()));
         } catch (IllegalBookException illegalBook) {
             illegalBook.printStackTrace();
@@ -85,5 +87,16 @@ public class CommentServiceImpl implements CommentService {
         ioService.output(String.valueOf(commentDao.count()));
     }
 
+    private Comment checkCommentById(String id) {
+        Comment temp = commentDao.getById(id);
+        if (temp == null) throw new IllegalCommentException();
+        return temp;
+    }
+
+    private List<Comment> checkCommentsByBookName(String bookname) {
+        List<Comment> list = commentDao.getByBookName(bookname);
+        if (list.size() == 0) throw new IllegalCommentException();
+        return list;
+    }
 
 }
