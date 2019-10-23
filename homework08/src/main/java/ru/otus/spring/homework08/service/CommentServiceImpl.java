@@ -76,7 +76,6 @@ public class CommentServiceImpl implements CommentService {
         ioService.output("Удалить все комментарии по книге");
         String bookname = ioService.input();
         try {
-            checkBook(bookname);
             List<Comment> list = getCommentsByBookName(bookname);
             list.forEach(temp -> commentDao.deleteById(temp.getId()));
         } catch (IllegalBookException illegalBook) {
@@ -101,12 +100,6 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> list = commentDao.getByBookName(bookname);
         if (list.size() == 0) throw new IllegalCommentException();
         return list;
-    }
-
-    private Book checkBook(String bookname) throws IllegalBookException {
-        Book temp = bookDao.getByName(bookname);
-        if (temp == null) throw new IllegalBookException(bookname);
-        return temp;
     }
 
 }
