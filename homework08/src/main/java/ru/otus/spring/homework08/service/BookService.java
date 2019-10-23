@@ -15,7 +15,4 @@ public interface BookService {
 
     void showCount();
 
-    String deleteGenre();
-
-    String updateGenre();
 }

@@ -6,13 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.spring.homework08.domain.Author;
+import ru.otus.spring.homework08.domain.Book;
 import ru.otus.spring.homework08.storage.AuthorDao;
+import ru.otus.spring.homework08.storage.BookDao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -22,13 +26,13 @@ import static org.mockito.Mockito.verify;
 class AuthorServiceImplTest {
 
     @Autowired
-    private AuthorService authorService;
+    private AuthorServiceImpl authorService;
     @MockBean
     private IOService ioService;
     @MockBean
     private AuthorDao authorDao;
     @MockBean
-    private CustomService customService;
+    private BookDao bookDao;
 
     @DisplayName("должен вставляться объект в БД")
     @Test
@@ -80,13 +84,12 @@ class AuthorServiceImplTest {
     void deleteById() {
         given(ioService.input()).willReturn("1").willReturn("y");
         given(authorDao.getById(any())).willReturn(new Author("1","Тургенев"));
-        given(customService.checkAvailableBooks(any())).willReturn(true);
+        given(bookDao.getByAuthorId(anyString())).willReturn(Arrays.asList(new Book()));
         assertThat(authorService.deleteById()).isEqualTo("Автор с id 1 удален из БД");
         verify(ioService,times(1)).output("Удалить автора с id");
         verify(ioService,times(2)).input();
         verify(authorDao,times(1)).getById(any());
         verify(authorDao,times(1)).deleteById("1");
-        verify(customService,times(1)).checkAvailableBooks(any());
     }
 
     @DisplayName("должен удаляться автор по имени из БД")
@@ -94,13 +97,12 @@ class AuthorServiceImplTest {
     void deleteByName() {
         given(ioService.input()).willReturn("Тургенев").willReturn("y");
         given(authorDao.getByAuthorName(any())).willReturn(new Author("1","Тургенев"));
-        given(customService.checkAvailableBooks(any())).willReturn(true);
+        given(bookDao.getByAuthorId(anyString())).willReturn(Arrays.asList(new Book()));
         assertThat(authorService.deleteByName()).isEqualTo("Автор с именем Тургенев удален из БД");
         verify(ioService,times(1)).output("Удалить автора с именем");
         verify(ioService,times(2)).input();
         verify(authorDao,times(1)).getByAuthorName(any());
         verify(authorDao,times(1)).deleteById("1");
-        verify(customService,times(1)).checkAvailableBooks(any());
     }
 
     @DisplayName("должно корректно отображаться количество авторов")

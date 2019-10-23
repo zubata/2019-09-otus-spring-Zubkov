@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework08.domain.Author;
 import ru.otus.spring.homework08.exceptions.IllegalAuthorException;
 import ru.otus.spring.homework08.storage.AuthorDao;
+import ru.otus.spring.homework08.storage.BookDao;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
     private final IOService ioService;
-    private final CustomService customService;
+    private final BookDao bookDao;
 
     @Override
     public String insert() {
@@ -37,7 +38,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void showById() {
         ioService.output("Показать автора с id");
         String id = ioService.input();
-        Author temp = checkAuthorById(id);
+        Author temp = getAuthorById(id);
         ioService.output(temp.toString());
     }
 
@@ -45,7 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void showByName() {
         ioService.output("Показать автора с именем");
         String authorname = ioService.input();
-        Author temp = checkAuthorByName(authorname);
+        Author temp = getAuthorByName(authorname);
         ioService.output(temp.toString());
     }
 
@@ -53,31 +54,29 @@ public class AuthorServiceImpl implements AuthorService {
     public String deleteById() {
         ioService.output("Удалить автора с id");
         String id = ioService.input();
-        checkAuthorById(id);
+        if (authorDao.getById(id) == null) {
+            throw new IllegalAuthorException(id);
+        }
         if (deleteOrNot(id)) {
             authorDao.deleteById(id);
-            id = String.format("Автор с id %s удален из БД", id);
+            return String.format("Автор с id %s удален из БД", id);
+        } else {
+            return String.format("Автор с id %s не был удален из БД", id);
         }
-        else {
-            id = String.format("Автор с id %s не был удален из БД", id);
-        }
-        return id;
     }
 
     @Override
     public String deleteByName() {
         ioService.output("Удалить автора с именем");
         String authorname = ioService.input();
-        Author temp = checkAuthorByName(authorname);
+        Author temp = getAuthorByName(authorname);
         String id = temp.getId();
         if (deleteOrNot(id)) {
             authorDao.deleteById(id);
-            authorname = String.format("Автор с именем %s удален из БД", authorname);
+            return String.format("Автор с именем %s удален из БД", authorname);
+        } else {
+            return String.format("Автор с именем %s не был удален из БД", authorname);
         }
-        else {
-            authorname = String.format("Автор с именем %s не был удален из БД", authorname);
-        }
-        return authorname;
     }
 
     @Override
@@ -86,23 +85,28 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     private boolean deleteOrNot(String id) {
-        if(customService.checkAvailableBooks(id)) {
+        if (checkAvailableBooks(id)) {
             ioService.output("Имеются книги у данного автора, которые будут удалены (в том числе комментарии), продолжить? [Y(да)]");
             return ioService.input().toLowerCase().equals("y");
         }
         return true;
     }
 
-    private Author checkAuthorById(String id) {
+    private Author getAuthorById(String id) {
         Author temp = authorDao.getById(id);
-        if(temp==null) throw new IllegalAuthorException(id);
+        if (temp == null) throw new IllegalAuthorException(id);
         return temp;
     }
 
-    private Author checkAuthorByName(String name) {
+    private Author getAuthorByName(String name) {
         Author temp = authorDao.getByAuthorName(name);
-        if(temp==null) throw new IllegalAuthorException(name);
+        if (temp == null) throw new IllegalAuthorException(name);
         return temp;
+    }
+
+    public boolean checkAvailableBooks(String authorId) {
+        int count = bookDao.getByAuthorId(authorId).size();
+        return count != 0;
     }
 
 }

@@ -11,6 +11,8 @@ import ru.otus.spring.homework08.domain.Author;
 import ru.otus.spring.homework08.domain.Book;
 import ru.otus.spring.homework08.domain.Genre;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Тестирование DAO для работы с книгами ")
@@ -40,7 +42,7 @@ class BookDaoTest {
         assertThat(bookDao.getById(DEFAULT_ID)).hasFieldOrPropertyWithValue("id", DEFAULT_ID)
                 .hasFieldOrPropertyWithValue("name", DEFAULT_BOOKNAME)
                 .hasFieldOrPropertyWithValue("author", DEFAULT_AUTHOR)
-                .hasFieldOrPropertyWithValue("genre", DEFAULT_GENRE);
+                .hasFieldOrPropertyWithValue("genreList", Arrays.asList(DEFAULT_GENRE));
     }
 
     @DisplayName("должна корректно вернуться книга по имени")
@@ -49,6 +51,6 @@ class BookDaoTest {
         assertThat(bookDao.getByName(DEFAULT_BOOKNAME)).hasFieldOrPropertyWithValue("id", DEFAULT_ID)
                 .hasFieldOrPropertyWithValue("name", DEFAULT_BOOKNAME)
                 .hasFieldOrPropertyWithValue("author", DEFAULT_AUTHOR)
-                .hasFieldOrPropertyWithValue("genre", DEFAULT_GENRE);
+                .hasFieldOrPropertyWithValue("genreList", Arrays.asList(DEFAULT_GENRE));
     }
 }
