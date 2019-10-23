@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
         ioService.output("Укажите книгу, для который хотите написать комменатрий");
         String bookname = ioService.input();
         try {
-            Comment temp = new Comment(checkBook(bookname));
+            Comment temp = new Comment(getBook(bookname));
             ioService.output("Напишите ваш комментарий");
             String strComment = ioService.input();
             temp.setComment(strComment);
@@ -102,4 +102,9 @@ public class CommentServiceImpl implements CommentService {
         return list;
     }
 
+    private Book getBook(String bookname) throws IllegalBookException {
+        Book temp = bookDao.getByName(bookname);
+        if (temp == null) throw new IllegalBookException(bookname);
+        return temp;
+    }
 }
