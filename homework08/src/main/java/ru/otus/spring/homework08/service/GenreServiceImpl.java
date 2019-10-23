@@ -25,7 +25,7 @@ public class GenreServiceImpl implements GenreService {
         List<Book> list = bookDao.getByGenreListName(genreName);
         if (list.size() > 1) {
             for (Book temp : list) {
-                temp.delete(new Genre(genreName));
+                temp.deleteGenre(new Genre(genreName));
                 bookDao.save(temp);
             }
             return String.format("Жанр %s удалён из книг", genreName);

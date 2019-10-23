@@ -127,7 +127,7 @@ public class BookServiceImpl implements BookService {
     }
 
     private boolean checkAvailableComments(String bookId) {
-        int count = commentDao.getByBookId(bookId).size();
+        long count = commentDao.countByBookId(bookId);
         return count != 0;
     }
 }

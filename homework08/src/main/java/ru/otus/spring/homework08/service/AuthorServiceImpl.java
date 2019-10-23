@@ -105,7 +105,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     public boolean checkAvailableBooks(String authorId) {
-        int count = bookDao.getByAuthorId(authorId).size();
+        long count = bookDao.countByAuthorId(authorId);
         return count != 0;
     }
 

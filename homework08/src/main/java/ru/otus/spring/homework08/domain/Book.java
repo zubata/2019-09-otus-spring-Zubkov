@@ -52,7 +52,7 @@ public class Book {
 
     public void addGenre(Genre genre) { genreList.add(genre); }
 
-    public void delete(Genre genre) {
+    public void deleteGenre(Genre genre) {
         genreList.remove(genre);
     }
 }

@@ -14,4 +14,6 @@ public interface BookDao extends MongoRepository<Book,String> {
     List<Book> getByAuthorId(String authorId);
 
     List<Book> getByGenreListName(String genreName);
+
+    long countByAuthorId(String authorId);
 }

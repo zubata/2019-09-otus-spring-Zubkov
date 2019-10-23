@@ -13,4 +13,5 @@ public interface CommentDao extends MongoRepository<Comment, String> {
 
     List<Comment> getByBookId(String id);
 
+    long countByBookId(String bookId);
 }
