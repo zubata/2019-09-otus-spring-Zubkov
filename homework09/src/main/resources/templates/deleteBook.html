@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+</head>
+<body>
+<h1>Удаление книги прошло успешно</h1>
+<div class="book">
+    <span th:text="${book}">Книга Война и Мир успешно удалена</span>
+    <form th:action="@{/book}">
+          <button type="submit">Вернуться к списку книг</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Коментарии</title>
+</head>
+<body>
+<h1>Добавление комментария прошло успешно</h1>
+<div class="string">
+    <span th:text="${result}">Комментарий успешно добавлен</span>
+    <form>
+        <input type="submit" value="Вернуться к списку книг" formaction="/book">
+    </form>
+</div>
+</body>
+</html>

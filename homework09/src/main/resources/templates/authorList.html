@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .author, .author td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Список авторов</h1>
+<div>
+    <form th:action="@{/author/insertauthor}">
+        <button type="submit">Добавить автора</button>
+    </form>
+</div>
+<table class="author">
+    <thead>
+    <tr>
+        <th>ID Автора</th>
+        <th>Имя Автора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author : ${author}">
+        <td th:text="${author.id}"></td>
+        <td th:text="${author.name}"></td>
+        <td>
+            <form th:action="@{/author/del}" th:object="${author}" method="post">
+                <input type="hidden" name="id" th:value="*{id}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

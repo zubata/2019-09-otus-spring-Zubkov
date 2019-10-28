@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .book, .book td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Список книг</h1>
+<div>
+    <form th:action="@{/book/insertbook}">
+        <button type="submit">Добавить книгу</button>
+    </form>
+</div>
+<table class="book">
+    <thead>
+    <tr>
+        <th>ID Книги </th>
+        <th>Название Книги</th>
+        <th>Имя Автора</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${book}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.name}"></td>
+        <td th:text="${book.author.name}"></td>
+        <td th:text="${book.getGenreList()}"></td>
+        <td><a th:href="@{/comment/book(bookname=${book.name})}">Комментарии</a></td>
+        <td>
+            <form th:action="@{/book/del}" th:object="${book}" method="post">
+                <input type="hidden" name="id" th:value="*{id}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+
+<!--<a type="submit" th:href="@{/author/del(id=${author.id})}">Delete</a>-->

@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    sqlScriptEncoding: UTF-8
+  jpa:
+    #show-sql: true
+    hibernate:
+      ddl-auto: none
