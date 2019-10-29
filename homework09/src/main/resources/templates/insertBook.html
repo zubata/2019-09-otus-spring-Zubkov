@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-<h1>Добавление нового автора</h1>
+<h1>Добавление новой книги</h1>
 <div>
     <form th:action="@{/book/add}" th:object="${book}" method="post">
         <label>Имя автора <input type="text" th:field="*{name}"/></label>

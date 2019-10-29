@@ -25,7 +25,7 @@ public class ControllerForBook {
         return "bookList";
     }
 
-    @GetMapping("/book")
+    @GetMapping("/")
     public String getBookAll(Model model) {
         List<Book> books = bookService.showAllRows();
         model.addAttribute("book", books);

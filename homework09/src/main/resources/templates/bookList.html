@@ -17,8 +17,9 @@
 <body>
 <h1>Список книг</h1>
 <div>
-    <form th:action="@{/book/insertbook}">
-        <button type="submit">Добавить книгу</button>
+    <form>
+        <input type="submit" value="Добавить книгу" formaction="/book/insertbook">
+        <input type="submit" value="Список авторов" formaction="/author">
     </form>
 </div>
 <table class="book">

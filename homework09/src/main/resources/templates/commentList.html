@@ -18,8 +18,9 @@
 <body>
 <h1 th:text="'Комментарии '+ (${bookname == null}? 'по книгам':'по книге '+${bookname})">Комментарии по книге Война и Мир</h1>
 <div>
-    <form th:action="@{/comment/insertcomment}">
-        <button type="submit">Добавить комментарий</button>
+    <form>
+        <input type="submit" value="Добавить комментарий" formaction="/comment/insertcomment">
+        <input type="submit" value="Список книг" formaction="/">
     </form>
 </div>
 <table class="comment">
