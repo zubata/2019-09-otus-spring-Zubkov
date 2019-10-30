@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookDto {
 
-    private String name;
     private String author;
+    private String name;
     private String genre;
 
 }
