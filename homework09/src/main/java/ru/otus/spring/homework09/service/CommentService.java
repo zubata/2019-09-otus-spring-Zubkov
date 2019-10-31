@@ -9,8 +9,6 @@ public interface CommentService {
 
     String insert(CommentDto commentDto);
 
-    List<Comment> showAllRows();
-
     List<Comment> showByBook(String bookname);
 
     String deleteById(long id);

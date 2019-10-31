@@ -25,33 +25,28 @@ public class ControllerForComment {
         return "commentList";
     }
 
-    @GetMapping("/comment")
-    public String getCommentAll(Model model) {
-        List<Comment> comments = commentService.showAllRows();
-        model.addAttribute("comment", comments);
-        return "commentList";
-    }
-
     @PostMapping("/comment/add")
     public String insertComment(CommentDto commentDto, Model model) {
         String result = commentService.insert(commentDto);
         model.addAttribute("result", result);
+        model.addAttribute("bookname", commentDto.getBookname());
         return "resultInsertComment";
     }
 
 
     @GetMapping("/comment/insertcomment")
-    public String getPageInsert(Model model) {
-        CommentDto form = new CommentDto();
+    public String getPageInsert(@RequestParam("bookname") String bookname, Model model) {
+        CommentDto form = new CommentDto(bookname);
         model.addAttribute("comment", form);
         return "insertComment";
     }
 
 
     @PostMapping("/comment/del")
-    public String deleteCommentById(@RequestParam("id") long id, Model model) {
-        String result = commentService.deleteById(id);
-        model.addAttribute("comment", result);
+    public String deleteCommentById(CommentDto commentDto, Model model) {
+        String result = commentService.deleteById(Long.parseLong(commentDto.getId()));
+        model.addAttribute("result", result);
+        model.addAttribute("bookname", commentDto.getBookname());
         return "deleteComment";
     }
 }

@@ -15,10 +15,10 @@
     </style>
 </head>
 <body>
-<h1>Добавление нового комментария</h1>
+<h1 th:text="'Добавление комментария к книге '+ ${comment.bookname}">Добавление комментария к книге Война и Мир</h1>
 <div>
     <form th:action="@{/comment/add}" th:object="${comment}" method="post">
-        <label>Название книги <input type="text" th:field="*{bookname}"/></label>
+        <input type="hidden" name="bookname" th:value="*{bookname}">
         <label>Комментарий <input type="text" th:field="*{comment}"/></label>
         <button type="submit">Добавить</button>
     </form>

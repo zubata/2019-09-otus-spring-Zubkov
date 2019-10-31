@@ -1,13 +1,12 @@
 package ru.otus.spring.homework09.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.homework09.dto.CommentDto;
-import ru.otus.spring.homework09.exceptions.IllegalBookException;
 import ru.otus.spring.homework09.domain.Book;
 import ru.otus.spring.homework09.domain.Comment;
+import ru.otus.spring.homework09.dto.CommentDto;
+import ru.otus.spring.homework09.exceptions.IllegalBookException;
 import ru.otus.spring.homework09.exceptions.IllegalCommentException;
 import ru.otus.spring.homework09.storage.BookDao;
 import ru.otus.spring.homework09.storage.CommentDao;
@@ -28,9 +27,6 @@ public class CommentServiceImpl implements CommentService {
         commentDao.save(temp);
         return String.format("Комментарий для книги %s успешно добавлен", temp.getBook().getName());
     }
-
-    @Override
-    public List<Comment> showAllRows() { return commentDao.findAll(); }
 
 
     @Override

@@ -12,13 +12,18 @@
             display: block;
             padding-top: 5px;
         }
+
     </style>
 </head>
 <body>
 <h1>Добавление новой книги</h1>
 <div>
     <form th:action="@{/book/add}" th:object="${book}" method="post">
-        <label>Имя автора <input type="text" th:field="*{author}"/></label>
+        <label>Имя автора</label>
+        <select name="author">
+            <option selected disabled hidden>Выберите автора</option>
+            <option th:each="authors : ${authors}" th:value="${authors.name}" th:text="${authors.name}">Автор</option>
+        </select>
         <label>Название книги <input type="text" th:field="*{name}"/></label>
         <label>Жанр <input type="text" th:field="*{genre}"/></label>
         <button type="submit">Добавить</button>

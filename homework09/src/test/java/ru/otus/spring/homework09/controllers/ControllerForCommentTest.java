@@ -66,19 +66,6 @@ class ControllerForCommentTest {
                 .andExpect(content().string(Matchers.containsString(TEST_COMMENT_1_STRING)));
     }
 
-    @DisplayName("должны верно отображаться все комментарии")
-    @Test
-    void getCommentAll() throws Exception {
-        List<Comment> list = Arrays.asList(TEST_COMMENT_1, TEST_COMMENT_2);
-        given(commentService.showAllRows()).willReturn(list);
-        mockMvc.perform(get("/comment").accept(MediaType.TEXT_PLAIN))
-                .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString(TEST_BOOK_NAME_1)))
-                .andExpect(content().string(Matchers.containsString(TEST_COMMENT_1_STRING)))
-                .andExpect(content().string(Matchers.containsString(TEST_BOOK_NAME_2)))
-                .andExpect(content().string(Matchers.containsString(TEST_COMMENT_2_STRING)));
-    }
-
     @DisplayName("должны верно отобразиться страница результата добавления комментария и корректно переданы параметры для создания комментария")
     @Test
     void insertComment() throws Exception {
@@ -97,11 +84,11 @@ class ControllerForCommentTest {
     @DisplayName("должна верно отобразиться страница добавления комментария")
     @Test
     void getPageInsert() throws Exception {
-        MvcResult result = mockMvc.perform(get("/comment/insertcomment").accept(MediaType.TEXT_PLAIN))
+        MvcResult result = mockMvc.perform(get("/comment/insertcomment").param("bookname",TEST_BOOK_NAME_1).accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString("Добавление нового комментария")))
+                .andExpect(content().string(Matchers.containsString("Добавление комментария к книге "+TEST_BOOK_NAME_1)))
                 .andReturn();
-        assertThat(result.getRequest().getAttribute("comment")).isNotNull();
+        assertThat(result.getRequest().getAttribute("comment")).hasFieldOrPropertyWithValue("bookname",TEST_BOOK_NAME_1).isNotNull();
     }
 
     @DisplayName("должны верно отобразиться страница результата удаления комментария и корректно переданы параметры на удаление комментария")

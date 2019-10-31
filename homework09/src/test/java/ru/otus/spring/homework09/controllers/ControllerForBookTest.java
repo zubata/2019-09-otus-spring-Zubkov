@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import ru.otus.spring.homework09.domain.Author;
 import ru.otus.spring.homework09.domain.Book;
 import ru.otus.spring.homework09.domain.Genre;
+import ru.otus.spring.homework09.service.AuthorService;
 import ru.otus.spring.homework09.service.BookService;
 
 import java.util.Arrays;
@@ -42,6 +43,8 @@ class ControllerForBookTest {
 
     @MockBean
     private BookService bookService;
+    @MockBean
+    private AuthorService authorService;
 
     @DisplayName("должна верно отображаться книга по id")
     @Test
@@ -86,11 +89,14 @@ class ControllerForBookTest {
     @DisplayName("должна верно отобразиться страница добавления книги")
     @Test
     void getPageInsert() throws Exception {
+        List<Author> authors = Arrays.asList(new Author("Толстой"),new Author("Есенин"));
+        given(authorService.showAllRows()).willReturn(authors);
         MvcResult result = mockMvc.perform(get("/book/insertbook").accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string(Matchers.containsString("Добавление новой книги")))
                 .andReturn();
         assertThat(result.getRequest().getAttribute("book")).isNotNull();
+        assertThat(result.getRequest().getAttribute("authors")).isEqualToComparingFieldByField(authors);
     }
 
     @DisplayName("должны верно отобразиться страница результата удаления книги и корректно переданы параметры на удаление книги")

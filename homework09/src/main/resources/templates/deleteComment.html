@@ -5,11 +5,15 @@
     <title>Комментарии</title>
 </head>
 <body>
-<h1>Удаление книги прошло успешно</h1>
-<div class="comment">
-    <span th:text="${comment}">Комментарий к книге Война и Мир успешно удалён</span>
-    <form th:action="@{/comment}">
-          <button type="submit">Вернуться к списку комментариев</button>
+<h1>Удаление комментария прошло успешно</h1>
+<div class="string">
+    <span th:text="${result}">Комментарий к книге Война и Мир успешно удалён</span>
+    <form>
+        <input type="submit" value="Вернуться к списку книг" formaction="/">
+    </form>
+    <form th:action="@{/comment/book}">
+        <input type="hidden" name="bookname" th:value="${bookname}">
+        <button type="submit">Вернуться к cписоку комментариев книги</button>
     </form>
 </div>
 </body>

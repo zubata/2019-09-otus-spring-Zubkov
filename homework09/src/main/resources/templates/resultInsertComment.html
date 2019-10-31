@@ -11,6 +11,10 @@
     <form>
         <input type="submit" value="Вернуться к списку книг" formaction="/">
     </form>
+    <form th:action="@{/comment/book}">
+        <input type="hidden" name="bookname" th:value="${bookname}">
+        <button type="submit">Вернуться к cписоку комментариев книги</button>
+    </form>
 </div>
 </body>
 </html>

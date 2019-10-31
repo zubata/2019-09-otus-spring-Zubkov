@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.spring.homework09.domain.Author;
 import ru.otus.spring.homework09.domain.Book;
 import ru.otus.spring.homework09.dto.BookDto;
+import ru.otus.spring.homework09.service.AuthorService;
 import ru.otus.spring.homework09.service.BookService;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 @Controller
 public class ControllerForBook {
     private final BookService bookService;
+    private final AuthorService authorService;
 
     @GetMapping("/book/id={id}")
     public String getBookById(@PathVariable("id") long id, Model model) {
@@ -43,7 +46,9 @@ public class ControllerForBook {
     @GetMapping("/book/insertbook")
     public String getPageInsert(Model model) {
         BookDto form = new BookDto();
+        List<Author> authors = authorService.showAllRows();
         model.addAttribute("book", form);
+        model.addAttribute("authors", authors);
         return "insertBook";
     }
 

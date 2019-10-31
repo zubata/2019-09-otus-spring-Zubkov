@@ -1,6 +1,6 @@
 spring:
   datasource:
-    data: test-data.sql
+    data: "classpath:test-data.sql"
     sqlScriptEncoding: UTF-8
   jpa:
     #show-sql: true
