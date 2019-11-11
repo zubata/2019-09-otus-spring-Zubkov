@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+    <style type="text/css">
+        .block {
+        display: inline-block;
+        }
+
+        input, label {
+            display: block;
+            padding-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Добавление новой книги</h1>
+<div>
+    <form th:action="@{/book/add}" th:object="${book}" method="post">
+        <label>Имя автора</label>
+        <select name="author">
+            <option selected disabled hidden>Выберите автора</option>
+            <option th:each="authors : ${authors}" th:value="${authors.name}" th:text="${authors.name}">Автор</option>
+        </select>
+        <label>Название книги <input type="text" th:field="*{name}"/></label>
+        <label>Жанр <input type="text" th:field="*{genre}"/></label>
+        <button type="submit">Добавить</button>
+    </form>
+</div>
+</body>
+</html>
