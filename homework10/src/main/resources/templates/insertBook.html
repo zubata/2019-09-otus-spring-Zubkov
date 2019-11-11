@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+    <style type="text/css">
+        .block {
+        display: inline-block;
+        }
+
+        input, label {
+            display: block;
+            padding-top: 5px;
+        }
+
+
+    </style>
+    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+</head>
+<body>
+<div id="msg">
+    <h1>{{ message1 }}</h1>
+    <form action="/book/result">
+        <label>{{ message2 }}</label>
+        <select v-model="selectedauthor">
+            <option selected disabled hidden>Выберите автора</option>
+            <option v-for="author in authors" v-bind:value="author.name" >{{ author.name }}</option>
+        </select>
+        <label>Название книги <input type="text" v-model="name"/></label>
+        <label>Жанр <input type="text" v-model="genre"/></label>
+        <button type="submit" v-on:click="post">Добавить</button>
+    </form>
+</div>
+<script>
+    var app1 = new Vue({
+    el: '#msg',
+    data: {
+    message1 : "Добавление новой книги",
+    message2 : "Имя автора",
+    message3 : "Название книги",
+    message4 : "Название жанра",
+    message5 : "Добавить",
+    authors:'',
+    selectedauthor: '',
+    name: '',
+    genre: ''
+    },
+    methods: {
+    post: function() { fetch('/api/book/add', {
+    method: 'POST',
+    body: JSON.stringify({
+    author: this.selectedauthor,
+    name: this.name,
+    genre: this.genre
+    }),
+    headers: { "Content-type": "application/json; charset=utf-8" }
+    }).then(function(response) {
+    if (response.status !==201) {
+    console.log('Ooops, something went wrong');
+    return; }
+    })
+    },
+    },
+    });
+
+    fetch('/api/author')
+    .then(response => response.json())
+    .then(authors => {
+        new Vue({
+            el:'#aut',
+            data: {
+                authors: app1.authors=authors
+            }
+        })
+    });
+
+</script>
+</body>
+</html>

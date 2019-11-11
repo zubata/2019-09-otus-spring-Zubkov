@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+    <style type="text/css">
+        .block {
+        display: inline-block;
+        }
+
+        input, label {
+            display: block;
+            padding-top: 5px;
+        }
+
+    </style>
+    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+
+</head>
+<body>
+<form id="msg" action="/author/result">
+    <h1>{{ message1 }}</h1>
+    <span>{{ message2 }}</span>
+    <input type="text" v-model="name"/>
+    <button type="submit" v-on:click="post" >{{ message3 }}</button>
+</form>
+
+<script>
+    var app1 = new Vue({
+    el: '#msg',
+    data: {
+    message1 : "Добавление нового автора",
+    message2 : "Имя автора",
+    message3 : "Добавить",
+    name: ''
+    },
+    methods: {
+    post: function() { fetch('/api/author/add', {
+    method: 'POST',
+    body: JSON.stringify(app1, function(key,value) {
+    return app1.name;
+    }),
+    headers: { "Content-type": "application/json; charset=utf-8" }
+    }).then(function(response) {
+    if (response.status !==201) {
+    console.log('Ooops, something went wrong');
+    return; }
+    })
+    }
+    }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .book, .book td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+    </style>
+    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+</head>
+<body>
+<h1>Список книг</h1>
+<div>
+    <form>
+        <input type="submit" value="Добавить книгу" formaction="/book/insertbook">
+        <input type="submit" value="Список авторов" formaction="/author">
+    </form>
+</div>
+<table class="book" id="listbooks">
+    <thead>
+    <tr>
+        <th>ID Книги</th>
+        <th>Название Книги</th>
+        <th>Имя Автора</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="book in books">
+        <td>{{ book.id }}</td>
+        <td>{{ book.name }}</td>
+        <td>{{ book.author.name }}</td>
+        <td>{{ book.genreList }}</td>
+        <td><a v-bind:href="'/comment/book?bookname=' + book.name">Комментарии</a></td>
+        <td>
+            <form action="/book/del">
+                <button type="submit" v-on:click="post(book)">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    fetch('/api/book')
+    .then(response => response.json())
+    .then(books => {
+        new Vue({
+            el: '#listbooks',
+            data: {
+                books: books
+            },
+            methods: {
+            post: function(book) { fetch('/api/book/del', {
+            method: 'POST',
+            body: JSON.stringify(book),
+            headers: { "Content-type": "application/json; charset=utf-8" }
+            }).then(function(response) {
+            if (response.status !==200) {
+            console.log('Ooops, something went wrong');
+            return; }
+            })
+            }
+            }
+        })
+    });
+
+</script>
+</body>
+</html>
