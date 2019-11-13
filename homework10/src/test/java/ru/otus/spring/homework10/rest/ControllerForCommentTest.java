@@ -1,5 +1,7 @@
 package ru.otus.spring.homework10.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import ru.otus.spring.homework10.domain.Author;
 import ru.otus.spring.homework10.domain.Book;
 import ru.otus.spring.homework10.domain.Comment;
@@ -19,12 +20,9 @@ import ru.otus.spring.homework10.service.CommentService;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,6 +53,11 @@ class ControllerForCommentTest {
         TEST_COMMENT_2.setComment(TEST_COMMENT_2_STRING);
     }
 
+    public String toJSON(Comment comment) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(comment);
+    }
+
     @DisplayName("должен верно отображаться комментарий по id")
     @Test
     void getCommentByBook() throws Exception {
@@ -70,21 +73,19 @@ class ControllerForCommentTest {
     @Test
     void insertComment() throws Exception {
         String inputJson = String.format("{ \"bookname\" : \"%s\", \"comment\" : \"%s\" }",TEST_BOOK_NAME_1,TEST_COMMENT_2_STRING);
-        given(commentService.insert(any())).willReturn("Комментарий для книги Война и Мир успешно добавлен");
-        mockMvc.perform(post("/api/comment/add")
+        given(commentService.insert(any())).willReturn(TEST_COMMENT_1);
+        mockMvc.perform(post("/api/comment/book")
                 .contentType(MediaType.APPLICATION_JSON).content(inputJson))
                 .andExpect(status().isCreated())
-                .andExpect(content().string(Matchers.containsString("Комментарий для книги Война и Мир успешно добавлен")));
+                .andExpect(content().json(toJSON(TEST_COMMENT_1)));
     }
 
     @DisplayName("должны верно отобразиться страница результата удаления комментария и корректно переданы параметры на удаление комментария")
     @Test
     void deleteCommentById() throws Exception {
         String inputJson = String.format("{ \"bookname\" : \"%s\", \"comment\" : \"%s\" }",TEST_BOOK_NAME_1,TEST_COMMENT_2_STRING);
-        mockMvc.perform(post("/api/comment/add").contentType(MediaType.APPLICATION_JSON).content("{ \"id\" : \"1\" }"));
-        given(commentService.deleteById(anyLong())).willReturn("Комментарий удалён");
-        mockMvc.perform(post("/api/comment/del").contentType(MediaType.APPLICATION_JSON).content(inputJson))
-                .andExpect(status().isOk())
-                .andExpect(content().string(Matchers.containsString("Комментарий удалён")));
+        mockMvc.perform(post("/api/comment/book").contentType(MediaType.APPLICATION_JSON).content("{ \"id\" : \"1\" }"));
+        mockMvc.perform(delete("/api/comment/book").contentType(MediaType.APPLICATION_JSON).content(inputJson))
+                .andExpect(status().isOk());
     }
 }

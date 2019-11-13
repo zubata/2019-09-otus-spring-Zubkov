@@ -14,7 +14,7 @@
         }
 
     </style>
-    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 <h1>Список книг</h1>
@@ -42,7 +42,7 @@
         <td><a v-bind:href="'/comment/book?bookname=' + book.name">Комментарии</a></td>
         <td>
             <form action="/book/del">
-                <button type="submit" v-on:click="post(book)">Delete</button>
+                <button type="submit" v-on:click="deleteData(book)">Delete</button>
             </form>
         </td>
     </tr>
@@ -58,8 +58,8 @@
                 books: books
             },
             methods: {
-            post: function(book) { fetch('/api/book/del', {
-            method: 'POST',
+            deleteData: function(book) { fetch('/api/book', {
+            method: 'DELETE',
             body: JSON.stringify(book),
             headers: { "Content-type": "application/json; charset=utf-8" }
             }).then(function(response) {

@@ -34,7 +34,8 @@ class AuthorServiceImplTest {
     @DisplayName("должен вставляться объект в БД")
     @Test
     void insert() {
-        assertThat(authorService.insert(TEST_AUTHOR)).isEqualTo("Автор Толстой не был добавлен");
+        given(authorDao.save(any())).willReturn(TEST_AUTHOR);
+        assertThat(authorService.insert(any())).isEqualTo(TEST_AUTHOR);
         verify(authorDao, times(1)).save(any());
     }
 
@@ -60,7 +61,7 @@ class AuthorServiceImplTest {
     @Test
     void deleteById() {
         given(authorDao.getById(anyLong())).willReturn(TEST_AUTHOR);
-        assertThat(authorService.deleteById(TEST_ID)).isEqualTo("Автор с id 1 удален из БД");
+        authorService.deleteById(TEST_ID);
         verify(authorDao,times(1)).deleteById(1L);
     }
 

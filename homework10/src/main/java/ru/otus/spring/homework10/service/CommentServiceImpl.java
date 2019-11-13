@@ -22,10 +22,9 @@ public class CommentServiceImpl implements CommentService {
     private final BookDao bookDao;
 
     @Override
-    public String insert(CommentDto commentDto) {
+    public Comment insert(CommentDto commentDto) {
         Comment temp = convertToDomain(commentDto);
-        commentDao.save(temp);
-        return String.format("Комментарий для книги %s успешно добавлен", temp.getBook().getName());
+        return commentDao.save(temp);
     }
 
 
@@ -33,12 +32,11 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> showByBook(String bookname) { return commentDao.getByBookName(bookname);}
 
     @Override
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         if (commentDao.getById(id) == null) {
             throw new IllegalCommentException();
         }
         commentDao.deleteById(id);
-        return "Комментарий удалён";
     }
 
     private Book getBook(String bookname) throws IllegalBookException {

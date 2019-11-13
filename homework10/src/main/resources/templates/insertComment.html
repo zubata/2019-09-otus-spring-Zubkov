@@ -14,7 +14,7 @@
         }
 
     </style>
-    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router"></script>
 </head>
 <body>
@@ -48,7 +48,7 @@
     }
     },
     methods: {
-    post: function() { fetch('/api/comment/add', {
+    post: function() { fetch('/api/comment/book', {
     method: 'POST',
     body: JSON.stringify({
     bookname: this.bookname,

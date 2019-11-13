@@ -24,10 +24,9 @@ public class BookServiceImpl implements BookService {
     private final GenreDao genreDao;
 
     @Override
-    public String insert(BookDto bookDto) {
+    public Book insert(BookDto bookDto) {
         Book temp = convertToDomain(bookDto);
-        bookDao.save(temp);
-        return String.format("Книга %s была успешно добавлена", temp.getName());
+        return bookDao.save(temp);
     }
 
     @Override
@@ -41,13 +40,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         if (bookDao.getById(id) == null) {
             throw new IllegalBookException(id);
         }
         String bookname = bookDao.getById(id).getName();
         bookDao.deleteById(id);
-        return String.format("Книга с названием %s удалена из БД", bookname);
     }
 
     private Book getBookById(long id) throws IllegalBookException {

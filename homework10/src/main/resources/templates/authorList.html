@@ -15,7 +15,7 @@
 
 
     </style>
-    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 <h1>Список авторов</h1>
@@ -38,7 +38,7 @@
         <td>{{ author.name }}</td>
         <td>
             <form action="/author/del">
-            <button type="submit" v-on:click="post(author)">Delete</button>
+            <button type="submit" v-on:click="deleteData(author)">Delete</button>
             </form>
         </td>
     </tr>
@@ -54,8 +54,8 @@
                 authors: authors
             },
             methods: {
-            post: function(author) { fetch('/api/author/del', {
-            method: 'POST',
+            deleteData: function(author) { fetch('/api/author', {
+            method: 'DELETE',
             body: JSON.stringify(author),
             headers: { "Content-type": "application/json; charset=utf-8" }
             }).then(function(response) {

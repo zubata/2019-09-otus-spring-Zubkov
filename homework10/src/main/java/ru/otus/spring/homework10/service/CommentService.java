@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface CommentService {
 
-    String insert(CommentDto commentDto);
+    Comment insert(CommentDto commentDto);
 
     List<Comment> showByBook(String bookname);
 
-    String deleteById(long id);
+    void deleteById(long id);
 
 }

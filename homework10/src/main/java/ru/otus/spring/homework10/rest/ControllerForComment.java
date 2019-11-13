@@ -3,7 +3,6 @@ package ru.otus.spring.homework10.rest;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.homework10.domain.Comment;
 import ru.otus.spring.homework10.dto.CommentDto;
@@ -21,16 +20,15 @@ public class ControllerForComment {
         return commentService.showByBook(bookname);
     }
 
-    @PostMapping("/api/comment/add")
+    @PostMapping("/api/comment/book")
     public @ResponseBody
-    ResponseEntity<String> insertComment(@RequestBody CommentDto commentDto) {
+    ResponseEntity<Comment> insertComment(@RequestBody CommentDto commentDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(commentService.insert(commentDto));
     }
 
 
-    @PostMapping("/api/comment/del")
-    public @ResponseBody
-    ResponseEntity<String> deleteCommentById(@RequestBody Comment comment) {
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.deleteById(comment.getId()));
+    @DeleteMapping("/api/comment/book")
+    public void deleteCommentById(@RequestBody Comment comment) {
+        commentService.deleteById(comment.getId());
     }
 }

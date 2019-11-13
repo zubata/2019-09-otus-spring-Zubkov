@@ -20,15 +20,14 @@ public class ControllerForBook {
     @GetMapping("/api/book")
     public List<Book> getBookAll() { return bookService.showAllRows(); }
 
-    @PostMapping("/api/book/add")
+    @PostMapping("/api/book")
     public @ResponseBody
-    ResponseEntity<String> insertBook(@RequestBody BookDto bookDto) {
+    ResponseEntity<Book> insertBook(@RequestBody BookDto bookDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.insert(bookDto));
     }
 
-    @PostMapping("/api/book/del")
-    public @ResponseBody
-    ResponseEntity<String> deleteBookById(@RequestBody Book book) {
-        return ResponseEntity.status(HttpStatus.OK).body(bookService.deleteById(book.getId()));
+    @DeleteMapping("/api/book")
+    public void deleteBookById(@RequestBody Book book) {
+        bookService.deleteById(book.getId());
     }
 }

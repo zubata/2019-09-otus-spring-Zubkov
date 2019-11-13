@@ -3,7 +3,6 @@ package ru.otus.spring.homework10.rest;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.homework10.domain.Author;
 import ru.otus.spring.homework10.service.AuthorService;
@@ -21,16 +20,15 @@ public class ControllerForAuthor {
         return authorService.showAllRows();
     }
 
-    @PostMapping("/api/author/add")
+    @PostMapping("/api/author")
     public @ResponseBody
-    ResponseEntity<String> insertAuthor(@RequestBody Author author) {
+    ResponseEntity<Author> insertAuthor(@RequestBody Author author) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.insert(author));
     }
 
 
-    @PostMapping("/api/author/del")
-    public @ResponseBody
-    ResponseEntity<String> deleteAuthorById(@RequestBody Author author) {
-        return ResponseEntity.status(HttpStatus.OK).body(authorService.deleteById(author.getId()));
+    @DeleteMapping("/api/author")
+    public void deleteAuthorById(@RequestBody Author author) {
+        authorService.deleteById(author.getId());
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Авторы</title>
@@ -14,7 +14,7 @@
         }
 
     </style>
-    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 </head>
 <body>
@@ -35,7 +35,7 @@
     name: ''
     },
     methods: {
-    post: function() { fetch('/api/author/add', {
+    post: function() { fetch('/api/author', {
     method: 'POST',
     body: JSON.stringify(app1, function(key,value) {
     return app1.name;

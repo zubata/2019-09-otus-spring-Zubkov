@@ -15,7 +15,7 @@
         }
 
     </style>
-    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router"></script>
 </head>
 <body>
@@ -40,7 +40,7 @@
         <td>{{comment.comment}}</td>
         <td>
             <input type="hidden" name="bookname">
-            <button type="submit" v-on:click="post(comment)">Delete</button>
+            <button type="submit" v-on:click="deleteData(comment)">Delete</button>
         </td>
     </tr>
     </tbody>
@@ -80,8 +80,8 @@
                 comments: comments
             },
             methods: {
-            post: function(comment) { fetch('/api/comment/del', {
-            method: 'POST',
+            deleteData: function(comment) { fetch('/api/comment/book', {
+            method: 'DELETE',
             body: JSON.stringify(comment),
             headers: { "Content-type": "application/json; charset=utf-8" }
             }).then(function(response) {

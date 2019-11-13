@@ -17,9 +17,8 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorDao authorDao;
 
     @Override
-    public String insert(Author author) {
-        if (authorDao.save(author) != null) return String.format("Автор %s успешно добавлен", author.getName());
-        else return String.format("Автор %s не был добавлен", author.getName());
+    public Author insert(Author author) {
+        return authorDao.save(author);
     }
 
     @Override
@@ -33,12 +32,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         if (authorDao.getById(id) == null) {
             throw new IllegalAuthorException(id);
         }
         authorDao.deleteById(id);
-        return String.format("Автор с id %s удален из БД", id);
     }
 
     private Author getAuthorById(long id) {

@@ -16,7 +16,7 @@
 
 
     </style>
-    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 <div id="msg">
@@ -47,7 +47,7 @@
     genre: ''
     },
     methods: {
-    post: function() { fetch('/api/book/add', {
+    post: function() { fetch('/api/book', {
     method: 'POST',
     body: JSON.stringify({
     author: this.selectedauthor,
