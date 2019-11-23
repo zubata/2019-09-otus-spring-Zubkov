@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Комментарии</title>
+    <style type="text/css">
+        .block {
+        display: inline-block;
+        }
+
+        input, label {
+            display: block;
+            padding-top: 5px;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router"></script>
+</head>
+<body>
+<h1>Добавление комментария</h1>
+<div id="msg">
+    <span>{{message1}} {{bookname}}</span>
+    <span>{{ message2 }}</span>
+    <input type="text" v-model="comment"/>
+    <button type="submit" v-on:click="post">{{message3}}</button>
+</div>
+
+<script>
+
+    var router = new VueRouter({
+    mode: 'history',
+    routes: []
+    });
+
+    var app1 = new Vue({
+    router,
+    el: '#msg',
+    data: {
+    message1 : "Добавление нового комментария по книге ",
+    message2 : "Комментарий",
+    message3 : "Добавить",
+    comment: ''
+    },
+    computed: {
+    bookname: function() {
+        return this.$route.query.bookname;
+    }
+    },
+    methods: {
+    post: function() { fetch('/api/comment/book', {
+    method: 'POST',
+    body: JSON.stringify({
+    bookname: this.bookname,
+    comment: this.comment
+    }),
+    headers: { "Content-type": "application/json; charset=utf-8" }
+    }).then(function(response) {
+    if (response.status !==201) {
+    console.log('Ooops, something went wrong');
+    return; }
+    }).then(this.$router.push({path: '/comment/result', query : { bookname: this.bookname } }))
+    .then(this.$router.go())
+    }
+    }
+    });
+
+
+</script>
+
+</body>
+</html>
