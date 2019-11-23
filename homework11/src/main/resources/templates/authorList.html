@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .author, .author td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<h1>Список авторов</h1>
+<div>
+    <form>
+        <input type="submit" value="Добавить автора" formaction="/author/insertauthor">
+        <input type="submit" value="Список книг" formaction="/">
+    </form>
+</div>
+<table class="author" id="listauthors">
+    <thead>
+    <tr>
+        <th>ID Автора</th>
+        <th>Имя Автора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="author in authors">
+        <td>{{ author.id }}</td>
+        <td>{{ author.name }}</td>
+        <td>
+            <form action="/author/del">
+            <button type="submit" v-on:click="deleteData(author)">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    fetch('/api/author')
+    .then(response => response.json())
+    .then(authors => {
+        new Vue({
+            el: '#listauthors',
+            data: {
+                authors: authors
+            },
+            methods: {
+            deleteData: function(author) { fetch('/api/author', {
+            method: 'DELETE',
+            body: JSON.stringify(author),
+            headers: { "Content-type": "application/json; charset=utf-8" }
+            }).then(function(response) {
+            if (response.status !==200) {
+            console.log('Ooops, something went wrong');
+            return; }
+            })
+            }
+            }
+        })
+    });
+
+</script>
+</body>
+</html>
