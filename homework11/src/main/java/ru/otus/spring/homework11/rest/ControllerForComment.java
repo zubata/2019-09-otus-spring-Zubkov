@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.scheduler.Schedulers;
 import ru.otus.spring.homework11.domain.Comment;
 import ru.otus.spring.homework11.dto.CommentDto;
 import ru.otus.spring.homework11.service.BookService;
@@ -30,18 +29,18 @@ public class ControllerForComment {
                         request -> request.queryParam("bookname")
                                 .map(commentService::getByBook)
                                 .map(comments -> ok().body(comments, Comment.class)).orElse(notFound().build()))
-                .POST("/api/comment/book", accept(APPLICATION_JSON)
-                        , request -> request.bodyToMono(CommentDto.class)
+                .POST("/api/comment/book", accept(APPLICATION_JSON),
+                        request -> request.bodyToMono(CommentDto.class)
                                 .flatMap(dto -> bookService.getByName(dto.getBookname())
                                         .map(Comment::new)
                                         .doOnNext(comment -> comment.setComment(dto.getComment())))
-                                .subscribeOn(Schedulers.elastic())
                                 .map(commentService::insert)
                                 .flatMap(comment -> ok().body(comment, Comment.class))
                 )
                 .DELETE("/api/comment/book", accept(APPLICATION_JSON),
                         request -> request.bodyToMono(Comment.class)
-                                .map(comment -> commentService.deleteById(comment.getId()).subscribe())
+                                .flatMap(comment -> commentService.deleteById(comment.getId())
+                                )
                                 .then(ok().build())
                 )
                 .build();

@@ -30,7 +30,7 @@ public class ControllerForAuthor {
                 )
                 .DELETE("/api/author", accept(APPLICATION_JSON),
                         request -> request.bodyToMono(Author.class)
-                        .map(author->authorService.deleteById(author.getId()).subscribe())
+                        .flatMap(author->authorService.deleteById(author.getId()))
                                 .then(ok().build())
                 )
                 .build();
