@@ -29,40 +29,25 @@ public class ControllerForBook {
 
     @Bean
     public RouterFunction<ServerResponse> controllerBook(BookService bookService) {
-        BookHandler bookHandler = new BookHandler(bookService, authorService);
         return route()
                 .GET("/api/book", accept(APPLICATION_JSON),
                         request -> ok().contentType(APPLICATION_JSON).body(bookService.showAllRows(), Book.class))
                 .POST("/api/book", contentType(APPLICATION_JSON),
-                        bookHandler::createBook
+                        this::createBook
                 )
                 .DELETE("/api/book", accept(APPLICATION_JSON),
                         request -> request.bodyToMono(Book.class)
-                                .flatMap(book -> bookService.deleteById(book.getId())
-                                )
+                                .flatMap(book -> bookService.deleteById(book.getId()))
                                 .then(ok().build())
                 )
                 .build();
     }
 
-    class BookHandler {
-
-        private final BookService bookService;
-        private final AuthorService authorService;
-
-
-        public BookHandler(BookService bookService, AuthorService authorService) {
-            this.bookService = bookService;
-            this.authorService = authorService;
-        }
-
-        public Mono<ServerResponse> createBook(ServerRequest request) {
-            Mono<BookDto> bookDto = request.bodyToMono(BookDto.class);
-            Mono<Book> book = bookDto.flatMap(dto -> authorService.getByName(dto.getAuthor())
-                    .map(author -> new Book(dto.getName(), author, new Genre(dto.getGenre())))).flatMap(bookService::insert);
-            return ok().body(book, Book.class);
-        }
+    private Mono<ServerResponse> createBook(ServerRequest request) {
+        Mono<BookDto> bookDto = request.bodyToMono(BookDto.class);
+        Mono<Book> book = bookDto.flatMap(dto -> authorService.getByName(dto.getAuthor())
+                .map(author -> new Book(dto.getName(), author, new Genre(dto.getGenre())))).flatMap(bookService::insert);
+        return ok().body(book, Book.class);
     }
-
 
 }
