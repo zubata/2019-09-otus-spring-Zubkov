@@ -18,12 +18,12 @@
 
 </head>
 <body>
-<form id="msg" action="/author/result">
+<div id="msg">
     <h1>{{ message1 }}</h1>
     <span>{{ message2 }}</span>
     <input type="text" v-model="name"/>
     <button type="submit" v-on:click="post" >{{ message3 }}</button>
-</form>
+</div>
 
 <script>
     var app1 = new Vue({
@@ -43,9 +43,10 @@
     }),
     headers: { "Content-type": "application/json; charset=utf-8" }
     }).then(function(response) {
-    if (response.status !==201) {
+    if (response.status !==200) {
     console.log('Ooops, something went wrong');
     return; }
+    else { location.href = "/author/result"}
     })
     }
     }

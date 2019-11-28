@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Книги</title>
 </head>
 <body>
 <h1>Добавление книги прошло успешно</h1>
-<div class="string">
-    <form>
-        <input type="submit" value="Вернуться к списку книг" formaction="/">
-        <input type="submit" value="Добавить ещё одну книгу" formaction="/book/insertbook">
-    </form>
+<div>
+    <input type="submit" value="Вернуться к списку книг" onclick='location.href="/"'>
+    <input type="submit" value="Добавить ещё одну книгу" onclick='location.href="/book/insertbook"'>
 </div>
 </body>
 </html>

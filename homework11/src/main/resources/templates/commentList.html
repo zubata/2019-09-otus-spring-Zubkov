@@ -14,6 +14,8 @@
             padding: 5px;
         }
 
+
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router"></script>
@@ -21,9 +23,7 @@
 <body>
 <div id="app">
     <h1>Комментарии к книге {{ bookname }}</h1>
-    <form>
-        <input type="submit" value="Список книг" formaction="/">
-    </form>
+    <input type="submit" value="Список книг" onclick='location.href="/"'>
     <button type="submit" v-on:click="goToUrl(bookname)">Добавить комментарий</button>
 </div>
 <table class="comment" id="listcomments">
@@ -94,6 +94,8 @@
             }
         })
     });
+
+
 
 
 

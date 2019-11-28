@@ -30,7 +30,7 @@
     </select>
     <label>Название книги <input type="text" v-model="name"/></label>
     <label>Жанр <input type="text" v-model="genre"/></label>
-    <a href="/book/result" v-on:click="post">{{message5}}</a>
+    <button type="submit" v-on:click="post">{{message5}}</button>
 </div>
 <script>
     var app1 = new Vue({
@@ -58,7 +58,9 @@
     }).then(function(response) {
     if (response.status !==200) {
     console.log('Ooops, something went wrong');
-    return; }
+    return;
+     }
+     else { location.href = "/book/result"}
     })
     }
     }

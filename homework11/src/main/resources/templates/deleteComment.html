@@ -10,9 +10,9 @@
 <h1>Удаление комментария</h1>
 <div id="msg">
     <span>{{message1}} {{bookname}}</span>
-    <form>
-        <input type="submit" value="Вернуться к списку книг" formaction="/">
-    </form>
+    <div>
+        <input type="submit" value="Вернуться к списку книг" onclick='location.href="/"'>
+    </div>
     <button type="submit" v-on:click="goToUrl(bookname)">{{message2}}</button>
 </div>
 <script>
@@ -40,6 +40,7 @@
     }
     }
     })
+
 
 </script>
 </body>

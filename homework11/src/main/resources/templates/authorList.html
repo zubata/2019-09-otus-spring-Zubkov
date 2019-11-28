@@ -14,16 +14,16 @@
         }
 
 
+
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 <h1>Список авторов</h1>
 <div>
-    <form>
-        <input type="submit" value="Добавить автора" formaction="/author/insertauthor">
-        <input type="submit" value="Список книг" formaction="/">
-    </form>
+    <input type="submit" value="Добавить автора" onclick='location.href="/author/insertauthor"'>
+    <input type="submit" value="Список книг" onclick='location.href="/"'>
 </div>
 <table class="author" id="listauthors">
     <thead>
@@ -37,9 +37,7 @@
         <td>{{ author.id }}</td>
         <td>{{ author.name }}</td>
         <td>
-            <form action="/author/del">
             <button type="submit" v-on:click="deleteData(author)">Delete</button>
-            </form>
         </td>
     </tr>
     </tbody>
@@ -62,11 +60,14 @@
             if (response.status !==200) {
             console.log('Ooops, something went wrong');
             return; }
+            else { location.href = "/author/del"}
             })
             }
             }
         })
     });
+
+
 
 </script>
 </body>

@@ -13,16 +13,15 @@
             padding: 5px;
         }
 
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 <h1>Список книг</h1>
 <div>
-    <form>
-        <input type="submit" value="Добавить книгу" formaction="/book/insertbook">
-        <input type="submit" value="Список авторов" formaction="/author">
-    </form>
+        <input type="submit" value="Добавить книгу" onclick='location.href="/book/insertbook"'>
+        <input type="submit" value="Список авторов" onclick='location.href="/author"'>
 </div>
 <table class="book" id="listbooks">
     <thead>
@@ -41,9 +40,7 @@
         <td>{{ book.genreList }}</td>
         <td><a v-bind:href="'/comment/book?bookname=' + book.name">Комментарии</a></td>
         <td>
-            <form action="/book/del">
-                <button type="submit" v-on:click="deleteData(book)">Delete</button>
-            </form>
+            <button type="submit" v-on:click="deleteData(book)">Delete</button>
         </td>
     </tr>
     </tbody>
@@ -66,11 +63,13 @@
             if (response.status !==200) {
             console.log('Ooops, something went wrong');
             return; }
+            else { location.href = "/book/del"}
             })
             }
             }
         })
     });
+
 
 </script>
 </body>
