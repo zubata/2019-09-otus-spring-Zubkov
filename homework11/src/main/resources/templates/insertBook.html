@@ -15,22 +15,22 @@
         }
 
 
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router"></script>
 </head>
 <body>
 <div id="msg">
     <h1>{{ message1 }}</h1>
-    <form action="/book/result">
-        <label>{{ message2 }}</label>
-        <select v-model="selectedauthor">
-            <option selected disabled hidden>Выберите автора</option>
-            <option v-for="author in authors" v-bind:value="author.name" >{{ author.name }}</option>
-        </select>
-        <label>Название книги <input type="text" v-model="name"/></label>
-        <label>Жанр <input type="text" v-model="genre"/></label>
-        <button type="submit" v-on:click="post">Добавить</button>
-    </form>
+    <label>{{ message2 }}</label>
+    <select v-model="selectedauthor">
+        <option selected disabled hidden>Выберите автора</option>
+        <option v-for="author in authors" v-bind:value="author.name">{{ author.name }}</option>
+    </select>
+    <label>Название книги <input type="text" v-model="name"/></label>
+    <label>Жанр <input type="text" v-model="genre"/></label>
+    <a href="/book/result" v-on:click="post">{{message5}}</a>
 </div>
 <script>
     var app1 = new Vue({
@@ -56,24 +56,24 @@
     }),
     headers: { "Content-type": "application/json; charset=utf-8" }
     }).then(function(response) {
-    if (response.status !==201) {
+    if (response.status !==200) {
     console.log('Ooops, something went wrong');
     return; }
     })
-    },
-    },
+    }
+    }
     });
 
     fetch('/api/author')
     .then(response => response.json())
     .then(authors => {
         new Vue({
-            el:'#aut',
             data: {
                 authors: app1.authors=authors
             }
         })
     });
+
 
 </script>
 </body>
