@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Коментарии</title>
+    <script src="http://localhost:8080/webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="https://unpkg.com/vue-router"></script>
+</head>
+<body>
+<h1>Добавление комментария</h1>
+<div id="msg">
+    <span>{{message1}} {{bookname}}</span>
+    <div>
+        <input type="submit" value="Вернуться к списку книг" onclick='location.href="/"'>
+    </div>
+    <button type="submit" v-on:click="goToUrl(bookname)">{{message2}}</button>
+</div>
+<script>
+    var router = new VueRouter({
+    mode: 'history',
+    routes: []
+    });
+
+    var res = new Vue({
+    router,
+    el: '#msg',
+    data: {
+    message1: 'Комментарий успешно добавлен по книге',
+    message2: 'Вернуться к cписку комментариев книги'
+    },
+    computed: {
+    bookname: function() {
+        return this.$route.query.bookname;
+    }
+    },
+    methods: {
+    goToUrl: function(param) {
+    this.$router.push({path: '/comment/book', query : { bookname: param } })
+    this.$router.go()
+    }
+    }
+    })
+
+
+
+
+</script>
+</body>
+</html>

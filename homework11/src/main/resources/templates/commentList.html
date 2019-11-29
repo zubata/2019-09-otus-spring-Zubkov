@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Комментарии</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .comment, .comment td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router"></script>
+</head>
+<body>
+<div id="app">
+    <h1>Комментарии к книге {{ bookname }}</h1>
+    <input type="submit" value="Список книг" onclick='location.href="/"'>
+    <button type="submit" v-on:click="goToUrl(bookname)">Добавить комментарий</button>
+</div>
+<table class="comment" id="listcomments">
+    <thead>
+    <tr>
+        <th>ID Комментария</th>
+        <th>Комментарий</th>
+        <th>Удалить</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="comment in comments">
+        <td>{{comment.id}}</td>
+        <td>{{comment.comment}}</td>
+        <td>
+            <input type="hidden" name="bookname">
+            <button type="submit" v-on:click="deleteData(comment)">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+
+    var router = new VueRouter({
+    mode: 'history',
+    routes: []
+    });
+
+    var vm =  new Vue({
+    router,
+    el: '#app',
+    computed: {
+    bookname: function() {
+        return this.$route.query.bookname;
+    }
+    },
+    methods: {
+    goToUrl: function(param) {
+    this.$router.push({path: '/comment/insertcomment', query : { bookname: param } })
+    this.$router.go()
+    }
+    }
+    });
+
+    var url = "/api/comment/book?bookname=" + vm.bookname;
+
+    fetch(url)
+    .then(response => response.json())
+    .then(comments => {
+        new Vue({
+            router,
+            el: '#listcomments',
+            data: {
+                comments: comments
+            },
+            methods: {
+            deleteData: function(comment) { fetch('/api/comment/book', {
+            method: 'DELETE',
+            body: JSON.stringify(comment),
+            headers: { "Content-type": "application/json; charset=utf-8" }
+            }).then(function(response) {
+            if (response.status !==200) {
+            console.log('Ooops, something went wrong');
+            return; }
+            }).then(this.$router.push({path: '/comment/del', query : { bookname: vm.bookname } }))
+            .then(this.$router.go())
+            }
+            }
+        })
+    });
+
+
+
+
+
+</script>
+</body>
+</html>
