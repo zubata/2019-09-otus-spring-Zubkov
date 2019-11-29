@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Комментарии</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .comment, .comment td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+        .logout {
+            padding-bottom:20px;
+        }
+
+    </style>
+</head>
+<body>
+<h1 th:text="'Комментарии '+ (${bookname == null}? 'по книгам':'по книге '+${bookname})">Комментарии по книге Война и Мир</h1>
+<div class="logout">
+    <a th:href="@{logout}">Разлогиниться</a>
+</div>
+<div>
+    <form>
+        <input type="submit" value="Список книг" formaction="/book">
+    </form>
+    <form th:action="@{/comment/insertcomment}">
+        <input type="hidden" name="bookname" th:value="${bookname}">
+        <button type="submit">Добавить комментарий</button>
+    </form>
+</div>
+<table class="comment">
+    <thead>
+    <tr>
+        <th>ID Комментария</th>
+        <th>Название книги</th>
+        <th>Комментарий</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comment}">
+        <td th:text="${comment.id}"></td>
+        <td th:text="${comment.comment}"></td>
+        <td>
+            <form th:action="@{/comment/del}" th:object="${comment}" method="post">
+                <input type="hidden" name="id" th:value="*{id}">
+                <input type="hidden" name="bookname" th:value="*{book.name}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

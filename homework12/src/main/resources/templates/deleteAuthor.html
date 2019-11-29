@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+</head>
+<body>
+<h1>Удаление автора прошло успешно</h1>
+<div class="string">
+    <span th:text="${result}">Автор Толстой успешно удалён</span>
+    <form th:action="@{/author}">
+          <button type="submit">Вернуться к списку авторов</button>
+    </form>
+</div>
+</body>
+</html>

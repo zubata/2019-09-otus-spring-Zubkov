@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Комментарии</title>
+</head>
+<body>
+<h1>Удаление комментария прошло успешно</h1>
+<div class="string">
+    <span th:text="${result}">Комментарий к книге Война и Мир успешно удалён</span>
+    <form>
+        <input type="submit" value="Вернуться к списку книг" formaction="/book">
+    </form>
+    <form th:action="@{/comment/book}">
+        <input type="hidden" name="bookname" th:value="${bookname}">
+        <button type="submit">Вернуться к cписоку комментариев книги</button>
+    </form>
+</div>
+</body>
+</html>
