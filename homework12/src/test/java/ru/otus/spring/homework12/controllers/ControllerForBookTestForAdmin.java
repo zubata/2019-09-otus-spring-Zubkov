@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import ru.otus.spring.homework12.domain.Author;
 import ru.otus.spring.homework12.domain.Book;
 import ru.otus.spring.homework12.domain.Genre;
-import ru.otus.spring.homework12.security.MyUserDetailsService;
+import ru.otus.spring.homework12.security.MyPersonDetailsService;
 import ru.otus.spring.homework12.service.AuthorService;
 import ru.otus.spring.homework12.service.BookService;
 
@@ -48,7 +48,7 @@ class ControllerForBookTestForAdmin {
     @MockBean
     private AuthorService authorService;
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private MyPersonDetailsService myPersonDetailsService;
 
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @DisplayName("должна верно отображаться книга по id")

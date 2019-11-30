@@ -6,11 +6,9 @@
 </head>
 <body>
 <h1>Удаление автора прошло успешно</h1>
-<div class="string">
-    <span th:text="${result}">Автор Толстой успешно удалён</span>
-    <form th:action="@{/author}">
-          <button type="submit">Вернуться к списку авторов</button>
-    </form>
+<span th:text="${result}">Автор Толстой успешно удалён</span>
+<div>
+    <input type="button" value="Вернуться к списку авторов" onclick='location.href="/author"'>
 </div>
 </body>
 </html>

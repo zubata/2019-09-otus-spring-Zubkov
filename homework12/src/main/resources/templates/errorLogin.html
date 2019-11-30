@@ -8,7 +8,7 @@
         display: inline-block;
         }
 
-        button {
+        input {
             display: block;
             padding-top: 5px;
         }
@@ -16,8 +16,8 @@
 </head>
 <body>
 <span>Неверно введён логин/пароль</span>
-<form th:action="@{/login}">
-    <button type="submit">Войти ещё раз</button>
-</form>
+<div>
+    <input type="submit" value="Войти ещё раз" onclick='location.href="/login"'>
+</div>
 </body>
 </html>

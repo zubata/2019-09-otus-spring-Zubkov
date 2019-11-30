@@ -6,12 +6,10 @@
 </head>
 <body>
 <h1>Добавление книги прошло успешно</h1>
-<div class="string">
-    <span th:text="${result}">Книга Война и Мир успешно добавлна</span>
-    <form>
-        <input type="submit" value="Вернуться к списку книг" formaction="/book">
-        <input type="submit" value="Добавить ещё одну книгу" formaction="/book/insertbook">
-    </form>
+<span th:text="${result}">Книга Война и Мир успешно добавлна</span>
+<div>
+    <input type="submit" value="Вернуться к списку книг" onclick='location.href="/book"'>
+    <input type="submit" value="Добавить ещё одну книгу" onclick='location.href="/book/insertbook"'>
 </div>
 </body>
 </html>

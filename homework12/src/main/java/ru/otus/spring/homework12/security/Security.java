@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Security extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private MyPersonDetailsService myPersonDetailsService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -31,7 +31,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .failureUrl("/errorlogin")
                 .and()
-                .logout().permitAll()
+                .logout().logoutUrl("/logout")
                 .and()
                 .rememberMe().key("myKey")
         ;
@@ -45,7 +45,7 @@ public class Security extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(myPersonDetailsService).passwordEncoder(passwordEncoder());
     }
 
 }

@@ -20,18 +20,10 @@
 </head>
 <body>
 <h1 th:text="'Комментарии '+ (${bookname == null}? 'по книгам':'по книге '+${bookname})">Комментарии по книге Война и Мир</h1>
-<div class="logout">
-    <a th:href="@{logout}">Разлогиниться</a>
-</div>
-<div>
-    <form>
-        <input type="submit" value="Список книг" formaction="/book">
-    </form>
-    <form th:action="@{/comment/insertcomment}">
-        <input type="hidden" name="bookname" th:value="${bookname}">
-        <button type="submit">Добавить комментарий</button>
-    </form>
-</div>
+<div class="logout"><a th:href="@{logout}">Разлогиниться</a></div>
+<input type="submit" value="Список книг" onclick='location.href="/book"'>
+<input type="submit" value="Добавить комментарий"
+       th:onclick="|location.href='@{/comment/insertcomment(bookname=${bookname})}'|">
 <table class="comment">
     <thead>
     <tr>

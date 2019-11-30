@@ -1,5 +1,5 @@
-insert into users (`username`,`password`,`role`) values ('admin','admin','ADMIN');
-insert into users (`username`,`password`,`role`) values ('user','user','USER');
+insert into persons (`username`,`password`,`role`) values ('admin','admin','ADMIN');
+insert into persons (`username`,`password`,`role`) values ('user','user','USER');
 
 insert into authors (`author_name`) values ('Толстой');
 insert into authors (`author_name`) values ('Есенин');

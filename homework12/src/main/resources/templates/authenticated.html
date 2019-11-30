@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Успешная авторизация</title>
 </head>
 <body>
 <span>Вы успешно вошли!</span>
-<form th:action="@{/author}">
-    <button type="submit">Посмотреть авторов</button>
-</form>
-<form th:action="@{/book}">
-    <button type="submit">Посмотреть книги</button>
-</form>
+<div>
+    <input type="submit" value="Посмотреть авторов" onclick="location.href='/author'">
+</div>
+<div>
+    <input type="submit" value="Посмотреть книги" onclick="location.href='/book'">
+</div>
 </body>
 </html>

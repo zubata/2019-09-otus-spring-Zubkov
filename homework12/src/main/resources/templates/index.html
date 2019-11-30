@@ -16,7 +16,7 @@
             padding: 20px;
         }
 
-        button {
+        input {
             margin-left: 46%;
             margin-top: 20px;
             float: left;
@@ -28,8 +28,8 @@
 </head>
 <body>
 <div class="text">Добро пожаловать!</div>
-<form th:action="@{/authenticated}">
-    <button type="submit">Вход в систему</button>
-</form>
+<div>
+    <input type="submit" value="Вход в систему" onclick='location.href="/authenticated"'>
+</div>
 </body>
 </html>

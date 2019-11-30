@@ -6,11 +6,9 @@
 </head>
 <body>
 <h1>Удаление книги прошло успешно</h1>
-<div class="book">
-    <span th:text="${book}">Книга Война и Мир успешно удалена</span>
-    <form th:action="@{/book}">
-          <button type="submit">Вернуться к списку книг</button>
-    </form>
+<span th:text="${book}">Книга Война и Мир успешно удалена</span>
+<div>
+    <input type="button" value="Вернуться к списку книг" onclick='location.href="/book"'>
 </div>
 </body>
 </html>

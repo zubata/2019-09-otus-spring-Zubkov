@@ -24,10 +24,8 @@
     <a th:href="@{logout}">Разлогиниться</a>
 </div>
 <div>
-    <form>
-        <input type="submit" value="Добавить автора" formaction="/author/insertauthor">
-        <input type="submit" value="Список книг" formaction="/book">
-    </form>
+    <input type="submit" value="Добавить автора" onclick='location.href="/author/insertauthor"'>
+    <input type="submit" value="Список книг" onclick='location.href="/book"'>
 </div>
 <table class="author">
     <thead>

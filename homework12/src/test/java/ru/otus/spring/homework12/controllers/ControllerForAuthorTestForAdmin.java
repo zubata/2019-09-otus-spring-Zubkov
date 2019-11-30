@@ -11,7 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.otus.spring.homework12.domain.Author;
-import ru.otus.spring.homework12.security.MyUserDetailsService;
+import ru.otus.spring.homework12.security.MyPersonDetailsService;
 import ru.otus.spring.homework12.service.AuthorService;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ class ControllerForAuthorTestForAdmin {
     @MockBean
     private AuthorService authorService;
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private MyPersonDetailsService myPersonDetailsService;
 
     @WithMockUser(authorities = {"ROLE_ADMIN"})
     @DisplayName("должен верно отображаться автор по id")
