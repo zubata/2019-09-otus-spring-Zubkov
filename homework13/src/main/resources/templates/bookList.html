@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+    <style type="text/css">
+        body {
+            padding: 30px;
+        }
+
+        .book, .book td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+        .logout {
+            padding-bottom:20px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Список книг</h1>
+<div class="logout">
+<a th:href="@{logout}">Разлогиниться</a>
+</div>
+<div >
+    <input type="submit" th:if="${adminmode}" value="Добавить книгу" onclick='location.href="/book/insertbook"'>
+    <input type="submit" value="Список авторов" onclick='location.href="/author"'>
+    <input type="submit" th:if="${adminmode}" value="Перейти в H2 Web" onclick='location.href="/h2-console"'>
+</div>
+<table class="book">
+    <thead>
+    <tr>
+        <th>ID Книги </th>
+        <th>Название Книги</th>
+        <th>Имя Автора</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${book}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.name}"></td>
+        <td th:text="${book.author.name}"></td>
+        <td th:text="${book.getGenreList()}"></td>
+        <td><a th:href="@{/comment/book(bookname=${book.name})}">Комментарии</a></td>
+        <td th:if="${adminmode}">
+            <form th:action="@{/book/del}" th:object="${book}" method="post">
+                <input type="hidden" name="id" th:value="*{id}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,11 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    data: "classpath:data.sql"
+    sqlScriptEncoding: UTF-8
+  jpa:
+    #show-sql: true
+    hibernate:
+      ddl-auto: none

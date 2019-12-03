@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Комментарии</title>
+    <style type="text/css">
+        .block {
+        display: inline-block;
+        }
+
+        input, label {
+            display: block;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="'Добавление комментария к книге '+ ${comment.bookname}">Добавление комментария к книге Война и Мир</h1>
+<div>
+    <form th:action="@{/comment/add}" th:object="${comment}" method="post">
+        <input type="hidden" name="bookname" th:value="*{bookname}">
+        <label>Комментарий <input type="text" th:field="*{comment}"/></label>
+        <button type="submit">Добавить</button>
+    </form>
+</div>
+</body>
+</html>
