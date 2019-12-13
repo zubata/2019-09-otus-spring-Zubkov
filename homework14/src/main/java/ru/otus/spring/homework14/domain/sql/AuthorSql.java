@@ -1,22 +1,22 @@
-package ru.otus.spring.homework14.domain;
+package ru.otus.spring.homework14.domain.sql;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.*;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Entity(name = "author")
 @NoArgsConstructor
-@Document(collection = "authors")
-public class Author {
+@Table(name = "authors")
+public class AuthorSql {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NonNull
-    @Field("name")
+    @Column(name = "author_name", nullable = false)
     private String name;
 
     @Override

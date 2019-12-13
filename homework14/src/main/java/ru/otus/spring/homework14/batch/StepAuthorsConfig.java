@@ -10,63 +10,61 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemWriterBuilder;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import ru.otus.spring.homework14.domain.Book;
-import ru.otus.spring.homework14.domain.BookDto;
-import ru.otus.spring.homework14.service.BookService;
+import ru.otus.spring.homework14.domain.mongo.AuthorMongo;
+import ru.otus.spring.homework14.domain.sql.AuthorSql;
+import ru.otus.spring.homework14.service.MySqlReaderService;
+import ru.otus.spring.homework14.storage.sql.AuthorSqlDao;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class StepBooks {
+public class StepAuthorsConfig {
+
     private final StepBuilderFactory stepBuilderFactory;
-    private final DataSource dataSource;
+    private final AuthorSqlDao authorDaoSql;
     private final Logger logger = LoggerFactory.getLogger("Batch");
-    private final BookService bookService;
 
     @Bean
-    public ItemReader<BookDto> readerBooks() {
-        JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<BookDto>();
+    public ItemReader<AuthorSql> readerAuthor() {
+        /*JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<Author>();
         jdbcReader.setDataSource(dataSource);
-        jdbcReader.setSql("select b.id, a.author_name as author, b.book_name as name, g.genre_name genre from books b " +
-                "inner join books_genre bg on b.id=bg.book_id inner join genres g on bg.genre_id = g.id " +
-                "inner join authors a on a.id=b.author_id");
-        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(BookDto.class));
-        return jdbcReader;
+        jdbcReader.setSql("select id, author_name as name from authors");
+        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(Author.class));*/
+        MySqlReaderService<AuthorSql> reader = new MySqlReaderService<>();
+        reader.setJpaRepo(authorDaoSql);
+        return reader;
     }
 
     @Bean
-    public ItemProcessor<BookDto, Book> processorBooks() {
-        return bookDto -> bookService.convertToDomain(bookDto);
+    public ItemProcessor<AuthorSql, AuthorMongo> processorAuthor() {
+        return AuthorMongo::convertToDomain;
     }
 
     @Bean
-    public MongoItemWriter<Book> writerBooks(MongoTemplate mongoTemplate) {
-        return new MongoItemWriterBuilder<Book>()
+    public MongoItemWriter<AuthorMongo> writerAuthor(MongoTemplate mongoTemplate) {
+        return new MongoItemWriterBuilder<AuthorMongo>()
                 .template(mongoTemplate)
-                .collection("books")
+                .collection("authors")
                 .build();
     }
 
     @Bean
-    public Step step2(ItemReader readerBooks, MongoItemWriter writerBooks, ItemProcessor processorBooks) {
-        return stepBuilderFactory.get("step2")
-                .chunk(2)
-                .reader(readerBooks)
-                .processor(processorBooks)
-                .writer(writerBooks)
-                .listener(new ItemReadListener() {
+    public Step stepAuthors(ItemReader<AuthorSql> readerAuthor, MongoItemWriter<AuthorMongo> writerAuthor, ItemProcessor<AuthorSql, AuthorMongo> processorAuthor) {
+        return stepBuilderFactory.get("step1")
+                .<AuthorSql, AuthorMongo>chunk(2)
+                .reader(readerAuthor)
+                .processor(processorAuthor)
+                .writer(writerAuthor)
+                .listener(new ItemReadListener<AuthorSql>() {
                     public void beforeRead() {
                         logger.info("Начало чтения");
                     }
 
-                    public void afterRead(Object o) {
+                    public void afterRead(AuthorSql o) {
                         logger.info("Конец чтения");
                     }
 
@@ -74,7 +72,7 @@ public class StepBooks {
                         logger.info("Ошибка чтения");
                     }
                 })
-                .listener(new ItemWriteListener() {
+                .listener(new ItemWriteListener<AuthorMongo>() {
                     public void beforeWrite(List list) {
                         logger.info("Начало записи");
                     }
@@ -87,16 +85,16 @@ public class StepBooks {
                         logger.info("Ошибка записи");
                     }
                 })
-                .listener(new ItemProcessListener() {
-                    public void beforeProcess(Object o) {
+                .listener(new ItemProcessListener<AuthorSql, AuthorMongo>() {
+                    public void beforeProcess(AuthorSql o) {
                         logger.info("Начало обработки");
                     }
 
-                    public void afterProcess(Object o, Object o2) {
+                    public void afterProcess(AuthorSql o, AuthorMongo o2) {
                         logger.info("Конец обработки");
                     }
 
-                    public void onProcessError(Object o, Exception e) {
+                    public void onProcessError(AuthorSql o, Exception e) {
                         logger.info("Ошбка обработки");
                     }
                 })

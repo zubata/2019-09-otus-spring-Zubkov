@@ -10,61 +10,59 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemWriterBuilder;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import ru.otus.spring.homework14.domain.Comment;
-import ru.otus.spring.homework14.domain.CommentDto;
-import ru.otus.spring.homework14.service.BookService;
-import ru.otus.spring.homework14.service.CommentService;
+import ru.otus.spring.homework14.domain.mongo.CommentMongo;
+import ru.otus.spring.homework14.domain.sql.CommentSql;
+import ru.otus.spring.homework14.service.MySqlReaderService;
+import ru.otus.spring.homework14.storage.sql.CommentSqlDao;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class StepComments {
+public class StepCommentsConfig {
     private final StepBuilderFactory stepBuilderFactory;
-    private final DataSource dataSource;
     private final Logger logger = LoggerFactory.getLogger("Batch");
-    private final CommentService commentService;
+    private final CommentSqlDao commentSqlDao;
 
     @Bean
-    public ItemReader<CommentDto> readerComments() {
-        JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<CommentDto>();
+    public ItemReader<CommentSql> readerComments() {
+        /*JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<CommentDto>();
         jdbcReader.setDataSource(dataSource);
         jdbcReader.setSql("select c.id as id, c.comment, b.book_name as book from comments c " +
                 "inner join books b on c.book_id=b.id");
-        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(CommentDto.class));
-        return jdbcReader;
+        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(CommentDto.class));*/
+        MySqlReaderService<CommentSql> reader = new MySqlReaderService<>();
+        reader.setJpaRepo(commentSqlDao);
+        return reader;
     }
 
     @Bean
-    public ItemProcessor<CommentDto, Comment> processorComments() { return commentDto -> commentService.convertToDomain(commentDto); }
+    public ItemProcessor<CommentSql, CommentMongo> processorComments() { return CommentMongo::convertToDomain; }
 
     @Bean
-    public MongoItemWriter<Comment> writerComments(MongoTemplate mongoTemplate) {
-        return new MongoItemWriterBuilder<Comment>()
+    public MongoItemWriter<CommentMongo> writerComments(MongoTemplate mongoTemplate) {
+        return new MongoItemWriterBuilder<CommentMongo>()
                 .template(mongoTemplate)
                 .collection("comments")
                 .build();
     }
 
     @Bean
-    public Step step3(ItemReader readerComments, MongoItemWriter writerComments, ItemProcessor processorComments) {
+    public Step stepComments(ItemReader<CommentSql> readerComments, MongoItemWriter<CommentMongo> writerComments, ItemProcessor<CommentSql, CommentMongo> processorComments) {
         return stepBuilderFactory.get("step3")
-                .chunk(2)
+                .<CommentSql, CommentMongo> chunk(2)
                 .reader(readerComments)
                 .processor(processorComments)
                 .writer(writerComments)
-                .listener(new ItemReadListener() {
+                .listener(new ItemReadListener<CommentSql>() {
                     public void beforeRead() {
                         logger.info("Начало чтения");
                     }
 
-                    public void afterRead(Object o) {
+                    public void afterRead(CommentSql o) {
                         logger.info("Конец чтения");
                     }
 
@@ -72,7 +70,7 @@ public class StepComments {
                         logger.info("Ошибка чтения");
                     }
                 })
-                .listener(new ItemWriteListener() {
+                .listener(new ItemWriteListener<CommentMongo>() {
                     public void beforeWrite(List list) {
                         logger.info("Начало записи");
                     }
@@ -85,16 +83,14 @@ public class StepComments {
                         logger.info("Ошибка записи");
                     }
                 })
-                .listener(new ItemProcessListener() {
-                    public void beforeProcess(Object o) {
-                        logger.info("Начало обработки");
-                    }
+                .listener(new ItemProcessListener<CommentSql, CommentMongo>() {
+                    public void beforeProcess(CommentSql o) { logger.info("Начало обработки"); }
 
-                    public void afterProcess(Object o, Object o2) {
+                    public void afterProcess(CommentSql o, CommentMongo o2) {
                         logger.info("Конец обработки");
                     }
 
-                    public void onProcessError(Object o, Exception e) {
+                    public void onProcessError(CommentSql o, Exception e) {
                         logger.info("Ошбка обработки");
                     }
                 })

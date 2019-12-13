@@ -4,68 +4,68 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemWriterBuilder;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import ru.otus.spring.homework14.domain.Author;
+import ru.otus.spring.homework14.domain.mongo.BookMongo;
+import ru.otus.spring.homework14.domain.sql.BookSql;
+import ru.otus.spring.homework14.service.MySqlReaderService;
+import ru.otus.spring.homework14.storage.sql.BookSqlDao;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class StepAuthors {
-
+public class StepBooksConfig {
     private final StepBuilderFactory stepBuilderFactory;
-    private final DataSource dataSource;
     private final Logger logger = LoggerFactory.getLogger("Batch");
+    private final BookSqlDao bookDaoSQL;
 
     @Bean
-    public ItemReader<Author> readerAuthor() {
-        JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<Author>();
+    public ItemReader<BookSql> readerBooks() {
+        /*JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<BookSql>();
         jdbcReader.setDataSource(dataSource);
-        jdbcReader.setSql("select id, author_name as name from authors");
-        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(Author.class));
-        return jdbcReader;
+        jdbcReader.setSql("select b.id, a.author_name as author, b.book_name as name, g.genre_name genre from books b " +
+                "inner join books_genre bg on b.id=bg.book_id inner join genres g on bg.genre_id = g.id " +
+                "inner join authors a on a.id=b.author_id");
+        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(BookSql.class));*/
+        MySqlReaderService<BookSql> reader = new MySqlReaderService<>();
+        reader.setJpaRepo(bookDaoSQL);
+        return reader;
     }
 
     @Bean
-    public ItemProcessor<Author, Author> processorAuthor() {
-        return author -> author;
+    public ItemProcessor<BookSql, BookMongo> processorBooks() {
+        return BookMongo::convetToDomain;
     }
 
     @Bean
-    public MongoItemWriter<Author> writerAuthor(MongoTemplate mongoTemplate) {
-        return new MongoItemWriterBuilder<Author>()
+    public MongoItemWriter<BookMongo> writerBooks(MongoTemplate mongoTemplate) {
+        return new MongoItemWriterBuilder<BookMongo>()
                 .template(mongoTemplate)
-                .collection("authors")
+                .collection("books")
                 .build();
     }
 
     @Bean
-    public Step step1(ItemReader readerAuthor, MongoItemWriter writerAuthor, ItemProcessor processorAuthor) {
-        return stepBuilderFactory.get("step1")
-                .chunk(2)
-                .reader(readerAuthor)
-                .processor(processorAuthor)
-                .writer(writerAuthor)
-                .listener(new ItemReadListener() {
+    public Step stepBooks(ItemReader<BookSql> readerBooks, MongoItemWriter<BookMongo> writerBooks, ItemProcessor<BookSql, BookMongo> processorBooks) {
+        return stepBuilderFactory.get("step2")
+                .<BookSql, BookMongo>chunk(2)
+                .reader(readerBooks)
+                .processor(processorBooks)
+                .writer(writerBooks)
+                .listener(new ItemReadListener<BookSql>() {
                     public void beforeRead() {
                         logger.info("Начало чтения");
                     }
 
-                    public void afterRead(Object o) {
+                    public void afterRead(BookSql o) {
                         logger.info("Конец чтения");
                     }
 
@@ -73,7 +73,7 @@ public class StepAuthors {
                         logger.info("Ошибка чтения");
                     }
                 })
-                .listener(new ItemWriteListener() {
+                .listener(new ItemWriteListener<BookMongo>() {
                     public void beforeWrite(List list) {
                         logger.info("Начало записи");
                     }
@@ -86,18 +86,16 @@ public class StepAuthors {
                         logger.info("Ошибка записи");
                     }
                 })
-                .listener(new ItemProcessListener() {
-                    public void beforeProcess(Object o) {
+                .listener(new ItemProcessListener<BookSql, BookMongo>() {
+                    public void beforeProcess(BookSql o) {
                         logger.info("Начало обработки");
                     }
 
-                    public void afterProcess(Object o, Object o2) {
+                    public void afterProcess(BookSql o, BookMongo o2) {
                         logger.info("Конец обработки");
                     }
 
-                    public void onProcessError(Object o, Exception e) {
-                        logger.info("Ошбка обработки");
-                    }
+                    public void onProcessError(BookSql o, Exception e) { logger.info("Ошбка обработки"); }
                 })
                 .listener(new ChunkListener() {
                     public void beforeChunk(ChunkContext chunkContext) {

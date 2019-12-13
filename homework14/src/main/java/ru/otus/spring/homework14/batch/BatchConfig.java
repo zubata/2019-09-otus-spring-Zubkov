@@ -20,12 +20,12 @@ public class BatchConfig {
     private final Logger logger = LoggerFactory.getLogger("Batch");
 
     @Bean
-    public Job importUserJob(Step step1, Step step2, Step step3) {
+    public Job importUserJob(Step stepAuthors, Step stepBooks, Step stepComments) {
         return jobBuilderFactory.get("importUserJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(step1)
-                .next(step2)
-                .next(step3)
+                .flow(stepAuthors)
+                .next(stepBooks)
+                .next(stepComments)
                 .end()
                 .listener(new JobExecutionListener() {
                     @Override

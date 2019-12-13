@@ -1,20 +1,22 @@
-package ru.otus.spring.homework14.domain;
+package ru.otus.spring.homework14.domain.mongo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import ru.otus.spring.homework14.domain.sql.BookSql;
 
 import javax.persistence.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "books")
-public class Book {
+public class BookMongo {
     @Id
     private long id;
 
@@ -22,20 +24,20 @@ public class Book {
     private String name;
 
     @Field("author")
-    private Author author;
+    private AuthorMongo author;
 
     @Field("genre")
-    private List<Genre> genre;
+    private List<GenreMongo> genre;
 
-    public Book(String name, Author author, Genre genre) {
+    public BookMongo(String name, AuthorMongo author, GenreMongo genre) {
         this.name = name;
         this.author = author;
         this.genre = Collections.singletonList(genre);
     }
 
-    public void addGenre(Genre genre) { this.genre.add(genre); }
+    public void addGenre(GenreMongo genre) { this.genre.add(genre); }
 
-    public void remove(Genre genre) { this.genre.remove(genre); }
+    public void remove(GenreMongo genre) { this.genre.remove(genre); }
 
     public String getGenreList() {
         StringBuilder genresString = new StringBuilder();
@@ -49,5 +51,13 @@ public class Book {
                 ", название = '" + name + '\'' +
                 ", автор = " + author.getName() +
                 ", жанр = " + getGenreList();
+    }
+
+    public static BookMongo convetToDomain(BookSql bookSql) {
+        long id = bookSql.getId();
+        String name = bookSql.getName();
+        AuthorMongo tempAuthor = AuthorMongo.convertToDomain(bookSql.getAuthor());
+        List<GenreMongo> list = bookSql.getGenre().stream().map(GenreMongo::convertToDomain).collect(Collectors.toList());
+        return new BookMongo(id,name,tempAuthor,list);
     }
 }
