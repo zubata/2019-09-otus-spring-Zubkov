@@ -30,10 +30,6 @@ public class StepAuthorsConfig {
 
     @Bean
     public ItemReader<AuthorSql> readerAuthor() {
-        /*JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<Author>();
-        jdbcReader.setDataSource(dataSource);
-        jdbcReader.setSql("select id, author_name as name from authors");
-        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(Author.class));*/
         MySqlReaderService<AuthorSql> reader = new MySqlReaderService<>();
         reader.setJpaRepo(authorDaoSql);
         return reader;

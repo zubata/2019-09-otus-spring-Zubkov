@@ -29,11 +29,6 @@ public class StepCommentsConfig {
 
     @Bean
     public ItemReader<CommentSql> readerComments() {
-        /*JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<CommentDto>();
-        jdbcReader.setDataSource(dataSource);
-        jdbcReader.setSql("select c.id as id, c.comment, b.book_name as book from comments c " +
-                "inner join books b on c.book_id=b.id");
-        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(CommentDto.class));*/
         MySqlReaderService<CommentSql> reader = new MySqlReaderService<>();
         reader.setJpaRepo(commentSqlDao);
         return reader;

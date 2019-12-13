@@ -21,3 +21,6 @@ spring:
       database: local
       port: 27017
       host: localhost
+  batch:
+    job:
+      enabled: true

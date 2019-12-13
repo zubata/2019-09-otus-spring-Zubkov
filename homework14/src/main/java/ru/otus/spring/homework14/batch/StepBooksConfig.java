@@ -29,12 +29,6 @@ public class StepBooksConfig {
 
     @Bean
     public ItemReader<BookSql> readerBooks() {
-        /*JdbcCursorItemReader jdbcReader = new JdbcCursorItemReader<BookSql>();
-        jdbcReader.setDataSource(dataSource);
-        jdbcReader.setSql("select b.id, a.author_name as author, b.book_name as name, g.genre_name genre from books b " +
-                "inner join books_genre bg on b.id=bg.book_id inner join genres g on bg.genre_id = g.id " +
-                "inner join authors a on a.id=b.author_id");
-        jdbcReader.setRowMapper(new BeanPropertyRowMapper<>(BookSql.class));*/
         MySqlReaderService<BookSql> reader = new MySqlReaderService<>();
         reader.setJpaRepo(bookDaoSQL);
         return reader;
