@@ -1,0 +1,26 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url:
+    data: "classpath:data.sql"
+    sqlScriptEncoding: UTF-8
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  data:
+    mongodb:
+      authentication-database: admin
+      #username: root
+      #password: root
+      database: local
+      port: 27017
+      host: localhost
+  batch:
+    job:
+      enabled: true
