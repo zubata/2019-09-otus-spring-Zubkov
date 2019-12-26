@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+</head>
+<body>
+<h1>Добавление автора прошло успешно</h1>
+<span th:text="'Автор ' + ${result} + ' успешно добавлен'">Автор Толстой успешно добавлен</span>
+<div>
+    <input type="submit" value="Вернуться к списку авторов" onclick='location.href="/author"'>
+    <input type="submit" value="Добавить ещё одного автора" onclick='location.href="/author/insertauthor"'>
+</div>
+</body>
+</html>
