@@ -1,0 +1,27 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  data:
+    rest:
+      basepath: /api
+  datasource:
+    data: "classpath:data.sql"
+    sqlScriptEncoding: UTF-8
+  jpa:
+    #show-sql: true
+    hibernate:
+      ddl-auto: none
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
