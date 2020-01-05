@@ -16,7 +16,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "info, health, logfile"
   endpoint:
     shutdown:
       enabled: true
@@ -25,3 +25,5 @@ management:
   health:
     defaults:
       enabled: true
+logging:
+  file: "homework16/src/main/resources/logfile.log"
