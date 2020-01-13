@@ -1,0 +1,21 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    ports: 
+     - 5432:5432
+    environment:
+     - POSTGRES_USER=user
+     - POSTGRES_PASSWORD=123
+  programm:
+    image: mydocker
+    build: 
+     context: .
+     dockerfile: Dockerfile
+    ports:
+     - 8090:8080
+    environment:
+     - spring.datasource.username=user
+     - spring.datasource.password=123
+     - spring.datasource.url=jdbc:postgresql://postgres/postgres
+    
