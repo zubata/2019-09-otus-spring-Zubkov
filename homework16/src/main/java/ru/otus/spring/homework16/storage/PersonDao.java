@@ -1,7 +1,7 @@
-package ru.otus.spring.homework13.storage;
+package ru.otus.spring.homework16.storage;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.otus.spring.homework13.domain.Person;
+import ru.otus.spring.homework16.domain.Person;
 
 import java.util.Optional;
 
