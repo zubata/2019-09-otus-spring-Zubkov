@@ -10,6 +10,8 @@ ADD ./src/ $PROJECT_DIR/src
 
 RUN mvn install
 
+COPY /target/homework17*.jar $PROJECT_DIR/app.jar
+
 EXPOSE 8080
 
-CMD ["java","-jar","/opt/project/target/homework17-0.0.1-SNAPSHOT.jar"]
+CMD ["java","-jar","/opt/project/app.jar"]

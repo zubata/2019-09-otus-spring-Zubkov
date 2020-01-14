@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface RestControllerForComment extends PagingAndSortingRepository<Comment, Long> {
 
+    //url=http://localhost:8080/api/comments/search/commentsbook?bookname=
     @RestResource(path = "commentsbook", rel = "commentsbybook")
     List<Comment> findByBookName(@RequestParam("bookname") String bookname);
 
