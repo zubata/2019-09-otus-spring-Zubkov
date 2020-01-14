@@ -5,8 +5,8 @@ docker-compose up
 
 //Остановка и удаление контейнеров
 
-docker stop dockercompose_programm_1
-docker stop dockercompose_postgres_1
+docker stop homework17_programm_1
+docker stop homework17_postgres_1
 
-docker rm dockercompose_programm_1
-docker rm dockercompose_postgres_1
+docker rm homework17_programm_1
+docker rm homework17_postgres_1
