@@ -1,0 +1,2 @@
+logging:
+  file: "homework18/src/main/resources/logfile.log"

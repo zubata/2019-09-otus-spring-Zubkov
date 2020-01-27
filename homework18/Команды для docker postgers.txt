@@ -1,0 +1,2 @@
+//Запуск Postgres в docker
+docker run -it --name postgres -e POSTGRES_USER=user -e POSTGRES_PASSWORD=123 -p 5432:5432 postgres
