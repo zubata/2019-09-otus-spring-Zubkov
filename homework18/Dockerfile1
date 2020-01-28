@@ -1,0 +1,17 @@
+FROM openkbs/jdk11-mvn-py3
+
+ENV PROJECT_DIR=/opt/project1
+WORKDIR $PROJECT_DIR
+
+RUN mkdir -p $PROJECT_DIR
+
+ADD ./server/pom.xml $PROJECT_DIR
+ADD ./server/src/ $PROJECT_DIR/src
+
+RUN mvn install
+
+RUN cp $PROJECT_DIR/target/homework18*.jar $PROJECT_DIR/server.jar
+
+EXPOSE 8081
+
+CMD ["java","-jar","/opt/project1/server.jar"]
