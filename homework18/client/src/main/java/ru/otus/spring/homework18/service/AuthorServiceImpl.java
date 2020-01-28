@@ -2,6 +2,7 @@ package ru.otus.spring.homework18.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,20 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final RestTemplate restTemplate;
 
+    @Value("${rest.fullUrl}")
+    private String restUrl;
+
     @HystrixCommand(fallbackMethod = "insert_Fallback")
     @Override
     public Author insert(Author author) {
-        ResponseEntity<Author> response = restTemplate.postForEntity("http://localhost:8081/api/author", author, Author.class);
+        ResponseEntity<Author> response = restTemplate.postForEntity(restUrl + "/api/author", author, Author.class);
         return response.getBody();
     }
 
     @HystrixCommand(fallbackMethod = "showAllRows_Fallback")
     @Override
     public List<Author> showAllRows() {
-        ResponseEntity<List<Author>> response = restTemplate.exchange("http://localhost:8081/api/author",
+        ResponseEntity<List<Author>> response = restTemplate.exchange(restUrl + "/api/author",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Author>>() {
@@ -39,14 +43,14 @@ public class AuthorServiceImpl implements AuthorService {
     @HystrixCommand(fallbackMethod = "showById_Fallback")
     @Override
     public Author showById(long id) {
-        ResponseEntity<Author> response = restTemplate.getForEntity("http://localhost:8081/api/author?id=" + id, Author.class);
+        ResponseEntity<Author> response = restTemplate.getForEntity(restUrl + "/api/author?id=" + id, Author.class);
         return response.getBody();
     }
 
     @HystrixCommand(fallbackMethod = "deleteById_Fallback")
     @Override
     public String delete(Author author) {
-        restTemplate.delete("http://localhost:8081/api/author/id={id}", author.getId());
+        restTemplate.delete(restUrl + "/api/author/id={id}", author.getId());
         return "Success deleting";
     }
 
@@ -64,6 +68,8 @@ public class AuthorServiceImpl implements AuthorService {
         return new Author("Error with get author");
     }
 
-    public String deleteById_Fallback(Author author) { return "Error with delete author"; }
+    public String deleteById_Fallback(Author author) {
+        return "Error with delete author";
+    }
 
 }

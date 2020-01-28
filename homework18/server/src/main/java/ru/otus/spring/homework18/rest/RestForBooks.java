@@ -30,9 +30,9 @@ public class RestForBooks {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.save(book));
     }
 
-    @DeleteMapping("/api/book")
-    public ResponseEntity deleteBookById(@RequestBody Book book) {
-        bookService.deleteById(book.getId());
+    @DeleteMapping("/api/book/id={id}")
+    public ResponseEntity deleteBookById(@PathVariable long id) {
+        bookService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
