@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @RestController
-public class RestForComments {
+public class RestControllerForComments {
     private final CommentService commentService;
 
     @GetMapping("/api/comment/book")

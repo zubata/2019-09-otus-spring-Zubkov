@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @RestController
-public class RestForBooks {
+public class RestControllerForBooks {
     private final BookService bookService;
 
     @GetMapping("/api/book")
