@@ -10,7 +10,7 @@ import ru.otus.spring.homework18.storage.GenreDao;
 
 @Data
 @RestController
-public class RestForGenres {
+public class RestControllerForGenres {
     private final GenreDao genreDao;
 
     @GetMapping("/api/genre/name={name}")

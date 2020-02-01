@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @RestController
-public class RestForBooks {
+public class RestControllerForBooks {
     private final BookDao bookService;
 
     @GetMapping("/api/book")

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @Data
-public class RestForAuthors {
+public class RestControllerForAuthors {
 
     private final AuthorDao authorDao;
 

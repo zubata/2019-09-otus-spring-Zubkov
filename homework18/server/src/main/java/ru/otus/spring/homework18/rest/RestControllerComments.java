@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @RestController
-public class RestForComments {
+public class RestControllerComments {
     private final CommentDao commentService;
 
     @GetMapping("/api/comment/book")

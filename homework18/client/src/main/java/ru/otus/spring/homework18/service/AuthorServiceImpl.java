@@ -2,6 +2,7 @@ package ru.otus.spring.homework18.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -14,13 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final RestTemplate restTemplate;
+    private final String restUrl;
 
-    @Value("${rest.fullUrl}")
-    private String restUrl;
+    @Autowired
+    public AuthorServiceImpl(@Value("${rest.fullUrl}") String restUrl, RestTemplate restTemplate) {
+        this.restUrl = restUrl;
+        this.restTemplate = restTemplate;
+    }
 
     @HystrixCommand(fallbackMethod = "insert_Fallback")
     @Override

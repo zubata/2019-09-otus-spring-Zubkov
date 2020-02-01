@@ -11,7 +11,7 @@ import ru.otus.spring.homework18.storage.PersonDao;
 
 @Data
 @RestController
-public class RestForPersons {
+public class RestControllerForPersons {
     private final PersonDao personDao;
 
     @GetMapping("/api/person/name={name}")
