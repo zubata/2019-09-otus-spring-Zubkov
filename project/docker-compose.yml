@@ -1,0 +1,42 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    networks:
+     - myproject
+    ports: 
+     - 5432:5432
+    environment:
+     - POSTGRES_USER=user
+     - POSTGRES_PASSWORD=123
+  backend:
+    image: backend
+    build: 
+     context: .
+     dockerfile: DockerfileBack
+    networks:
+     - myproject
+    ports:
+     - 8010:8010
+    environment:
+     - spring.datasource.username=user
+     - spring.datasource.password=123
+     - spring.datasource.url=jdbc:postgresql://postgres/postgres
+     - eureka.client.service-url.defaultZone=http://eureka:8001/eureka
+    depends_on:
+     - "postgres"
+     - "eureka"
+    volumes:
+     - ./cache:/tmp/cache
+  eureka:
+   image: eureka
+   build: 
+    context: .
+    dockerfile: DockerfileEur
+   networks:
+     - myproject
+   ports:
+    - 8001:8001
+networks:
+  myproject:
+    driver: bridge

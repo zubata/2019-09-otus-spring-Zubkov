@@ -1,0 +1,17 @@
+FROM openkbs/jdk11-mvn-py3
+
+ENV PROJECT_DIR=/opt/eureka
+WORKDIR $PROJECT_DIR
+
+RUN mkdir -p $PROJECT_DIR
+
+ADD ./eureka/pom.xml $PROJECT_DIR
+ADD ./eureka/src/ $PROJECT_DIR/src
+
+RUN mvn install
+
+RUN cp $PROJECT_DIR/target/eureka-*.jar $PROJECT_DIR/eureka.jar
+
+EXPOSE 8001
+
+CMD ["java","-jar","/opt/eureka/eureka.jar"]
