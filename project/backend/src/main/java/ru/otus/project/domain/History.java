@@ -19,7 +19,6 @@ public class History {
 
     @ManyToOne(targetEntity = Vine.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "vine_id")
-
     @JsonIgnoreProperties(value = {"historyPrice", "producer", "hibernateLazyInitializer", "handler"})
     private Vine vine;
 

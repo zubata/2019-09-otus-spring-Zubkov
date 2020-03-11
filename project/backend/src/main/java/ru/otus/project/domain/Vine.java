@@ -73,7 +73,7 @@ public class Vine {
     }
 
     @JsonSetter("notAvailable")
-    public void setIsAvailable(boolean notAvailable) { this.isAvailable = !notAvailable; }
+    public void setAvailable(boolean notAvailable) { this.isAvailable = !notAvailable; }
 
     public boolean getIsAvailable() { return this.isAvailable; }
 

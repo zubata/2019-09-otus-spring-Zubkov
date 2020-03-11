@@ -28,6 +28,8 @@ public class Vine {
         historyPrice = new ArrayList<>();
     }
 
+    public void setIsAvailable(boolean isAvailable) { this.isAvailable = isAvailable; }
+
     @JsonSetter("wine_color")
     public void setColor(String wineColor) {
         this.color = wineColor;
@@ -46,8 +48,8 @@ public class Vine {
                 ", цвет ='" + color + '\'' +
                 ", год = " + year +
                 ", объём = " + capacity +
-                ", старана ='" + country + '\'' +
-                ", isAvailable = " + isAvailable +
+                ", страна ='" + country + '\'' +
+                ", В наличии = " + (isAvailable? "да" : "нет") +
                 ", цена = " + cost +
                 ", url= " + url;
     }
