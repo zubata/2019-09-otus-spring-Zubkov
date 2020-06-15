@@ -23,8 +23,8 @@ services:
      - spring.datasource.password=123
      - spring.datasource.url=jdbc:postgresql://postgres/postgres
      - eureka.client.service-url.defaultZone=http://eureka:8001/eureka
-     - spring.mail.username=zubatacan@gmail.com
-     - spring.mail.password=JuveN!82
+     - spring.mail.username=youremail
+     - spring.mail.password=yourpassword
     depends_on:
      - "postgres"
      - "eureka"
