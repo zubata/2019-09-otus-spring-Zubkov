@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Любимые вина</title>
+    <link href="/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="/webjars/jquery/3.5.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js"></script>
+    <style type="text/css"></style>
+</head>
+<body>
+<div th:replace="fragments/headers :: header">&nbsp;</div>
+<div class="row">
+    <div class="ml-3 mt-3 mb-2"><span>Ваши любимые вина</span></div>
+</div>
+<div class="row">
+    <div class="ml-3 mt-3 mb-2">
+        <input class="btn btn-primary" type="submit" value="Удалить все вина" onclick='location.href="/person/vine/all"'>
+    </div>
+</div>
+<div>
+    <div class="container-fluid">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID Вина</th>
+                <th>Название вина</th>
+                <th>Тип</th>
+                <th>Цвет</th>
+                <th>Цена</th>
+                <th>Год</th>
+                <th>В наличии</th>
+                <th>Ссылка</th>
+                <th>История</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vine : ${vine}">
+                <td th:text="${vine.id}">666</td>
+                <td th:text="${vine.name}">Шато Мурло</td>
+                <td th:text="${vine.type}">Сухое</td>
+                <td th:text="${vine.color}">Белое</td>
+                <td th:text="${vine.cost}">10</td>
+                <td th:text="${vine.year}">1992</td>
+                <td th:text="${vine.isAvailable}? 'Да': 'Нет'">Нет</td>
+                <td><a th:href="@{${vine.url}}">В магазин</a></td>
+                <td><a th:href="@{/history/vine?(id=${vine.id})}">История</a></td>
+                <td>
+                    <input id="favdel" type="submit" value="Удалить из любимых"
+                           th:onclick="|location.href='@{/person/vine/del(id=${vine.id})}'|">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

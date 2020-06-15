@@ -1,0 +1,20 @@
+FROM openkbs/jdk11-mvn-py3
+
+ENV PROJECT_DIR=/opt/backend
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+WORKDIR $PROJECT_DIR
+
+RUN mkdir -p $PROJECT_DIR
+
+ADD ./backend/pom.xml $PROJECT_DIR
+ADD ./backend/src/ $PROJECT_DIR/src
+
+RUN mvn install
+
+RUN cp $PROJECT_DIR/target/backend*.jar $PROJECT_DIR/backend.jar
+
+EXPOSE 8010
+
+CMD ["java","-jar","/opt/backend/backend.jar"]

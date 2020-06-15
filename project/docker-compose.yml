@@ -1,0 +1,59 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    networks:
+     - myproject
+    ports: 
+     - 5432:5432
+    environment:
+     - POSTGRES_USER=user
+     - POSTGRES_PASSWORD=123
+  backend:
+    image: backend
+    build: 
+     context: .
+     dockerfile: DockerfileBack
+    networks:
+     - myproject
+    ports:
+     - 8010:8010
+    environment:
+     - spring.datasource.username=user
+     - spring.datasource.password=123
+     - spring.datasource.url=jdbc:postgresql://postgres/postgres
+     - eureka.client.service-url.defaultZone=http://eureka:8001/eureka
+     - spring.mail.username=zubatacan@gmail.com
+     - spring.mail.password=JuveN!82
+    depends_on:
+     - "postgres"
+     - "eureka"
+    volumes:
+     - ./cache:/tmp/cache
+  eureka:
+   image: eureka
+   build: 
+    context: .
+    dockerfile: DockerfileEur
+   networks:
+     - myproject
+   ports:
+    - 8001:8001
+  frontendWeb:
+   image: frontendweb
+   build: 
+    context: .
+    dockerfile: DockerfileFrontWeb
+   networks:
+     - myproject
+   ports:
+    - 8086:8086
+   environment:
+     - eureka.client.service-url.defaultZone=http://eureka:8001/eureka
+     - security.oauth2.client.accessTokenUri=http://backend:8010/api/oauth/token
+     - security.oauth2.client.userAuthorizationUri=http://localhost:8010/api/oauth/authorize
+     - security.oauth2.resource.tokenInfoUri=http://backend:8010/api/oauth/check_token
+     - security.oauth2.resource.userInfoUri=http://backend:8010/api/user/me
+networks:
+  myproject:
+    driver: bridge

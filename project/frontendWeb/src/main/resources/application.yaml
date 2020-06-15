@@ -1,0 +1,30 @@
+server:
+  port: 8086
+  session:
+    cookie:
+      name: JSESSIONID
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 15000
+        readTimeout: 15000
+      parse:
+        connectTimeout: 10000
+        readTimeout: 240000
+logging:
+  level:
+    root: DEBUG
+  file: "frontedWeb/logfile.log"
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: tutorialspointWeb
+      clientSecret: secret-key
+      accessTokenUri: http://localhost:8010/api/oauth/token
+      userAuthorizationUri: http://localhost:8010/api/oauth/authorize
+    resource:
+      tokenInfoUri: http://localhost:8010/api/oauth/check_token
+      userInfoUri: http://localhost:8010/api/user/me

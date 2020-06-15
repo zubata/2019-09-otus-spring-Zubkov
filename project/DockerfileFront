@@ -1,0 +1,20 @@
+FROM openkbs/jdk11-mvn-py3
+
+ENV PROJECT_DIR=/opt/frontend
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+WORKDIR $PROJECT_DIR
+
+RUN mkdir -p $PROJECT_DIR
+
+ADD ./frontend/pom.xml $PROJECT_DIR
+ADD ./frontend/src/ $PROJECT_DIR/src
+
+RUN mvn install
+
+RUN cp $PROJECT_DIR/target/frontend-*.jar $PROJECT_DIR/frontend.jar
+
+EXPOSE 8085
+
+CMD ["java","-jar","/opt/frontend/frontend.jar"]

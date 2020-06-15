@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>История Цен</title>
+    <link href="../webjars/bootstrap/4.4.1-1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="/webjars/jquery/3.5.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js"></script>
+    <style type="text/css"></style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+<body>
+<div th:replace="fragments/headers :: header">&nbsp;</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 mt-3">
+            <canvas id="line-chart" width="600" height="250"></canvas>
+            <script th:inline="javascript">
+            new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+            labels: [[${dates}]],
+            datasets: [{
+            data: [[${prices}]],
+            borderColor: "#3e95cd",
+            fill: false
+            }
+            ]
+            },
+            options: {
+            title: {
+            display: true,
+            text: "График цен на вино"
+            },
+            legend: {
+                        display: false,
+                      }
+            }
+            });
+
+
+
+            </script>
+        </div>
+        <ul class="col-sm-5 mt-3 list-unstyled">
+            <li>Название вина: <span th:text="${vine.name}"></span></li>
+            <li>Страна: <span th:text="${vine.country}"></span></li>
+            <li>Последняя цена: <span th:text="${vine.cost}">0.0</span> рублей</li>
+            <li>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <td>Дата</td>
+                        <td>Цена</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="his : ${history}">
+                        <td th:text="${his.date}">1970-01-01</td>
+                        <td><span th:text="${his.price}">666</span> рублей</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

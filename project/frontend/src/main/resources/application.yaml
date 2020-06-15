@@ -1,0 +1,20 @@
+server:
+  port: 8085
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+      parse:
+        connectTimeout: 5000
+        readTimeout: 240000
+logging:
+  pattern:
+    console:
+  file: "backend/logfile.log"
+security:
+  oauth2:
+    client:
+      clientId: tutorialspointShell
+      clientSecret: secret-key

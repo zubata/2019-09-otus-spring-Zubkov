@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Список вин</title>
+    <link href="/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="/webjars/jquery/3.5.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js"></script>
+    <link href="/webjars/font-awesome/5.11.1/css/all.css" rel="stylesheet">
+    <style type="text/css"></style>
+</head>
+<body>
+<div th:replace="fragments/headers :: header">&nbsp;</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="ml-3 mt-2 mb-2" th:if="${producer != null}">
+            Вина производителя <span th:text="${producer}"></span>
+        </div>
+        <div class="ml-3 mt-2 mb-2" th:unless="${producer != null}" sec:authorize="hasRole('ROLE_ADMIN')">
+            <input class="btn btn-primary" type="submit" value="Очистить всю базу" onclick='location.href="/vine/del"'>
+        </div>
+        <div class="ml-3 mt-2 mb-2" th:unless="${producer != null}">
+            <input class="btn btn-primary" type="submit" value="Сохранить файл" onclick='location.href="/vine/save"'>
+        </div>
+        <div class="col-auto mt-3 mb-2" th:unless="${producer != null}">
+            <span th:text="'Общее количество ' + ${count}"></span>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID Вина</th>
+            <th>Название вина</th>
+            <th>Производитель</th>
+            <th>Страна</th>
+            <th>Тип</th>
+            <th>Цвет</th>
+            <th>Цена</th>
+            <th>Год</th>
+            <th>Объём</th>
+            <th>Подписаться</th>
+            <th>В наличии</th>
+            <th>Ссылка</th>
+            <th>История</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vine : ${vine}">
+            <td th:text="${vine.id}">666</td>
+            <td th:text="${vine.name}">Шато Мурло</td>
+            <td>
+                <a th:href="@{/vine/producer{id}(id=${vine.producer.id})}"><span
+                        th:text="${vine.producer.name}">Васька</span></a>
+            </td>
+            <td th:text="${vine.country}">Россия</td>
+            <td th:text="${vine.type}">Сухое</td>
+            <td th:text="${vine.color}">Белое</td>
+            <td th:text="${vine.cost}">10</td>
+            <td th:text="${vine.year}">1992</td>
+            <td th:text="${vine.capacity}">0.7</td>
+            <td>
+                <div>
+                    <div th:if="${favines.contains(vine)}">
+                        <a class="del" href="#" th:id="${vine.id}"><i class="fas fa-heart"></i></a>
+                    </div>
+                    <div th:unless="${favines.contains(vine)}">
+                        <a class="add" href="#" th:id="${vine.id}"><i class="far fa-heart"></i></a>
+                    </div>
+                </div>
+            </td>
+            <td th:text="${vine.isAvailable}? 'Да': 'Нет'">Нет</td>
+            <td><a th:href="@{${vine.url}}">В магазин</a></td>
+            <td><a th:href="@{/history/vine?(id=${vine.id})}">История</a></td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:href="@{/vine/del{id}(id=${vine.id})}"><i class="fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav class="navbar fixed-bottom" aria-label="Pagination" th:if="${producer == null} and ${page != null}">
+        <ul class="pagination pagination">
+            <li class="page-item" th:if="${page}!=1">
+                <a class="page-link" title="В начало" th:href="@{/vine(page=1)}">В начало</a>
+            </li>
+            <li class="page-item" th:classappend="${page} < 10 ? 'disabled'">
+                <a class="page-link" title="Предыдущие 10 страниц" th:href="@{/vine(page=${initpage-9})}"><i
+                        class="fa fa-angle-double-left"></i></a>
+            </li>
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(initpage,  page + 10 > lastpage ? lastpage : initpage + 10 , 1)}"
+                th:classappend="${page==i}? active">
+                <a class="page-link" th:href="@{/vine(page=${i})}" th:text="${i}"></a>
+            </li>
+            <li class="page-item" th:classappend="${(page+10)>lastpage} ? 'disabled'">
+                <a class="page-link" title="Следующие 10 страниц" th:href="@{/vine(page=${initpage+10})}"><i
+                        class="fa fa-angle-double-right"></i></a>
+            </li>
+            <li class="page-item" th:if="${page}!=${lastpage}">
+                <a class="page-link" th:href="@{/vine(page=${lastpage})}">В Конец</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="@{/vine/all}">Показать всё</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="myPopup">
+    <div id="favmodal1" class="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span>Вино добавлено в избранное</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="myPopup">
+    <div id="favmodal2" class="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span>Вино удалено из избранных</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+       $('.table .add').on('click', function(event){
+          fetch('/person/vine/add?id=' + this.id)
+          .then(function(response) {
+               if(response.status!=200) {
+                  console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+               }
+               $('.myPopup #favmodal1').modal('show')
+			   //setTimeout(function() {$('.myPopup #favmodal1').modal('hide')}, 3000)
+			   setTimeout(function(){ location.reload(); }, 3000)
+          });
+		  $(this).replaceWith(`<a class="del" href="#" id=${this.id}><i class="fas fa-heart"></i></a>`);
+
+       });
+
+	   $('.table .del').on('click', function(event){
+          fetch('/person/vine/del?id=' + this.id)
+          .then(function(response) {
+               if(response.status!=200) {
+                  console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+               }
+               $('.myPopup #favmodal2').modal('show')
+			   //setTimeout(function() {$('.myPopup #favmodal2').modal('hide')}, 3000)
+			   setTimeout(function(){ location.reload(); }, 3000)
+          });
+          $(this).replaceWith(`<a class="add" href="#" id=${this.id}><i class="far fa-heart"></i></a>`);
+
+       });
+    });
+
+    $.fn.swap = function (elem) {
+       elem = elem.jquery ? elem : $(elem);
+       return this.each(function () {
+           $(document.createTextNode('')).insertBefore(this).before(elem.before(this)).remove();
+       });
+    };
+
+
+
+
+</script>
+</body>
+</html>
