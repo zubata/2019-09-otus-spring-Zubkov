@@ -1,5 +1,6 @@
 package ru.otus.project.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import ru.otus.project.domain.Vine;
 
@@ -11,6 +12,8 @@ public interface VineService {
 
     List<Vine> getList();
 
+    Page<Vine> getListPage(int id);
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteById(long id);
 
@@ -20,5 +23,7 @@ public interface VineService {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteAll();
+
+    List<Vine> getByProducerId(long id);
 
 }

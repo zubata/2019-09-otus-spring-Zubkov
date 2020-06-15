@@ -60,7 +60,6 @@ public class StepProducerConfig {
     public FlatFileItemWriter<Producer> writerProducers() {
         FlatFileItemWriter<Producer> writer = new FlatFileItemWriter<>();
         writer.setResource(resource);
-        writer.setAppendAllowed(true);
         writer.setHeaderCallback(writer1 -> writer1.write("id, Имя"));
         writer.setLineAggregator(new DelimitedLineAggregator<Producer>() {
             {

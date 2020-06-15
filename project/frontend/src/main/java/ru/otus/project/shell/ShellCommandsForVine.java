@@ -22,6 +22,9 @@ public class ShellCommandsForVine {
     @ShellMethod(value = "get vines all", key = "gva")
     public void getAllVineList() { vineService.getList(); }
 
+    @ShellMethod(value = "get vines page", key = "gvp")
+    public void getVineListPage() { vineService.getListPage(); }
+
     @ShellMethod(value = "get vine by name", key = "gvn")
     public void getVineByName() { vineService.getByName();}
 

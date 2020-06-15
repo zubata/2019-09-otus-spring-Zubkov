@@ -11,6 +11,7 @@ public class FeignErrorHandler implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
+        MyHttpExceptionBody httpException = MyHttpExceptionBody.getHttpException(response);
         switch (response.status()){
             case 401:
                 return new UnauthorizedException();
@@ -19,7 +20,6 @@ public class FeignErrorHandler implements ErrorDecoder {
             case 404:
                 return new NotFoundException(response.request().url());
             case 500:
-                MyHttpExceptionBody httpException = MyHttpExceptionBody.getHttpException(response);
                 return new ServerErrorException(httpException.getMessage());
             default:
                 return FeignException.errorStatus(methodKey, response);

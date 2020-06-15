@@ -54,24 +54,6 @@ public class Vine {
         this.color = wineColor;
     }
 
-    @JsonSetter("year")
-    public void setYear(String json) {
-        if (json.equals("")) this.year = 0;
-        else {
-            if (json.contains("&nbsp")) this.year = Integer.parseInt(json.substring(0, json.indexOf("&nbsp")));
-            else this.year = Integer.parseInt(json.substring(0, 4));
-        }
-    }
-
-    @JsonSetter("capacity")
-    public void setCapacity(String json) {
-        if (json.equals("")) this.capacity = 0;
-        else {
-            if (json.contains("&nbsp")) this.capacity = Float.parseFloat(json.substring(0, json.indexOf("&nbsp")));
-            else this.capacity = Float.parseFloat(json.substring(0, 4));
-        }
-    }
-
     @JsonSetter("notAvailable")
     public void setAvailable(boolean notAvailable) { this.isAvailable = !notAvailable; }
 

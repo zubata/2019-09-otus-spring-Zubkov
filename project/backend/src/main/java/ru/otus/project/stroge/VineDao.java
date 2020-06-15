@@ -1,5 +1,7 @@
 package ru.otus.project.stroge;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,10 +18,16 @@ public interface VineDao extends JpaRepository<Vine, Long> {
     List<Vine> findAll();
 
     @EntityGraph(value = "VineAndProducer")
+    Page<Vine> findAll(Pageable pageable);
+
+    @EntityGraph(value = "VineAndProducer")
     Vine findById(long id);
 
     @EntityGraph(value = "VineAndProducer")
     List<Vine> findByName(String name);
+
+    @EntityGraph(value = "VineAndProducer")
+    List<Vine> findByProducerId(long id);
 
     //@Modifying
     //@Transactional

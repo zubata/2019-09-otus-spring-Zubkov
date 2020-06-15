@@ -23,6 +23,8 @@ services:
      - spring.datasource.password=123
      - spring.datasource.url=jdbc:postgresql://postgres/postgres
      - eureka.client.service-url.defaultZone=http://eureka:8001/eureka
+     - spring.mail.username=zubatacan@gmail.com
+     - spring.mail.password=JuveN!82
     depends_on:
      - "postgres"
      - "eureka"
@@ -37,6 +39,21 @@ services:
      - myproject
    ports:
     - 8001:8001
+  frontendWeb:
+   image: frontendweb
+   build: 
+    context: .
+    dockerfile: DockerfileFrontWeb
+   networks:
+     - myproject
+   ports:
+    - 8086:8086
+   environment:
+     - eureka.client.service-url.defaultZone=http://eureka:8001/eureka
+     - security.oauth2.client.accessTokenUri=http://backend:8010/api/oauth/token
+     - security.oauth2.client.userAuthorizationUri=http://localhost:8010/api/oauth/authorize
+     - security.oauth2.resource.tokenInfoUri=http://backend:8010/api/oauth/check_token
+     - security.oauth2.resource.userInfoUri=http://backend:8010/api/user/me
 networks:
   myproject:
     driver: bridge

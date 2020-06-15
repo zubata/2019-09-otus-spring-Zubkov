@@ -11,16 +11,16 @@ import java.util.List;
 @FeignClient(name = "backend", contextId = "history")
 public interface FeignForHistory {
 
-    @GetMapping("/vine/history/id")
+    @GetMapping("/api/vine/history/id")
     List<History> getVineHistoryById(@RequestParam long id);
 
-    @GetMapping("/vine/history/name")
+    @GetMapping("/api/vine/history/name")
     List<History> getVineHistoryByName(@RequestParam String name);
 
-    @DeleteMapping("/vine/history/id")
+    @DeleteMapping("/api/vine/history/id")
     List<History> deleteVineById(@RequestParam long id);
 
-    @DeleteMapping("/vine/history")
+    @DeleteMapping("/api/vine/history")
     List<History> deleteAllHistory();
 
 }

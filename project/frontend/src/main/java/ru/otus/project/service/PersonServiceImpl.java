@@ -1,5 +1,7 @@
 package ru.otus.project.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,10 @@ public class PersonServiceImpl implements PersonService {
         String name = ioService.input();
         ioService.output("Введите пароль пользователя");
         String password = ioService.input();
-        interceptor.setUser(name, password);
         try {
-            feignForAuth.personAuth();
+            String response = feignForAuth.personAuth(String.format("grant_type=%s&username=%s&password=%s","password",name,password));
+            String token = getToken(response);
+            interceptor.setToken(token);
             ioService.output("Авторизация прошла успешно");
         } catch (FeignException e) {
             ioService.output("Авторизация неуспешна, ошибка номер " + e.status());
@@ -38,7 +41,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void logOut() {
-        interceptor.setUser(null, null);
+        feignForAuth.revokeToken();
+        interceptor.setToken(null);
         ioService.output("Выход выполнен");
     }
 
@@ -60,5 +64,15 @@ public class PersonServiceImpl implements PersonService {
     public void getFavouriteVines() {
         List<Vine> list = feignForPerson.getFavouriteVines();
         list.forEach(s -> ioService.output(s.toString()));
+    }
+
+    private String getToken(String response) {
+        ObjectMapper om = new ObjectMapper();
+        try {
+            return om.readTree(response).findValue("access_token").asText();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -1,8 +1,10 @@
 package ru.otus.project.service;
 
+import java.io.File;
+
 public interface BatchService {
 
-    void saveToCsv(String jobName, String path);
+    File saveToCsv(String jobName);
 
     void restartJob(String jobName);
 

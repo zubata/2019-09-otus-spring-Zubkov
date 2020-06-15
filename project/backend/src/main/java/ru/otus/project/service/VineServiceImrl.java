@@ -1,7 +1,10 @@
 package ru.otus.project.service;
 
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.matcher.MethodSortMatcher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.otus.project.domain.Producer;
 import ru.otus.project.domain.Vine;
@@ -22,7 +25,7 @@ public class VineServiceImrl implements VineService {
 
     @Override
     public Vine insert(String vine) {
-        String[] mas = vine.split(",");
+        /*String[] mas = vine.split(",");
         Vine temp = new Vine();
         temp.setId(Long.parseLong(mas[0]));
         temp.setYear(mas[1]);
@@ -36,12 +39,18 @@ public class VineServiceImrl implements VineService {
         temp.setProducer(tempProd);
         temp.setName(mas[8]);
         temp.setUrl(mas[9]);
-        return vineDao.save(temp);
+        return vineDao.save(temp);*/
+        return new Vine();
     }
 
     @Override
     public List<Vine> getList() {
         return vineDao.findAll();
+    }
+
+    @Override
+    public Page<Vine> getListPage(int id) {
+        return vineDao.findAll(PageRequest.of(id, 6));
     }
 
     @Override
@@ -71,6 +80,13 @@ public class VineServiceImrl implements VineService {
     public List<Vine> getByName(String name) {
         List<Vine> temp = vineDao.findByName(name);
         if (temp.size() == 0) throw new NotFoundEntity("Вино", "наименованием");
+        return temp;
+    }
+
+    @Override
+    public List<Vine> getByProducerId(long id) {
+        List<Vine> temp = vineDao.findByProducerId(id);
+        if (temp.size() == 0) throw new NotFoundEntity("Вин", " с таким производителем не найдено");
         return temp;
     }
 }

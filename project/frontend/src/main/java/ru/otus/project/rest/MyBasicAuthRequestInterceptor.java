@@ -1,20 +1,34 @@
 package ru.otus.project.rest;
 
-import com.thoughtworks.xstream.core.util.Base64Encoder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Util;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 
 @Component
 public class MyBasicAuthRequestInterceptor implements RequestInterceptor {
-    private String username;
-    private String password;
+
+    private static final String AUTHORIZATION_HEADER="Authorization";
+    private static final String TOKEN_TYPE = "Bearer";
+    private final String clientId;
+    private final String clientSecret;
+    private String token;
+
+    public MyBasicAuthRequestInterceptor(@Value("${security.oauth2.client.clientId}") String id,
+                                         @Value("${security.oauth2.client.clientSecret}") String secret) {
+        this.clientId = id;
+        this.clientSecret = secret;
+    }
 
     @Override
     public void apply(RequestTemplate template) {
-        String myHeaderValue = "Basic " + base64Encode((username + ":" + password).getBytes(Util.ISO_8859_1));
+        if(token == null) {
+            String myHeaderValue = "Basic " + base64Encode((clientId + ":" + clientSecret).getBytes(Util.ISO_8859_1));
+            template.header("Authorization", new String[]{myHeaderValue});
+        }
+        String myHeaderValue = "Bearer " + token;
         template.header("Authorization", new String[]{myHeaderValue});
     }
 
@@ -22,9 +36,8 @@ public class MyBasicAuthRequestInterceptor implements RequestInterceptor {
         return Base64Utils.encodeToString(bytes);
     }
 
-    public void setUser(String name, String password) {
-        this.username=name;
-        this.password=password;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
 

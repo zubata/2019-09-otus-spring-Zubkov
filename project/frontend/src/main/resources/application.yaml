@@ -13,3 +13,8 @@ logging:
   pattern:
     console:
   file: "backend/logfile.log"
+security:
+  oauth2:
+    client:
+      clientId: tutorialspointShell
+      clientSecret: secret-key

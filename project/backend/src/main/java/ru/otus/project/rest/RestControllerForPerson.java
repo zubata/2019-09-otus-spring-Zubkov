@@ -29,6 +29,12 @@ public class RestControllerForPerson {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @DeleteMapping("/person/vine/all")
+    public ResponseEntity<Void> deleteAllFavouriteVine() {
+        personService.deleteAllFavouriteVine();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @GetMapping("/person/vine")
     public ResponseEntity<List<Vine>> getFavouriteVines() {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getFavouriteVines());

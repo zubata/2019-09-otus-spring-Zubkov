@@ -12,19 +12,19 @@ import java.util.List;
 @FeignClient(name = "backend", contextId = "producer")
 public interface FeignForProducer {
 
-    @GetMapping("/producer")
+    @GetMapping("/api/producer")
     List<Producer> getProducerList();
 
-    @GetMapping("/producer/name")
+    @GetMapping("/api/producer/name")
     Producer getProducerByName(@RequestParam String name);
 
-    @GetMapping("/producer/id")
+    @GetMapping("/api/producer/id")
     Producer getProducerById(@RequestParam long id);
 
-    @DeleteMapping("/producer/id")
+    @DeleteMapping("/api/producer/id")
     void deleteById(@RequestParam long id);
 
-    @DeleteMapping("/producer")
+    @DeleteMapping("/api/producer")
     void deleteAllProducer();
 
 }

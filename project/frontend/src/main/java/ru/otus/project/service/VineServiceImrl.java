@@ -1,11 +1,14 @@
 package ru.otus.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import ru.otus.project.config.IOService;
 import ru.otus.project.domain.Vine;
 import ru.otus.project.rest.FeignForVine;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -26,6 +29,23 @@ public class VineServiceImrl implements VineService {
     public List<Vine> getList() {
         List<Vine> list = vineDao.getAllVines();
         list.forEach(i -> ioService.output(i.toString()));
+        return list;
+    }
+
+    @Override
+    public List<Vine> getListPage() {
+        int numpage = 0;
+        boolean continueOrNot = true;
+        List<Vine> list = new ArrayList<>();
+        while (continueOrNot) {
+            Page<Vine> page = vineDao.getVinesPage(numpage++);
+            List<Vine> listOnePage = page.getContent();
+            list.addAll(listOnePage);
+            listOnePage.forEach(i -> ioService.output(i.toString()));
+            ioService.output(String.format("Для того, чтобы отобразить следующую страницу (ещё 50 записей), " +
+                    "введите \"yes\", Всего %d записей", page.getTotalElements()));
+            continueOrNot = Arrays.asList("yes", "y").contains(ioService.input());
+        }
         return list;
     }
 
@@ -58,8 +78,8 @@ public class VineServiceImrl implements VineService {
         ioService.output("Введите именование вина");
         String name = ioService.input();
         List<Vine> vines = vineDao.getVineByName(name);
-        if (vines.size() ==0) ioService.output("Данного названия нет в базе данных");
-        vines.forEach(v->ioService.output(v.toString()));
+        if (vines.size() == 0) ioService.output("Данного названия нет в базе данных");
+        vines.forEach(v -> ioService.output(v.toString()));
         return vines;
     }
 }

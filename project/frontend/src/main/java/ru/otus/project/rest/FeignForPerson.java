@@ -11,13 +11,13 @@ import java.util.List;
 @FeignClient(name = "backend", contextId = "person")
 public interface FeignForPerson {
 
-    @PostMapping("/person/vine")
+    @PostMapping("/api/person/vine")
     void addFavouriteVine(long id);
 
-    @DeleteMapping("/person/vine")
+    @DeleteMapping("/api/person/vine")
     void deleteFavouriteVine(long id);
 
-    @GetMapping("/person/vine")
+    @GetMapping("/api/person/vine")
     List<Vine> getFavouriteVines();
 
 }

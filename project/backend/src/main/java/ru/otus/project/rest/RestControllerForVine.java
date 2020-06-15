@@ -1,16 +1,13 @@
 package ru.otus.project.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.project.domain.Vine;
-import ru.otus.project.service.SiteParsingService;
-import ru.otus.project.service.SubscribeService;
-import ru.otus.project.service.SubscribeServiceImpl;
 import ru.otus.project.service.VineService;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,36 +17,51 @@ public class RestControllerForVine {
     private final VineService vineService;
 
     @PostMapping("/vine/insert")
+    @ResponseBody
     public ResponseEntity<Vine> insertVine(@RequestBody String vine) {
         return ResponseEntity.status(HttpStatus.CREATED).body(vineService.insert(vine));
     }
 
     @GetMapping("/vine")
-    public ResponseEntity<List<Vine>> getAllVineList() {
-        return ResponseEntity.status(HttpStatus.OK).body(vineService.getList());
+    @ResponseBody
+    public List<Vine> getAllVineList() {
+        return vineService.getList();
+    }
+
+    @GetMapping("/vine/page")
+    @ResponseBody
+    public Page<Vine> getVineListPage(@RequestParam(defaultValue = "0") int id) {
+        return vineService.getListPage(id);
     }
 
     @GetMapping("/vine/name")
-    public ResponseEntity<List<Vine>> getVineByName(@RequestParam String name) {
-        return ResponseEntity.status(HttpStatus.OK).body(vineService.getByName(name));
+    @ResponseBody
+    public List<Vine> getVineByName(@RequestParam String name) {
+        return vineService.getByName(name);
     }
 
     @GetMapping("/vine/id")
-    public @ResponseBody
-    ResponseEntity<Vine> getVineById(@RequestParam long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(vineService.getById(id));
+    @ResponseBody
+    public Vine getVineById(@RequestParam long id) {
+        return vineService.getById(id);
+    }
+
+    @GetMapping("/vine/producer/id")
+    @ResponseBody
+    public List<Vine> getVineByProducer(@RequestParam long id) {
+        return vineService.getByProducerId(id);
     }
 
     @DeleteMapping("/vine/del")
-    public ResponseEntity<Void> deleteById(@RequestParam long id) {
+    @ResponseBody
+    public void deleteById(@RequestParam long id) {
         vineService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/vine")
-    public ResponseEntity<Void> deleteAllVine() {
+    @ResponseBody
+    public void deleteAllVine() {
         vineService.deleteAll();
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "backend", contextId = "parse")
 public interface FeignForParseSite {
 
-    @GetMapping("/parse")
+    @GetMapping("/api/parse")
     void parseSite();
 
 }

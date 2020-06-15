@@ -10,6 +10,8 @@ public interface PersonService {
 
     void deleteFavouriteVine(long id);
 
+    void deleteAllFavouriteVine();
+
     List<Vine> getFavouriteVines();
 
 }

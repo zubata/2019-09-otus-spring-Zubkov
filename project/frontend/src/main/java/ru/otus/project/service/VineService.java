@@ -10,6 +10,8 @@ public interface VineService {
 
     List<Vine> getList();
 
+    List<Vine> getListPage();
+
     void deleteById ();
 
     Vine getById();

@@ -39,6 +39,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public void deleteAllFavouriteVine() {
+        Person currentPerson = getPerson();
+        currentPerson.setVine(null);
+        personDao.save(currentPerson);
+    }
+
+    @Override
     public List<Vine> getFavouriteVines() {
         Person currentPerson = getPerson();
         return currentPerson.getVine();
@@ -47,8 +54,7 @@ public class PersonServiceImpl implements PersonService {
     private Person getPerson() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Person person = personDao.getByUsername(userDetails.getUsername()).get();
-        return person;
+        String username = (String) authentication.getPrincipal();
+        return personDao.getByUsername(username).get();
     }
 }

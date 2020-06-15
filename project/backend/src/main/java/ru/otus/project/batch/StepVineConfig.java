@@ -52,7 +52,6 @@ public class StepVineConfig {
     public FlatFileItemWriter<Vine> writerVines() {
         FlatFileItemWriter<Vine> writer = new FlatFileItemWriter<>();
         writer.setResource(resource);
-        writer.setAppendAllowed(true);
         writer.setHeaderCallback(writer1 -> writer1.write("id, Имя, Год, Тип, " +
                 "Цвет, Объём, Страна, В наличие , Цена, Производитель, Ссылка"));
         writer.setLineAggregator(new DelimitedLineAggregator<Vine>() {
